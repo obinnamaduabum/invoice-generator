@@ -21,8 +21,8 @@ import { AlreadyLoggedInGuard } from 'src/app/guard/already-logged-in/already-lo
 import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protect-invoice-builder.component';
 
 const routes: Routes = [
-  { path: '', component: InvoiceCreatorComponent, canLoad: [AlreadyLoggedInGuard] },
-  { path: 'main', component: ProtectInvoiceBuilderComponent, canLoad: [UserLoggedInGuard] }
+  { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
+  { path: 'main', component: ProtectInvoiceBuilderComponent, canActivate: [UserLoggedInGuard] }
 ];
 
 @NgModule({

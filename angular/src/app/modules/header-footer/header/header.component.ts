@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {MyToastService} from '../../../services/toast-service/my-toast.service';
 import {LoginComponent} from '../../authentication/login/login.component';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
+import {AuthenticationService} from '../../../services/authentication-service';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +12,19 @@ import {LoginComponentHandlerService} from '../../../services/login-component-ha
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private myToastService: MyToastService, private loginComponentHandlerService: LoginComponentHandlerService) { }
+  isLoggedIn = false;
+  constructor(private myToastService: MyToastService,
+              private authenticationService: AuthenticationService,
+              private loginComponentHandlerService: LoginComponentHandlerService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authenticationService.fetchUser().subscribe((data: any) => {
+      if (data) {
+        this.isLoggedIn = true;
+      }
+      console.log(data);
+    });
+  }
 
   openLoginDialog(): void {
    this.loginComponentHandlerService.openDialog();

@@ -10,6 +10,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: white;
 }
 
+
+.google-btn-stretched {
+  width: 100% !important;
+  background-color: #ffffff;
+  color: #000000;
+}
+
 .add-column-btn {
   background-color: #4dcc2b;
   color: white !important;

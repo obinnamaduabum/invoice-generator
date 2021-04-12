@@ -1,6 +1,10 @@
-<div class="container">
-  <div style="padding-top: 20px; padding-bottom: 20px" [formGroup]="loginFormGroup">
+<div style="padding: 10px;">
+  <div [formGroup]="loginFormGroup">
     <div class="col m12 s12 l12">
+
+      <div>
+        <h1 class="center">LOGIN</h1>
+      </div>
       <mat-form-field class="alignment hide-login-with-phone-number" appearance="outline">
         <!--<mat-label>Email</mat-label>-->
 
@@ -65,11 +69,11 @@
 
 
     <button *ngIf="!loggingIn"
-            mat-button class="add-column-btn-stretched"
+            mat-raised-button class="add-column-btn-stretched"
             (click)="login()">
       Submit
     </button>
-    <button *ngIf="loggingIn" mat-button class="add-column-btn-stretched">
+    <button *ngIf="loggingIn" mat-raised-button class="add-column-btn-stretched">
       <mat-icon>
         <mat-progress-spinner
           class="white-mat-spinner"
@@ -79,5 +83,12 @@
       </mat-icon>
       Loading...
     </button>
+
+    <hr style="margin-top: 15px; margin-bottom: 15px">
+    <div>
+      <button mat-raised-button class="google-btn-stretched" (click)="loginWithGoogle()">Continue with Google</button>
+    </div>
+
+
   </div>
 </div>

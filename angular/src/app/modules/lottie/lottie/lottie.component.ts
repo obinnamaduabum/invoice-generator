@@ -5,7 +5,7 @@ import {
   BMCompleteLoopEvent,
   BMConfigErrorEvent, BMDestroyEvent, BMEnterFrameEvent, BMRenderFrameErrorEvent,
   BMSegmentStartEvent
-} from "ngx-lottie";
+} from 'ngx-lottie';
 
 @Component({
   selector: 'app-lottie',
@@ -18,20 +18,19 @@ export class LottieComponent implements OnInit {
   animationSpeed = 1;
   public lottieConfig: object;
   @Input()
-  width: number = 0;
+  width = 0;
   @Input()
-  height: number = 0;
+  height = 0;
   @Input()
-  path: string = '';
+  path = '';
   @Input()
-  start: boolean = false;
+  start = false;
   options: AnimationOptions = {
     path: 'assets/lottie/page-not-found-animation.json',
   };
 
   constructor() {
-    const url: string = `assets/lottie/page-not-found-animation.json`;
-    console.log(url);
+    const url = `assets/lottie/page-not-found-animation.json`;
     this.lottieConfig = {
       path: url,
       autoplay: true,
@@ -40,8 +39,7 @@ export class LottieComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.start) {
-      console.log(this.path);
+    if (this.start) {
       // const url: string = `assets/lottie/${this.path}.json`;
       // console.log(url);
       // this.lottieConfig = {
@@ -52,51 +50,51 @@ export class LottieComponent implements OnInit {
     }
   }
 
-  handleAnimation(anim: any) {
+  handleAnimation(anim: any): void {
     this.anim = anim;
   }
 
-  stop() {
+  stop(): void {
     this.anim.stop();
   }
 
-  animationCreated($event: import("lottie-web").AnimationItem) {
+  animationCreated($event: import('lottie-web').AnimationItem): void {
 
   }
 
-  configReady() {
+  configReady(): void {
 
   }
 
-  dataReady() {
+  dataReady(): void {
 
   }
 
-  domLoaded() {
+  domLoaded(): void {
 
   }
 
-  complete($event: BMCompleteEvent) {
+  complete($event: BMCompleteEvent): void {
 
   }
 
-  loopComplete($event: BMCompleteLoopEvent) {
+  loopComplete($event: BMCompleteLoopEvent): void {
 
   }
 
-  destroy($event: BMDestroyEvent) {
+  destroy($event: BMDestroyEvent): void {
 
   }
 
-  error($event: BMRenderFrameErrorEvent | BMConfigErrorEvent) {
+  error($event: BMRenderFrameErrorEvent | BMConfigErrorEvent): void {
 
   }
 
-  segmentStart($event: BMSegmentStartEvent) {
+  segmentStart($event: BMSegmentStartEvent): void {
 
   }
 
-  enterFrame($event: BMEnterFrameEvent) {
+  enterFrame($event: BMEnterFrameEvent): void {
 
   }
 }

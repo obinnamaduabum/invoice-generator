@@ -12,6 +12,7 @@ import {LoginInterface} from '../../../interfaces/login-interface';
 import {ErrorCatcherService} from '../../../services/error-catcher.service';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
 import {MyRoutes} from '../../../utils/my-routes';
+import {GoogleLoginProvider, SocialAuthService, SocialUser} from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ export class LoginComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   loginFormGroup: FormGroup;
   loggingIn = false;
+  socialUser: SocialUser;
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
@@ -30,7 +32,8 @@ export class LoginComponent implements OnInit {
               private myToastrService: MyToastService,
               private authenticationService: AuthenticationService,
               private errorCatcherService: ErrorCatcherService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private socialAuthService: SocialAuthService) {
   }
 
   ngOnInit(): void {
@@ -94,6 +97,10 @@ export class LoginComponent implements OnInit {
     }, error1 => {
       this.myToastrService.showFailed('Login failed');
     });
+  }
+
+  loginWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
 
 }

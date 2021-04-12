@@ -59,7 +59,6 @@ export class AuthenticationService {
   }
 
   login(value: any): Observable<any> {
-    // console.log(value);
     return this.httpClient.post(this.serverAuthenticationApi + `/api/v1/public/auth/login`, value, httpOptions).pipe(map((data: any) => {
       return data;
     }));
@@ -74,7 +73,6 @@ export class AuthenticationService {
   }
 
   fetchUser(): Observable<any> {
-      console.log('...........');
       if (this.initialized) {
         return this.user.asObservable();
       }
@@ -83,9 +81,7 @@ export class AuthenticationService {
 
   public fetch(): Observable<any> {
     if (!this.ongoingFetch) {
-
       this.ongoingFetch = this.httpClient.get(this.serverAuthenticationApi + `/api/v1/protected/auth/me`, httpOptions);
-
       this.ongoingFetch.subscribe((data: ResponseModel) => {
         this.ongoingFetch = null;
         this.user.next(data);
@@ -94,7 +90,6 @@ export class AuthenticationService {
         this.user.next(null);
        // this.portalUser.next(null);
       });
-
     } else {
       console.log('fetching user ongoing...');
     }

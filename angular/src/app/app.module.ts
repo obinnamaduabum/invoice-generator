@@ -14,6 +14,7 @@ import {UserService} from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {AlreadyLoggedInGuard} from './guard/already-logged-in/already-logged-in.guard';
 import {UserLoggedInGuard} from './guard/user/user-logged-in.guard';
+import {SocialAuthService} from 'angularx-social-login';
 
 @NgModule({
   declarations: [

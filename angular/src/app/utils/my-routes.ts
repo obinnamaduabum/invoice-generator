@@ -3,6 +3,6 @@ export class MyRoutes {
     authLandingPage: '/invoice-builder/main'
   };
   static notProtected = {
-    loginPage: '/invoice-builder?login=true'
+    loginPage: '/invoice-builder'
   };
 }

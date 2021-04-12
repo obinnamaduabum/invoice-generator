@@ -4,10 +4,10 @@
 <!--  </button>-->
   <span>Invoice Generator</span>
   <span class="spacer"></span>
-  <span>
+  <span *ngIf="!this.isLoggedIn">
     <button mat-button (click)="openLoginDialog()" class="success-btn">LOGIN</button>
   </span>
-  <span>
+  <span class="profile-icon" *ngIf="this.isLoggedIn">
    <mat-icon>account_circle</mat-icon>
   </span>
 </mat-toolbar>

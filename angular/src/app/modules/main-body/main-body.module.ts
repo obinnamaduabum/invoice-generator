@@ -9,7 +9,7 @@ import {SidebarModule} from '../sidebar/sidebar.module';
 const routes: Routes = [
   {
     path: '', component: BodyComponent, children: [
-      { path: '', redirectTo: '/invoice', pathMatch: 'full' },
+      { path: '', redirectTo: '/invoice-builder', pathMatch: 'full' },
       { path: 'invoice-builder',
         loadChildren : () => import('../invoice-generator/invoice-generator.module').then(m => m.InvoiceGeneratorModule) }
     ]

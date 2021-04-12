@@ -9,6 +9,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {LoginComponentHandlerService} from '../../services/login-component-handler.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 
 @NgModule({
   declarations: [
@@ -22,9 +23,26 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     MatCardModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    SocialLoginModule
   ],
-  providers: [LoginComponentHandlerService],
+  providers: [LoginComponentHandlerService,
+    SocialAuthService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              'Google-Client-ID-Goes-Here'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ],
   exports: [LoginComponent]
 })
 export class AuthenticationModule { }

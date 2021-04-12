@@ -76,10 +76,6 @@ export class InvoiceCreatorComponent implements OnInit {
     };
 
     this.loginComponentHandlerService.loginDialogObservable.subscribe(value => {
-
-      console.log('xxxx: ');
-      console.log(value);
-
       if (value) {
         this.loginComponentHandlerService.openDialog();
       }
@@ -203,13 +199,9 @@ export class InvoiceCreatorComponent implements OnInit {
     return  divisionResult * 100;
   }
 
-
-
-
   save(): void {
     console.log(this.invoiceForm.getRawValue());
   }
-
 
   openAddLogoDialog(): void {
     const dialogRef = this.dialog.open(FileUploadGalleryComponent, {
@@ -298,8 +290,6 @@ export class InvoiceCreatorDialogComponent implements OnInit {
     } else {
       this.myToastService.showFailed('Column name required');
     }
-
-    // this.dialog.
   }
 }
 
@@ -312,16 +302,8 @@ export interface ThTypeInterface {
   type: string;
 }
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
 export interface ResponseDialog {
   result: any;
   success: boolean;
   message: string;
 }
-// 'transform': 'scale('+scale+','+ scale +')',

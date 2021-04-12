@@ -1,11 +1,10 @@
 import {body} from "express-validator";
 import {Request, Response} from 'express';
 import {ApiResponseUtil} from "../utils/api-response-util";
-import {AuthenticationUtils} from "../utils/authentication_utils";
 import {User} from "../models/User";
 import AuthenticationService from "../service/authentication_service";
 import {UserDao} from "../dao/psql/user/user_dao";
-import {JWTObjInterface, MyJWTObj} from "../interface/JWTObjInterface";
+import {MyJWTObj} from "../interface/JWTObjInterface";
 
 export class AuthenticationController {
 
@@ -53,9 +52,10 @@ export class AuthenticationController {
 
         try {
 
+            console.log("response++++");
             const response: MyJWTObj | null | Response = await AuthenticationService.getVerificationToken(req, res);
             if(response instanceof MyJWTObj) {
-                console.log(response);
+
                 const user: User | null = await User.findOne({
                     where: {code: response.id}
                 });
@@ -80,6 +80,8 @@ export class AuthenticationController {
                     email: user.email,
                     code: user.code,
                 };
+
+                console.log(userObj);
 
                 return res.status(200).send({
                     success: true,
@@ -107,6 +109,8 @@ export class AuthenticationController {
                 "username or password is required",
                 false);
         }
+
+        console.log("logging in ++++");
 
         try {
 

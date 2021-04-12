@@ -17,9 +17,6 @@ export class AlreadyLoggedInGuard implements CanActivate {
     UrlTree> | boolean | UrlTree {
 
     return this.authenticationService.fetchUser().pipe(map(data => {
-
-      console.log(data);
-
       if (data) {
           this.router.navigate([MyRoutes.protectedRoutes.authLandingPage], {queryParams: {returnUrl: state.url}});
         }

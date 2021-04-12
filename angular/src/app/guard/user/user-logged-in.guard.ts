@@ -16,10 +16,11 @@ export class UserLoggedInGuard implements CanActivate {
     UrlTree> | boolean | UrlTree {
 
     return this.authenticationService.fetchUser().pipe(map(data => {
-          console.log(data);
-          return !!data;
+      return !!data;
         }), catchError((error, caught) => {
-          this.router.navigate([MyRoutes.notProtected.loginPage], {queryParams: {returnUrl: state.url}});
+          const extras = {queryParams: {returnUrl: state.url, login: true}};
+          const url: string =  MyRoutes.notProtected.loginPage.toString();
+          this.router.navigate([url], extras);
           return of(false);
         })
     );
