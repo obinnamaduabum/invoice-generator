@@ -22,7 +22,6 @@ export class HeaderComponent implements OnInit {
       if (data) {
         this.isLoggedIn = true;
       }
-      console.log(data);
     });
   }
 

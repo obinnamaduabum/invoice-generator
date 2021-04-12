@@ -9,6 +9,8 @@ import {StartUpActions} from "./start-up/start-up-actions";
 import {User} from "./models/user";
 import PublicAuthenticationRouter from "./routes/unprotected/public_authentication_router";
 import ProtectedAuthenticationRouter from "./routes/protected/protected_authentication_router";
+import {MyLogo} from "./models/my_logo";
+import {ProtectedMyLogoRouter} from "./routes/protected/protected_logo_router";
 
 const mainPath = "/api";
 const v1 = "/v1";
@@ -26,6 +28,10 @@ let CustomRouters: CustomRouterInterface[] = [
     {
         url: `${mainPath}${v1}${protectedPath}/auth`,
         routerObj: new ProtectedAuthenticationRouter()
+    },
+    {
+        url: `${mainPath}${v1}${protectedPath}/logos`,
+        routerObj: new ProtectedMyLogoRouter()
     }
 ];
 
@@ -55,8 +61,9 @@ try {
     pd.checkConnection().then(async r => {
 
         const sequelizeObj = {alter: false, force: false};
-        //await pd.getSequelize.sync();
+        //await pd.getSequelize.sync(sequelizeObj);
         await User.sync(sequelizeObj);
+        await MyLogo.sync(sequelizeObj);
         //await pd.syncAllTables();
         await StartUpActions.init();
         const app = new App(CustomRouters, PORT, HOSTNAME);

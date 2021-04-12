@@ -14,11 +14,9 @@
 
           <mat-error *ngIf="addColumnForm.controls['name'].invalid &&
             (addColumnForm.controls['name'].dirty || addColumnForm.controls['name'].touched)">
-
               <span *ngIf="addColumnForm.controls['name'].errors.required">
                 Name is required
               </span>
-
           </mat-error>
 
         </mat-form-field>
@@ -34,10 +32,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-
-
-
-      </div>
+    </div>
 
     <button mat-button class="add-column-btn-stretched" (click)="addColumn()">Add</button>
 

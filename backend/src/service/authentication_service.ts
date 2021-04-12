@@ -2,7 +2,7 @@ import {User} from "../models/user";
 import {MyUtils} from "../utils/my_util";
 import {BcryptPasswordUtil} from "../utils/bcrypt-password-util";
 import {AuthenticationUtils} from "../utils/authentication_utils";
-import {UserDao} from "../dao/psql/user/user_dao";
+import {UserDao} from "../dao/psql/user_dao";
 import {Request, Response} from 'express';
 import {MyJWTObj} from "../interface/JWTObjInterface";
 import {ApiResponseUtil} from "../utils/api-response-util";

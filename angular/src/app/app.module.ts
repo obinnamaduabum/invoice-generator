@@ -14,7 +14,7 @@ import {UserService} from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {AlreadyLoggedInGuard} from './guard/already-logged-in/already-logged-in.guard';
 import {UserLoggedInGuard} from './guard/user/user-logged-in.guard';
-import {SocialAuthService} from 'angularx-social-login';
+import {LogoService} from './services/logo.service';
 
 @NgModule({
   declarations: [
@@ -30,12 +30,14 @@ import {SocialAuthService} from 'angularx-social-login';
         }),
       HttpClientModule
     ],
-  providers: [SidebarService,
+  providers: [
+    SidebarService,
     MyToastService,
     ToastrService,
     ErrorCatcherService,
     AuthenticationService,
     UserService,
+    LogoService,
     // guards
     AlreadyLoggedInGuard,
     UserLoggedInGuard

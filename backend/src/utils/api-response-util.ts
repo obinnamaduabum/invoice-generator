@@ -29,6 +29,15 @@ export class ApiResponseUtil {
     }
 
 
+    static apiResponseWithData(res: any, code: number, message: string, success: boolean, data: any) {
+        return res.status(code).send({
+            success: success,
+            message: message,
+            data: data
+        });
+    }
+
+
     static unAuthorized(res) {
         return ApiResponseUtil.apiResponse(res,
             401,

@@ -7,6 +7,8 @@ import {EnumInputType} from '../../../lh-enum/EnumInputType';
 import {FileUploadGalleryComponent} from '../../file-upload/components/file-upload-gallery/file-upload-gallery.component';
 import {ActivatedRoute} from '@angular/router';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
+import {LogoService} from '../../../services/logo.service';
+import {ResponseModel} from '../../../models/response-model';
 
 export interface InvoiceCreationInterface {
   thList: ThTypeInterface[];
@@ -190,7 +192,6 @@ export class InvoiceCreatorComponent implements OnInit {
     this.reCalibrate(this.pageSize.name);
   }
 
-
   percentageChange(x: number, originalAmount: number): number {
     const divisionResult = x / originalAmount;
     console.log('divisionResult: ' + divisionResult);
@@ -235,15 +236,20 @@ export class InvoiceCreatorDialogComponent implements OnInit {
   addColumnForm: FormGroup;
   inputTypeList: string[] = [EnumInputType.AMOUNT, EnumInputType.STRING, EnumInputType.DISCOUNT];
 
-
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<InvoiceCreatorDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private myToastService: MyToastService) {}
+              private myToastService: MyToastService,
+              private logoService: LogoService) {}
 
   ngOnInit(): void {
     this.addColumnForm = this.fb.group({
       name: new FormControl('', [Validators.required]),
       typeOfColumn: new FormControl('', [Validators.required]),
+    });
+
+    this.logoService.index().subscribe((data: ResponseModel) => {
+      console.log(data);
+    }, error => {
     });
   }
 

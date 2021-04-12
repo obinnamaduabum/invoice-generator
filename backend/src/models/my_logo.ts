@@ -1,50 +1,44 @@
 import {
     Model,
-    DataTypes, Association, HasOneSetAssociationMixin, HasOneGetAssociationMixin,
+    DataTypes, HasOneGetAssociationMixin, HasOneSetAssociationMixin, Association,
 } from 'sequelize';
 import Sequelize from 'sequelize';
 import {PostgresDatabase} from "../database/postgres_db";
-import {MyLogo} from "./my_logo";
+import {User} from "./user";
 
-export class User extends Model {
+export class MyLogo extends Model {
 
     public id!: number;
-    public email!: string;
-    public password!: string;
     public code!: string;
-    public active!: boolean;
-    public blocked!: boolean;
-    public failedLoginAttemptCount!: number;
-    public lastFailedLoginAttemptDate!: Date;
+    public url!: string;
+
+    public getUser!: HasOneGetAssociationMixin<User>; // Note the null assertions!
+    public setUser!: HasOneSetAssociationMixin<User, number>;
+    public readonly users?: User[]; // Note this is optional since it's only populated when explicitly requested in code
+
+    public static associations: {
+        users: Association<MyLogo, User>;
+    };
 
     public date_created!: Date;
     public date_updated!: Date;
 }
 
 
-User.init(
+MyLogo.init(
     {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         code: {
             type: new DataTypes.STRING,
             allowNull: true
         },
-        password: {
+        url: {
             type: Sequelize.STRING,
             allowNull: false
-        },
-        active: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
         },
         date_created: {
             type: DataTypes.DATE,
@@ -56,15 +50,10 @@ User.init(
         }
     },
     {
-        tableName: "portal_user",
+        tableName: "logo",
         freezeTableName: true,
         createdAt: false,
         updatedAt: false,
         sequelize: new PostgresDatabase().getSequelize // this bit is important
     }
 );
-
-User.hasMany(MyLogo, {
-    foreignKey: "user_id",
-    as: "my_logo"
-});

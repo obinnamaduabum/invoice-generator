@@ -3,7 +3,7 @@ import {Request, Response} from 'express';
 import {ApiResponseUtil} from "../utils/api-response-util";
 import {User} from "../models/User";
 import AuthenticationService from "../service/authentication_service";
-import {UserDao} from "../dao/psql/user/user_dao";
+import {UserDao} from "../dao/psql/user_dao";
 import {MyJWTObj} from "../interface/JWTObjInterface";
 
 export class AuthenticationController {
@@ -35,8 +35,6 @@ export class AuthenticationController {
                 res.cookie(prop, '', options);
             }
 
-            // return AuthenticationUtils.logoutSetCookie(res, req);
-
             return res.status(200).send({
                 success: true,
                 message: 'Logout successful',
@@ -49,13 +47,9 @@ export class AuthenticationController {
     }
 
     static async me(req: Request, res: Response) {
-
         try {
-
-            console.log("response++++");
             const response: MyJWTObj | null | Response = await AuthenticationService.getVerificationToken(req, res);
             if(response instanceof MyJWTObj) {
-
                 const user: User | null = await User.findOne({
                     where: {code: response.id}
                 });
@@ -81,18 +75,16 @@ export class AuthenticationController {
                     code: user.code,
                 };
 
-                console.log(userObj);
-
                 return res.status(200).send({
                     success: true,
                     message: 'user found',
                     data: userObj
                 });
 
-            } else if (response !== null) {
+            }
+            else if (response !== null) {
                 return response;
             }
-
         } catch (e) {
             return ApiResponseUtil.InternalServerError(res, e);
         }
@@ -109,8 +101,6 @@ export class AuthenticationController {
                 "username or password is required",
                 false);
         }
-
-        console.log("logging in ++++");
 
         try {
 
