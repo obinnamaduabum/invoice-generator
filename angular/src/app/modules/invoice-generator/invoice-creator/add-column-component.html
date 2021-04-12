@@ -1,0 +1,79 @@
+<div class="center">
+  <h2 mat-dialog-title>Add Column To Table</h2>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <form class="example-form" [formGroup]="addColumnForm">
+    <div class="row">
+
+      <div class="col m12 s12 l12">
+        <mat-form-field class="example-full-width">
+          <mat-label>Add Column</mat-label>
+          <input matInput placeholder="Add Column Name" formControlName="name">
+
+          <mat-error *ngIf="addColumnForm.controls['name'].invalid &&
+            (addColumnForm.controls['name'].dirty || addColumnForm.controls['name'].touched)">
+
+              <span *ngIf="addColumnForm.controls['name'].errors.required">
+                Name is required
+              </span>
+
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+
+      <div class="col m12 s12 l12">
+        <mat-form-field appearance="fill">
+          <mat-label>Input Types</mat-label>
+          <mat-select formControlName="typeOfColumn">
+            <mat-option *ngFor="let inputType of inputTypeList" [value]="inputType">
+              {{inputType}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+
+      </div>
+
+    <button mat-button class="add-column-btn-stretched" (click)="addColumn()">Add</button>
+
+  </form>
+
+
+  <div class="p20">
+
+    <p class="note">Note: Column table headers</p>
+
+    <div class="my-custom-table">
+      <table class="responsive-table">
+        <thead>
+        <tr>
+          <th *ngFor="let th of thList; let i = index">{{th.value}}
+            <div class="delete-icon">
+              <mat-icon aria-hidden="false" (click)="removeFromColumn(i)">
+                delete
+              </mat-icon>
+            </div>
+          </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="cancel-btn">Cancel</button>
+  <button mat-button class="success-btn" (click)="save()">Save</button>
+</mat-dialog-actions>
+
+<!-- Copyright 2020 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

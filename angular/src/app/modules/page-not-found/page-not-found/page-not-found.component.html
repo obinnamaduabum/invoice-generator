@@ -1,0 +1,39 @@
+<div class="entire-page">
+  <mat-sidenav-container [hasBackdrop] (backdropClick)="closeSidebar()">
+    <mat-sidenav #leftSidenav
+                 [fixedInViewport]="true"
+                 position="start"
+                 class="sidebar"
+                 [mode]="mode">
+
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div class="page-content" [ngClass]="(isSidebarOpen) ? 'root-div':''">
+        <app-header></app-header>
+        <div class="custom-body">
+          <div class="login-page-resize" style="margin-top: 120px; min-height: 80vh">
+            <div class="container">
+              <mat-card>
+                <div style="text-align: center" class="center">
+                  <app-lottie [height]="200"
+                              [width]="1000"
+                              [path]="'page-not-found-animation'"
+                              [start]="true">
+                  </app-lottie>
+                  <h4 style="font-size: 24px" class="center">
+                    Page Not found
+                  </h4>
+                </div>
+
+              </mat-card>
+            </div>
+          </div>
+        </div>
+        <app-footer></app-footer>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+

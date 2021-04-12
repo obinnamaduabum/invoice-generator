@@ -1,0 +1,51 @@
+.page-blue-print {
+  background: white;
+  display: block;
+  margin: 0 auto 0.5cm;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+
+
+.center-card-with-padding {
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.please-add-column {
+  border: 2px solid grey;
+  width: 100%;
+  min-height: 50px;
+  clear: both;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.please-add-column-dot-dash {
+  border: 2px dashed grey;
+  padding: 20px;
+}
+
+.invoice-div {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 2px;
+  margin: 0 auto;
+  background-color: black;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.invoice-div h1 {
+  text-transform: uppercase;
+}
+
+.balance {
+  float: right;
+  clear: both;
+}
+
+.additional-info {
+  clear: both;
+}

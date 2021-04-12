@@ -1,0 +1,121 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/css/materialize.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.add-column-btn-stretched {
+  width: 100% !important;
+  background-color: #4dcc2b;
+  color: white;
+}
+
+.add-column-btn {
+  background-color: #4dcc2b;
+  color: white !important;
+}
+
+.success-btn {
+  background-color: #4dcc2b;
+  color: white !important;
+}
+
+.preview-btn {
+  background-color: #1040ee;
+  color: white !important;
+}
+
+.m20 {
+  margin: 20px;
+}
+
+.m20-v {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.m10-v {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.p20-lr {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.cancel-btn {
+  background-color: #de081a;
+  color: white !important;
+}
+
+.note {
+  font-style: italic;
+  color: #7a7a7a;
+  font-size: 12px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.my-table-horizontal-scroll {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.little-italic {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.mat-form-field {
+  display: inline;
+}
+
+
+.white-mat-spinner svg circle{
+  stroke: #ffffff;
+}
+
+.sidebar, .background-grey {
+  background-color: #bcbbbb;
+}
+
+.shimmer {
+  background: #f6f7f8 linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%) no-repeat;
+  background-size: 800px 104px;
+  display: inline-block;
+  position: relative;
+
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-name: placeholderShimmer;
+  -webkit-animation-timing-function: linear;
+}
+
+
+@-webkit-keyframes placeholderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.fake-image-for-gallery {
+  width: 150px;
+  height: 100px;
+}
+
+.fake-text-title {
+  width: 100px;
+  height: 20px;
+}
+
+.login-page-resize {
+  min-height: 80vh;
+}

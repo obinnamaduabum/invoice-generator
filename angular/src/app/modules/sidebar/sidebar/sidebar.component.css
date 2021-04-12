@@ -1,0 +1,10 @@
+.template-size {
+  width: 140px;
+}
+
+.template-size:hover {
+  cursor: pointer;
+  border: 2px solid mediumpurple;
+  border-radius: 10px;
+  padding: 10px;
+}

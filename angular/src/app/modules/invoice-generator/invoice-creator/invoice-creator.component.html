@@ -1,0 +1,192 @@
+<div class="container">
+
+  <div class="m20-v">
+    <mat-card>
+      <div class="row">
+        <div class="col m6 s12 l6">
+          <mat-form-field appearance="fill">
+            <mat-label>Page Size</mat-label>
+            <mat-select [value]="defaultPageSize.name" (selectionChange)="updatePageSize($event)">
+              <mat-option *ngFor="let pageSize of pageSizes" [value]="pageSize.name">
+                {{pageSize.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col m6 s12 l6">
+          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m6 s12 l6">
+          <mat-form-field appearance="fill">
+            <mat-label>Select Currency</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let currency of listOfCurrencies" [value]="currency.name">
+                {{currency.name}} - <span class="little-italic" [innerHTML]="currency.symbol"></span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </mat-card>
+  </div>
+
+  <mat-card>
+
+    <form [formGroup]="invoiceForm">
+      <div class="invoice-div">
+        <h1>Invoice</h1>
+      </div>
+      <div class="container">
+        <div>
+          <header>
+            <address contenteditable>
+              <p>Jonathan Neal</p>
+              <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
+              <p>(800) 555-1234</p>
+            </address>
+            <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file"
+                                                                                                  accept="image/*"></span>
+          </header>
+
+          <div>
+            <h1>Recipient</h1>
+            <address contenteditable>
+              <p>Some Company<br>c/o Some Guy</p>
+            </address>
+
+            <div>
+              <table>
+                <tr>
+                  <th><span contenteditable>Invoice #</span></th>
+                  <td><span contenteditable>101138</span></td>
+                </tr>
+                <tr>
+                  <th><span contenteditable>Date</span></th>
+                  <td><span contenteditable>January 1, 2012</span></td>
+                </tr>
+                <tr>
+                  <th><span contenteditable>Amount Due</span></th>
+                  <td><span id="prefix" contenteditable>$</span><span>600.00</span></td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="my-custom-table my-table-horizontal-scroll"
+                 *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
+              <table class="responsive-table">
+                <thead>
+                <tr>
+                  <th *ngFor="let th of invoiceCreationObj.thList">
+                    <span>{{th.value}}</span>
+                  </th>
+                </tr>
+                </thead>
+                <tbody *ngIf="invoiceCreationObj.thList.length > 0" formArrayName="rows">
+                  <tr *ngFor="let col of rows.controls; let i = index" [formGroupName]="i">
+                      <td *ngFor="let th of invoiceCreationObj.thList">
+
+                        <mat-form-field *ngIf="th.type === EnumInputType.STRING" class="example-full-width">
+                          <input matInput formControlName="{{th['value']}}">
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="th.type === EnumInputType.AMOUNT" class="example-full-width">
+                          <input type="number" matInput formControlName="{{th['value']}}">
+                        </mat-form-field>
+
+                      </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="invoiceCreationObj.thList.length > 0 && invoiceForm.get('rows').value.length <= 0">
+              <div class="please-add-column">
+                <div class="please-add-column-dot-dash">
+                  <div class="center">
+                    <h4>Add row</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="m20-v" *ngIf="invoiceCreationObj.thList.length > 0;">
+              <button mat-button class="success-btn" (click)="addRow()">
+                Add Row
+              </button>
+            </div>
+
+            <ng-template #other_content>
+              <div class="please-add-column">
+                <div class="please-add-column-dot-dash">
+                  <div class="center">
+                    <h4>Add Invoice Table</h4>
+                    <div class="p20">
+                      <button mat-button class="add-column-btn" (click)="openAddColumnDialog()">
+                        Add Column
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
+            <div class="balance my-custom-table">
+
+              <table class="responsive-table">
+                <tr>
+                  <th><span contenteditable>Total</span></th>
+                  <td><span data-prefix>$</span><span>{{totalAmount}}</span></td>
+                </tr>
+                <tr>
+                  <th><span contenteditable>Amount Paid</span></th>
+                  <td><span data-prefix>$</span><span contenteditable>0.00</span></td>
+                </tr>
+                <tr>
+                  <th><span contenteditable>Balance Due</span></th>
+                  <td><span data-prefix>$</span><span>600.00</span></td>
+                </tr>
+              </table>
+
+              <div class="m20-v">
+                <button mat-button class="success-btn" (click)="calculateTotal()">
+                  Calculate Total
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="additional-info">
+            <h1><span contenteditable>Additional Notes</span></h1>
+            <div contenteditable>
+              <p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+  </mat-card>
+
+  <div class="m20-v">
+    <mat-card>
+      <div style="display: flex">
+      <span>
+        <button mat-button class="success-btn" (click)="save()">Save</button>
+      </span>
+        <span class="spacer"></span>
+        <span>
+        <button mat-button class="preview-btn m20">Preview</button>
+      </span>
+      </div>
+    </mat-card>
+
+  </div>
+
+</div>

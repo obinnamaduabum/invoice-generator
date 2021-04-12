@@ -1,0 +1,29 @@
+
+<label>Upload Company Logo</label>
+<div style="margin-bottom: 10px">
+  <label class="file-upload">
+    <input class="file-upload-input"
+           type="file"
+           name="file"
+           id="file"
+           (change)="onFileChanged($event)"/>
+    <span *ngIf="file === null">Select File</span>
+    <span *ngIf="file !== null">File Selected</span> - <span class="file-name">{{fileName}}</span>
+  </label>
+
+</div>
+
+<span *ngIf="uploadingFile">
+  <button class="success-btn" mat-button>
+    <mat-icon>
+      <mat-progress-spinner
+        class="white-mat-spinner"
+        [diameter]="20"
+        mode="indeterminate">
+      </mat-progress-spinner>
+    </mat-icon>
+  </button>
+</span>
+<span *ngIf="!uploadingFile">
+  <button class="success-btn" mat-button (click)="uploadFile()">Upload</button>
+</span>

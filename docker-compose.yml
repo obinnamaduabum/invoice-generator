@@ -1,0 +1,56 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres:11
+    container_name: postgres
+    restart: unless-stopped
+    networks:
+      - invoice-generator-network
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    env_file:
+      - docker-database.env # configure postgres
+    volumes:
+      - postgres_dbdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "6123:6000"
+    expose:
+      - "6123"
+    depends_on:
+      - "postgres"
+    links:
+      - "postgres"
+    networks:
+      - invoice-generator-network
+    environment:
+      SERVICE_NAME: backend
+      SERVICE_TAGS: nodejs
+      PG_HOST: postgres
+      NODE_ENV: production
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8089:80"
+    expose:
+      - "8089"
+    networks:
+      - invoice-generator-network
+    environment:
+      SERVICE_NAME: front-end
+      SERVICE_TAGS: reactjs
+
+volumes:
+  postgres_dbdata:
+# persist data even if container shuts down
+
+networks:
+  invoice-generator-network:
+    external: true
+

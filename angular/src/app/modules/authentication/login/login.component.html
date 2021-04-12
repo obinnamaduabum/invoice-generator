@@ -1,0 +1,83 @@
+<div class="container">
+  <div style="padding-top: 20px; padding-bottom: 20px" [formGroup]="loginFormGroup">
+    <div class="col m12 s12 l12">
+      <mat-form-field class="alignment hide-login-with-phone-number" appearance="outline">
+        <!--<mat-label>Email</mat-label>-->
+
+
+        <mat-label>Email or Username</mat-label>
+        <input class="input-placeholder"
+               matInput
+               formControlName="email"
+               placeholder="Enter email or username"
+               type="text"
+               [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="loginFormGroup.controls['email'].invalid &&
+            (loginFormGroup.controls['email'].dirty || loginFormGroup.controls['email'].touched)">
+
+              <span *ngIf="loginFormGroup.controls['email'].errors.required">
+                Email is required
+              </span>
+
+          <span
+            *ngIf="!loginFormGroup.controls['email'].errors.required && loginFormGroup.controls['email'].errors.emailInvalid">
+
+                    Email invalid
+                  </span>
+
+          <!--<span-->
+          <!--*ngIf="!loginFormGroup.controls['email'].errors.required && !loginFormGroup.controls['email'].errors.emailInvalid &&loginFormGroup.controls['email'].errors.emailDoesNotExist">-->
+
+          <!--Email already exists-->
+          <!--</span>-->
+
+
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col m12 s12 l12">
+      <mat-form-field class="alignment hide-login-with-phone-number" appearance="outline">
+        <!--<mat-label>Email</mat-label>-->
+        <mat-label>Password</mat-label>
+        <input class="input-placeholder"
+               matInput
+               formControlName="password"
+               placeholder="Enter password"
+               type="text"
+               [errorStateMatcher]="matcher">
+
+        <mat-error *ngIf="loginFormGroup.controls['password'].invalid &&
+            (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
+
+              <span *ngIf="loginFormGroup.controls['password'].errors.required">
+                  password is required
+              </span>
+
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <!--            <div class="div-padding center">-->
+    <!--              <a class="text-align-center cursor-with-pointer" (click)="openForgotPassword()">Forgot Password ? <span class="click-here">click here</span></a>-->
+    <!--            </div>-->
+
+
+    <button *ngIf="!loggingIn"
+            mat-button class="add-column-btn-stretched"
+            (click)="login()">
+      Submit
+    </button>
+    <button *ngIf="loggingIn" mat-button class="add-column-btn-stretched">
+      <mat-icon>
+        <mat-progress-spinner
+          class="white-mat-spinner"
+          [diameter]="20"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-icon>
+      Loading...
+    </button>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+.my-custom-table table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.mat-form-field {
+  display: inline;
+}
+
+.my-custom-table table.responsive-table tbody tr td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+.my-custom-table table.responsive-table thead tr th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  color: black;
+  border: 1px solid black;
+}
+
+.my-custom-table table.responsive-table thead tr th:hover {
+  background-color: red;
+  color: #ffffff;
+}
+
+.delete-icon {
+  display: none;
+}
+
+.my-custom-table table.responsive-table thead tr th:hover .delete-icon {
+  display: inline-block;
+}
+
+.p20 {
+  padding: 20px;
+}

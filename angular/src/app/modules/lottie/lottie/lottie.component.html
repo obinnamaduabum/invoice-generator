@@ -1,0 +1,19 @@
+<div *ngIf="start">
+  <ng-lottie
+    [width]="width+ 'px'"
+    [height]="height+ 'px'"
+    containerClass="moving-box another-class"
+    [options]="options"
+    (animationCreated)="animationCreated($event)"
+    (configReady)="configReady()"
+    (dataReady)="dataReady()"
+    (domLoaded)="domLoaded()"
+    (enterFrame)="enterFrame($event)"
+    (segmentStart)="segmentStart($event)"
+    (complete)="complete($event)"
+    (loopComplete)="loopComplete($event)"
+    (destroy)="destroy($event)"
+    (error)="error($event)"
+  ></ng-lottie>
+</div>
+

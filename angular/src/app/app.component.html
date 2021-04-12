@@ -1,0 +1,20 @@
+<div *ngIf="loading">
+  <div class="full-screen-div">
+    <div class="center-div">
+      <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading">
+  <router-outlet></router-outlet>
+</div>
