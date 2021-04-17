@@ -7,20 +7,24 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {AuthenticationModule} from "../authentication/authentication.module";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent
   ],
-    imports: [
-        CommonModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDialogModule,
-        AuthenticationModule
-    ],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatMenuModule,
+    AuthenticationModule,
+    MatProgressSpinnerModule
+  ],
   exports: [
     HeaderComponent,
     FooterComponent

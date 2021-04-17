@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
 import {MyToastService} from '../../../services/toast-service/my-toast.service';
-import {LoginComponent} from '../../authentication/login/login.component';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
 import {AuthenticationService} from '../../../services/authentication-service';
+import {MyRoutes} from "../../../utils/my-routes";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -13,12 +13,16 @@ import {AuthenticationService} from '../../../services/authentication-service';
 export class HeaderComponent implements OnInit {
 
   isLoggedIn = false;
+  loggingOut = false;
   constructor(private myToastService: MyToastService,
               private authenticationService: AuthenticationService,
-              private loginComponentHandlerService: LoginComponentHandlerService) { }
+              private loginComponentHandlerService: LoginComponentHandlerService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.authenticationService.fetchUser().subscribe((data: any) => {
+    this.authenticationService.user.subscribe((data: any) => {
+      console.log(data);
+      console.log("header");
       if (data) {
         this.isLoggedIn = true;
       }
@@ -27,5 +31,22 @@ export class HeaderComponent implements OnInit {
 
   openLoginDialog(): void {
    this.loginComponentHandlerService.openDialog();
+  }
+
+  doLogout() {
+    this.loggingOut = true;
+    this.authenticationService.logout().subscribe((data: Response) => {
+      this.loggingOut = false;
+      if(data) {
+        this.authenticationService.clearStaleSession();
+        this.router.navigate([MyRoutes.notProtected.loginPage]);
+        console.log(data);
+      }
+
+    }, error => {
+
+      this.loggingOut = false;
+
+    });
   }
 }

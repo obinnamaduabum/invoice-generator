@@ -21,7 +21,7 @@ const httpOptions = {
 export class AuthenticationService {
 
   serverAuthenticationApi = '';
-  private user: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  public user: BehaviorSubject<any> = new BehaviorSubject(undefined);
   private ongoingFetch: Observable<any>;
   private initialized: boolean;
 

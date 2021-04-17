@@ -4,7 +4,21 @@
   <span *ngIf="!this.isLoggedIn">
     <button mat-button (click)="openLoginDialog()" class="success-btn">LOGIN</button>
   </span>
-  <span class="profile-icon" *ngIf="this.isLoggedIn">
+  <span [matMenuTriggerFor]="menu" class="profile-icon" *ngIf="this.isLoggedIn">
    <mat-icon>account_circle</mat-icon>
   </span>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="doLogout()">
+        <mat-icon *ngIf="loggingOut">
+          <mat-progress-spinner
+            class="white-mat-spinner"
+            [diameter]="20"
+            mode="indeterminate">
+          </mat-progress-spinner>
+        </mat-icon>
+      <mat-icon *ngIf="!loggingOut">power_settings_new</mat-icon>
+      <span>Log Out</span>
+    </button>
+  </mat-menu>
+
 </mat-toolbar>

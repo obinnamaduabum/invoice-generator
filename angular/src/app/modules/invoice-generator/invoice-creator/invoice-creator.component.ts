@@ -147,7 +147,10 @@ export class InvoiceCreatorComponent implements OnInit {
   }
 
   instanceOfResponseDialog(object: any): object is ResponseDialog {
-    return 'success' in object;
+    if (object) {
+      return 'success' in object;
+    }
+    return false;
   }
 
   updatePageSize($event: any): void {
@@ -248,8 +251,8 @@ export class InvoiceCreatorDialogComponent implements OnInit {
     });
 
     this.logoService.index().subscribe((data: ResponseModel) => {
-      console.log(data);
-    }, error => {
+        console.log(data);
+      }, error => {
     });
   }
 
@@ -265,7 +268,6 @@ export class InvoiceCreatorDialogComponent implements OnInit {
       if (this.checkIfExist(value)) {
         const type = this.addColumnForm.get('typeOfColumn').value;
         const obj: ThTypeInterface = {value, type};
-        console.log(obj);
         this.thList.push(obj);
       } else {
         this.myToastService.showFailed('Column Name already exists');

@@ -3,7 +3,6 @@ import {MyJWTObj} from "../interface/JWTObjInterface";
 import AuthenticationService from "../service/authentication_service";
 import {User} from "../models/user";
 import {ApiResponseUtil} from "../utils/api-response-util";
-import {MyLogo} from "../models/my_logo";
 import {LogoDao} from "../dao/psql/logo_dao";
 
 export class MyLogoController {
@@ -11,7 +10,10 @@ export class MyLogoController {
     static async index(req: Request, res: Response) {
 
         try {
+
+            console.log("Yay!...");
             const response: MyJWTObj | null | Response = await AuthenticationService.getVerificationToken(req, res);
+
             if(response instanceof MyJWTObj) {
                 const user: User | null = await User.findOne({
                     where: {code: response.id}
@@ -29,8 +31,9 @@ export class MyLogoController {
                     'List of Logos',
                     true,
                     logoList);
-
             }
+
+            return response;
 
         } catch (e) {
             return ApiResponseUtil.InternalServerError(res, e);

@@ -38,21 +38,13 @@ export class FileUploadComponent implements OnInit {
 
     this.uploadingFile = true;
     this.fileUploadService.upload(formData).pipe(map(event => {
-
         switch (event.type) {
-
           case HttpEventType.UploadProgress:
-
             file.progress = Math.round(event.loaded * 100 / event.total);
-
             break;
-
           case HttpEventType.Response:
-
             return event;
-
         }
-
       }),
       catchError((error: HttpErrorResponse) => {
         file.inProgress = false;

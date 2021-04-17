@@ -11,6 +11,7 @@ import PublicAuthenticationRouter from "./routes/unprotected/public_authenticati
 import ProtectedAuthenticationRouter from "./routes/protected/protected_authentication_router";
 import {MyLogo} from "./models/my_logo";
 import {ProtectedMyLogoRouter} from "./routes/protected/protected_logo_router";
+import {ProtectedFileUploadRouter} from "./routes/protected/protected_file_upload_router";
 
 const mainPath = "/api";
 const v1 = "/v1";
@@ -32,6 +33,10 @@ let CustomRouters: CustomRouterInterface[] = [
     {
         url: `${mainPath}${v1}${protectedPath}/logos`,
         routerObj: new ProtectedMyLogoRouter()
+    },
+    {
+        url: `${mainPath}${v1}${protectedPath}/file-upload`,
+        routerObj: new ProtectedFileUploadRouter()
     }
 ];
 
