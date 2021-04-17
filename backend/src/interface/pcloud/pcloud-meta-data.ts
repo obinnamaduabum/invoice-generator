@@ -1,0 +1,20 @@
+export interface PcloudMetaData {
+    name: string,
+    created: string,
+    thumb: boolean,
+    modified: string,
+    isfolder: boolean,
+    height: number,
+    fileid: number,
+    width: number,
+    hash: number,
+    path: string,
+    category: number,
+    id: string,
+    isshared: boolean,
+    ismine: true,
+    size: number,
+    parentfolderid: number,
+    contenttype: string,
+    icon: string
+}

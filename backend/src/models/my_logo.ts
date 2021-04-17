@@ -57,3 +57,8 @@ MyLogo.init(
         sequelize: new PostgresDatabase().getSequelize // this bit is important
     }
 );
+
+User.hasMany(MyLogo, {
+    foreignKey: "user_id",
+    as: "my_logo"
+});

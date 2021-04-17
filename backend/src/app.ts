@@ -2,7 +2,6 @@ import express, {Application} from 'express';
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser'; // module for parsing cookies
 import cors from "cors";
-import {resolve} from "path";
 import {MyUtils} from "./utils/my_util";
 import {CustomRouterInterface} from "./interface/CustomRouterInterface";
 import {logger} from "sequelize/types/lib/utils/logger";

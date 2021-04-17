@@ -28,13 +28,12 @@ export class FileUploadComponent implements OnInit {
   }
 
   uploadFile() {
-    const formData = new FormData();
     const file = this.file;
-    formData.append('name', file.name);
-    formData.append('file', file.data);
     file.inProgress = true;
+    const formData = new FormData();
 
     console.log(file);
+    formData.append('logo', file);
 
     this.uploadingFile = true;
     this.fileUploadService.upload(formData).pipe(map(event => {

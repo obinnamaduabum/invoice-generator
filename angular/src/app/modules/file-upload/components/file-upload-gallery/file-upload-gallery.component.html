@@ -3,12 +3,21 @@
 <div>
   <div class="m20-v">
     <div class="row">
-      <div *ngFor="let logo of listOfUploadedLogos" class="col m2 l2 s6">
-        <div class="m10-v fake-image-for-gallery shimmer-animate" style="border-radius: 6px">
-        </div>
-        <div style="border-radius: 6px" class="shimmer-animate fake-text-title">
+      <div *ngFor="let logo of listOfUploadedLogos; let i = index" class="col m2 l2 s6">
 
+        <!-- Loaded -->
+        <img [src]="logo.url" (load)="loadImage($event, i)" [hidden]="!logo.loaded" class="fake-image-for-gallery" style="border-radius: 6px" alt="ji">
+
+        <div [hidden]="logo.loaded === true" class="m10-v shimmer-animate fake-image-for-gallery"></div>
+        <!-- Loaded -->
+
+
+        <div [hidden]="logo.loaded === false" style="border-radius: 6px" class="fake-text-title">
+          Hello
         </div>
+
+        <div [hidden]="logo.loaded === true" style="border-radius: 6px" class="shimmer-animate fake-text-title"></div>
+
 
       </div>
     </div>

@@ -1,5 +1,3 @@
-
-import * as fs from "fs";
 import axios, {AxiosRequestConfig} from "axios";
 import {resolve} from "path";
 import {Op, Sequelize, where} from "sequelize";
@@ -11,9 +9,66 @@ const FormData = require('form-data');
 const SqlString = require('sqlstring');
 // const sanitizer = require('sanitize');
 const sanitizer = require('sanitizer');
+const fs = require('fs');
 
 export class MyUtils {
 
+    static isObjectEmpty(obj: any) {
+       return Object.keys(obj).length === 0;
+    }
+
+    static async writeFile(path: string, file: any) {
+
+       return new Promise((resolve, reject) => {
+            fs.writeFile(path, file, function(err) {
+                if(err) {
+                    reject(false);
+                }
+                resolve(true);
+            });
+        });
+    }
+
+
+    static async getPaginationAndLimitParams(page: any, limit: any) {
+
+        let limitInt = 10;
+        let pageInt = 0;
+        if(page){
+            try {
+                pageInt = parseInt(page.toString());
+            } catch (e) {
+
+            }
+        }
+
+        if(limit){
+            try {
+                limitInt = parseInt(limit.toString());
+            } catch (e) {
+
+            }
+        }
+
+        return {
+            page: pageInt,
+            limit: limitInt
+        }
+
+    }
+
+
+    static async deleteFile(path: string) {
+        return new Promise((resolve, reject) => {
+            fs.unlink(path, (err) => {
+                if (err) {
+                    console.error(err);
+                    reject(false);
+                }
+                resolve(true);
+            });
+        });
+    }
 
     static async generateCode(field: string, mySequence: MySequenceTypeConstant) {
         const year = new Date().getFullYear();

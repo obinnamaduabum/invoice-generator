@@ -11,7 +11,7 @@ backend/node_modules
 backend/dist
 backend/package-lock.json
 backend/src/assets/security/
-
+backend/upload
 
 # Icon must end with two \r
 Icon

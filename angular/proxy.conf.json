@@ -2,7 +2,8 @@
   "/api": {
     "target": "http://localhost:3100",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "timeout": 360000
   },
   "secure": false,
   "changeOrigin": true,

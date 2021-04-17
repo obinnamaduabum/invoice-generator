@@ -37,6 +37,15 @@ export class ApiResponseUtil {
         });
     }
 
+    static pagination(page: number, limit: number, data: any[]){
+
+        return {
+            page: page,
+            limit: limit,
+            total: "",
+            data: data
+        }
+    }
 
     static unAuthorized(res) {
         return ApiResponseUtil.apiResponse(res,

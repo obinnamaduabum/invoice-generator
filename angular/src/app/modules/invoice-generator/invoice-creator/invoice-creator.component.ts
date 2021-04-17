@@ -61,7 +61,6 @@ export class InvoiceCreatorComponent implements OnInit {
 
     this.route.queryParams.subscribe(params => {
       if (params.login === 'true') {
-        console.log('run...');
         this.loginComponentHandlerService.setDialogState(true);
         this.loginComponentHandlerService.openDialog();
       }
@@ -96,9 +95,9 @@ export class InvoiceCreatorComponent implements OnInit {
 
   calculateTotal(): void {
     const listOfRows = this.rows.value;
-    console.log(listOfRows);
+   // console.log(listOfRows);
     for (const amount of listOfRows) {
-      console.log(amount);
+     // console.log(amount);
       this.totalAmount += amount;
     }
   }
@@ -108,7 +107,7 @@ export class InvoiceCreatorComponent implements OnInit {
     for (const key of listOfTh) {
       obj[key.value] = ['', Validators.required];
     }
-    console.log(obj);
+    //console.log(obj);
     return this.fb.group(obj);
   }
 
@@ -117,7 +116,7 @@ export class InvoiceCreatorComponent implements OnInit {
   }
 
   addRow(): void {
-    console.log(this.invoiceCreationObj.thList);
+   // console.log(this.invoiceCreationObj.thList);
     this.rowBuilder(this.invoiceCreationObj.thList, 0);
     // this.invoiceCreationObj.tbList.push({value: '', type: ''});
   }
@@ -173,7 +172,7 @@ export class InvoiceCreatorComponent implements OnInit {
        this.currentHeight / foundPageSize.height
       );
 
-      console.log('scale: ' + scale);
+     // console.log('scale: ' + scale);
       this.scale = scale;
 
       newWidth = foundPageSize.width;
