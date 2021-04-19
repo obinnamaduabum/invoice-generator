@@ -1,23 +1,33 @@
-<app-file-upload></app-file-upload>
+<app-file-upload (fileUploadEmitter)="fetchImages()"></app-file-upload>
 <hr>
 <div>
   <div class="m20-v">
     <div class="row">
       <div *ngFor="let logo of listOfUploadedLogos; let i = index" class="col m2 l2 s6">
 
-        <!-- Loaded -->
-        <img [src]="logo.url" (load)="loadImage($event, i)" [hidden]="!logo.loaded" class="fake-image-for-gallery" style="border-radius: 6px" alt="ji">
+        <div [ngClass]="{'logo-container': logo.loaded === true, 'logo-div': logo.loaded === true, 'image-gallery-overlay': logo.loaded === true }">
+          <!-- Loaded -->
+            <img [src]="logo.url" (load)="loadImage($event, i)" [hidden]="!logo.loaded" class="fake-image-for-gallery" style="border-radius: 6px" alt="ji">
 
-        <div [hidden]="logo.loaded === true" class="m10-v shimmer-animate fake-image-for-gallery"></div>
-        <!-- Loaded -->
+            <div [hidden]="logo.loaded === true" class="m10-v shimmer-animate fake-image-for-gallery"></div>
+          <!-- Loaded End -->
 
+          <div [hidden]="logo.loaded === false" style="border-radius: 6px" class="fake-text-title">
+            Hello
+          </div>
 
-        <div [hidden]="logo.loaded === false" style="border-radius: 6px" class="fake-text-title">
-          Hello
+          <div [hidden]="logo.loaded === true" style="border-radius: 6px" class="shimmer-animate fake-text-title"></div>
+
+          <!--overlay -->
+
+          <div class="logo-overlay">
+            <div class="overlay-text">
+              <button mat-button class="success-btn" (click)="getImageUrlOnSelect(logo.url)">Select</button>
+            </div>
+          </div>
+
+          <!-- overlay end -->
         </div>
-
-        <div [hidden]="logo.loaded === true" style="border-radius: 6px" class="shimmer-animate fake-text-title"></div>
-
 
       </div>
     </div>

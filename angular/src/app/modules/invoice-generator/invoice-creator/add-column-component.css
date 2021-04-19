@@ -37,3 +37,8 @@
 .p20 {
   padding: 20px;
 }
+
+.invoice-logo {
+  width: 200px;
+  height: auto;
+}

@@ -22,7 +22,8 @@ import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protec
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
-  { path: 'main', component: ProtectInvoiceBuilderComponent, canActivate: [UserLoggedInGuard] }
+  { path: 'main', component: ProtectInvoiceBuilderComponent, canActivate: [UserLoggedInGuard] },
+  { path: 'company', loadChildren: () => import('../../modules/company/company.module').then(m => m.CompanyModule) },
 ];
 
 @NgModule({

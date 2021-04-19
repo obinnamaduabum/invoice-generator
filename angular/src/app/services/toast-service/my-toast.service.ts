@@ -12,6 +12,15 @@ export class MyToastService {
     this.toastr.error(message, 'Error!');
   }
 
+
+  showServerError() {
+    this.toastr.error("Server error occurred", 'Error!');
+  }
+
+  showInvalidFormError() {
+    this.toastr.error("Form invalid", 'Error!');
+  }
+
   showSuccess(message: string) {
     this.toastr.success(message, 'Success!');
   }

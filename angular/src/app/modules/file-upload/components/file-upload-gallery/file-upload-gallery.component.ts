@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {LogoService} from "../../../../services/logo.service";
 import {ResponseModel} from "../../../../models/response-model";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-file-upload-gallery',
@@ -10,22 +11,26 @@ import {ResponseModel} from "../../../../models/response-model";
 export class FileUploadGalleryComponent implements OnInit {
 
   listOfUploadedLogos: any[] = [];
-  constructor(private logoService: LogoService) { }
+
+
+  constructor(private logoService: LogoService,
+              public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-
     this.generateTemplate(24);
+    this.fetchImages();
+  }
 
+
+  fetchImages() {
     this.logoService.index().subscribe((data: ResponseModel) => {
-      console.log(data);
 
       if(data) {
         const imgArray = data.data['data'];
         this.listOfUploadedLogos = imgArray;
       }
-    })
+    });
   }
-
 
   generateTemplate(value: number) {
     for(let i = 0; i < value; i++) {
@@ -55,4 +60,8 @@ export class FileUploadGalleryComponent implements OnInit {
     // }
   }
 
+  getImageUrlOnSelect(url: string) {
+    const dialog = this.dialog.getDialogById('logo-upload-dialog');
+    dialog.close(url);
+  }
 }

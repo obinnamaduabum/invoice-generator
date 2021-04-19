@@ -1,0 +1,32 @@
+<div class="container">
+
+  <h2 style="text-align: center">Add Phone Number</h2>
+
+  <form [formGroup]="phoneNumberForm">
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Phone Number</mat-label>
+      <input matInput placeholder="Enter phone number" formControlName="phoneNumber">
+
+      <mat-error *ngIf="phoneNumberForm.controls['phoneNumber'].invalid &&
+            (phoneNumberForm.controls['phoneNumber'].dirty || phoneNumberForm.controls['phoneNumber'].touched)">
+              <span *ngIf="phoneNumberForm.controls['phoneNumber'].errors.required">
+                Phone number is required
+              </span>
+      </mat-error>
+
+    </mat-form-field>
+
+
+    <div style="margin-top: 20px">
+      <button mat-button class="add-column-btn-stretched"
+              (click)="save()">
+        Add
+      </button>
+    </div>
+
+
+  </form>
+
+</div>

@@ -7,9 +7,9 @@ import {MyUtils} from "../../utils/my_util";
 import * as https from "https";
 import axios from "axios";
 import concat from "concat-stream";
+import {PCloudPublicLinkInterface} from "../../interface/pcloud/public_link/pcloud_public_link";
 
 const FormData = require('form-data');
-const fetch = require('node-fetch');
 const fs = require('fs');
 
 export class PCloud {
@@ -28,64 +28,6 @@ export class PCloud {
         this.url = 'https://api.pcloud.com/uploadfile';
     }
 
-    async upload(file: any, _type: any) {
-
-        console.log("cccccccc: ");
-        console.log(file);
-
-        const folderId: number = 0;
-
-        this.client.listfolder(0).then((fileMetadata) => {
-            console.log("fileMetadata: ");
-            console.log(fileMetadata);
-        });
-
-        // return new Promise(((resolve, reject) => {
-        //
-        //
-        //
-        //     this.client.upload(file, folderId, {
-        //         onBegin: () => {
-        //             console.log('started');
-        //         },
-        //         onProgress: function(progress) {
-        //             console.log(progress.loaded, progress.total);
-        //         },
-        //         onFinish: function(fileMetadata) {
-        //             console.log('finished', fileMetadata);
-        //             resolve(true);
-        //         }
-        //     }).catch(function(error) {
-        //         console.error(error);
-        //         reject(false);
-        //     });
-        //
-        // }));
-    }
-
-    static async getFileWithStream(fileId: any, plainAccessToken: string) {
-        try {
-            const url = 'https://api.pcloud.com/getfilelink?fileid=';
-            // return rp.get({
-            //     url: url + fileId,
-            //     auth: {bearer: plainAccessToken},
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // }).then((body: any) => {
-            //     const pcloudStreamFile: PcloudStreamFile = JSON.parse(body);
-            //     const remove_backlash = pcloudStreamFile.path;
-            //     const result = remove_backlash.replace(/\\\//g, "/");
-            //     const url = 'https://' + pcloudStreamFile.hosts[0] + result;
-            //     console.log('Upload successful!  Server responded with:' + url);
-            //     return url;
-            // }, (_error: any) => {
-            //
-            // });
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     static deleteFile(path: string) {
         try {
@@ -95,55 +37,10 @@ export class PCloud {
         }
     }
 
-    async axiosFileUpload(file: any) {
-
-
-        const url = "https://api.pcloud.com/uploadfile";
-
-        const formData = new FormData();
-        const stream = fs.createReadStream(file);
-        formData.append('file', stream);
-        // form.append('folderid',  0);
-
-        const requestConfig = {
-            headers: {
-                'Authorization': this.bearerAccessToken,
-                'Content-Type': `multipart/form-data` ,
-                'Connection': 'keep-alive'
-            }, timeout: 0
-        };
-
-        return axios.post(url, formData, requestConfig);
-    }
-
-
-    async nodeFetchUpload(file: any) {
-
-        const url = "https://api.pcloud.com/uploadfile";
-
-        const form = new FormData();
-        const buffer = fs.readFileSync(file);
-        form.append('file', file);
-
-        const headers = {
-            'Authorization': this.bearerAccessToken,
-            'Content-Type': `multipart/form-data` ,
-            'Connection': 'keep-alive'
-        };
-
-        const httpsAgent = new https.Agent({
-            keepAlive: true
-        });
-
-        fetch(`${url}`, { method: 'POST', body: form, headers: headers, timeout: 3600, agent: httpsAgent })
-            .then(res => res.json())
-            .then(json => console.log(json));
-    }
-
-
     async fileUpload(file) {
 
-        const url = "https://api.pcloud.com/uploadfile";
+        const folderId = 9076583045;
+        const url = `https://api.pcloud.com/uploadfile?folderid=${folderId}`;
 
         const form = new FormData();
         const buffer = fs.createReadStream(file);
@@ -175,16 +72,39 @@ export class PCloud {
         }
 
         const responseBody = await axios.get(url, config);
-
-        // console.log(responseBody);
         const pCloudStreamFile: PcloudStreamFile = responseBody['data'];
         const remove_backlash = pCloudStreamFile.path;
         const result = remove_backlash.replace(/\\\//g, "/");
-        const imgUrl = 'https://' + pCloudStreamFile.hosts[0] + result;
-        console.log('Upload successful!  Server responded with:' + url);
+        const imgUrl = `https://${pCloudStreamFile.hosts[0]}${result}`;
         return imgUrl;
 
     }
+
+
+    async getPublicFileUrl(fileId: any): Promise<PCloudPublicLinkInterface> {
+        const url = `https://api.pcloud.com/getfilepublink?fileid=${fileId}`;
+        const config = {
+            headers: {
+                'Authorization': this.bearerAccessToken
+            }
+        }
+
+        const responseBody = await axios.get(url, config);
+        const pCloudStreamFile: PCloudPublicLinkInterface = responseBody['data'];
+        return pCloudStreamFile;
+    }
+
+
+    async getThumbnailLink(fileId: number, code: string, width: number, height: number) {
+
+        const url = `https://api.pcloud.com/getpubthumb?fileid=${fileId}&code=${code}&size=${width}x${height}`;
+        // const responseBody = await axios.get(url);
+
+        // console.log(responseBody);
+        // console.log("responseBody: ");
+        return url;
+    }
+
 
     async axiosFetchFolderList() {
 

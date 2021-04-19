@@ -7,6 +7,7 @@ import {MyUtils} from "../utils/my_util";
 import * as fs from "fs";
 import {LogoDao} from "../dao/psql/logo_dao";
 import {User} from "../models/user";
+import {PCloudPublicLinkInterface} from "../interface/pcloud/public_link/pcloud_public_link";
 
 export class FileUploadService {
 
@@ -96,8 +97,8 @@ export class FileUploadService {
         const files: any[] = fileUploadResponse['data']['fileids'];
         const imgUrls: string[] = [];
         for (let i = 0; i < files.length; i++) {
-            const url = await new PCloud().getFileImgUrl(files[i]);
-            console.log(url);
+            const obj: PCloudPublicLinkInterface = await new PCloud().getPublicFileUrl(files[i]);
+            const url = await new PCloud().getThumbnailLink(obj.metadata.fileid, obj.code, obj.metadata.width, obj.metadata.height);
             imgUrls.push(url);
         }
 

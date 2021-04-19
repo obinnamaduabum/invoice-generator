@@ -10,6 +10,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import { CompaniesComponent } from './companies/companies.component';
+import { AddPhoneNumberComponent } from './add-phone-number/add-phone-number.component';
 
 const routes: Routes = [
   { path: 'create-profile', component: CompanyProfileComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CompanyProfileComponent,
-    CompaniesComponent
+    CompaniesComponent,
+    AddPhoneNumberComponent
   ],
   imports: [
     CommonModule,

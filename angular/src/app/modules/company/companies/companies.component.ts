@@ -16,6 +16,6 @@ export class CompaniesComponent implements OnInit {
   addCompanyProfile(url: string) {
     this.router.navigateByUrl(url).then((result) => {
       console.log(result);
-    })
+    });
   }
 }

@@ -13,9 +13,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col m6 s12 l6">
-          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>
-        </div>
+<!--        <div class="col m6 s12 l6">-->
+<!--          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>-->
+<!--        </div>-->
       </div>
 
       <div class="row">
@@ -49,8 +49,8 @@
               <p>(800) 555-1234</p>
             </address>
             <span>
-              <img alt="" src="">
-              <input type="file" accept="image/*">
+              <img alt="" class="invoice-logo" [src]="logoUrl">
+
             </span>
           </header>
 

@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col m12 s12 l6">
           <mat-form-field class="example-full-width">
-            <mat-label>Add Column</mat-label>
+            <mat-label>Company Name</mat-label>
             <input matInput placeholder="Company Name" formControlName="name">
 
             <mat-error *ngIf="companyProfile.controls['name'].invalid &&
@@ -21,7 +21,7 @@
 
         <div class="col m12 s12 l6">
           <mat-form-field class="example-full-width">
-            <mat-label>Add Column</mat-label>
+            <mat-label>Zip Code</mat-label>
             <input matInput placeholder="Zip code" formControlName="zipCode">
 
             <mat-error *ngIf="companyProfile.controls['zipCode'].invalid &&
@@ -39,13 +39,13 @@
       <div class="row">
         <div class="col m12 s12 l6">
           <mat-form-field class="example-full-width">
-            <mat-label>Add Column</mat-label>
-            <input matInput placeholder="Company Name" formControlName="name">
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Enter address" formControlName="address">
 
-            <mat-error *ngIf="companyProfile.controls['name'].invalid &&
-            (companyProfile.controls['name'].dirty || companyProfile.controls['name'].touched)">
-              <span *ngIf="companyProfile.controls['name'].errors.required">
-                Company name is required
+            <mat-error *ngIf="companyProfile.controls['address'].invalid &&
+            (companyProfile.controls['address'].dirty || companyProfile.controls['address'].touched)">
+              <span *ngIf="companyProfile.controls['address'].errors.required">
+                Address is required
               </span>
             </mat-error>
 
@@ -103,9 +103,44 @@
       </div>
 
       <div class="row">
-          <div class="col m12 s12 l6">
-            <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>
+        <div class="col m12 s12 l6">
+          <button mat-button class="success-btn" (click)="openAddLogoDialog()">
+            Add Logo
+          </button>
+
+          <div>
+            <span class="logo-url-style">{{logoUrl}}</span>
           </div>
+
+          <mat-error *ngIf="companyProfile.controls['logoUrl'].invalid &&
+            (companyProfile.controls['logoUrl'].dirty || companyProfile.controls['logoUrl'].touched)">
+              <span *ngIf="companyProfile.controls['logoUrl'].errors.required">
+                Company logo is required
+              </span>
+          </mat-error>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <button mat-button class="success-btn" (click)="openAddPhoneNumberDialog()">
+            Add Phone Number
+          </button>
+
+          <div style="margin-top: 5px">
+            <span *ngFor="let phoneNumber of phoneNumbers, let i = index">
+              <span class="number-style" *ngIf="i === 0">{{phoneNumber}}</span>
+              <span class="number-style" *ngIf="i !== 0">, {{phoneNumber}}</span>
+            </span>
+          </div>
+
+          <mat-error *ngIf="companyProfile.controls['phoneNumber'].invalid &&
+            (companyProfile.controls['phoneNumber'].dirty || companyProfile.controls['phoneNumber'].touched)">
+              <span *ngIf="companyProfile.controls['phoneNumber'].errors.required">
+                Company logo is required
+              </span>
+          </mat-error>
+
+
+        </div>
       </div>
 
       <div class="row">

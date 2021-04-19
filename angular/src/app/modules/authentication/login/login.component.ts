@@ -10,7 +10,6 @@ import {AuthenticationService} from '../../../services/authentication-service';
 import {UserService} from '../../../services/user.service';
 import {LoginInterface} from '../../../interfaces/login-interface';
 import {ErrorCatcherService} from '../../../services/error-catcher.service';
-import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
 import {MyRoutes} from '../../../utils/my-routes';
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from 'angularx-social-login';
 

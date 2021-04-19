@@ -15,6 +15,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {AlreadyLoggedInGuard} from './guard/already-logged-in/already-logged-in.guard';
 import {UserLoggedInGuard} from './guard/user/user-logged-in.guard';
 import {LogoService} from './services/logo.service';
+import {CompanyProfileService} from "./services/company-profile.service";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {LogoService} from './services/logo.service';
     AuthenticationService,
     UserService,
     LogoService,
+    CompanyProfileService,
     // guards
     AlreadyLoggedInGuard,
     UserLoggedInGuard

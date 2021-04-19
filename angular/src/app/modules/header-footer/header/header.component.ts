@@ -21,8 +21,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authenticationService.user.subscribe((data: any) => {
-      console.log(data);
-      console.log("header");
       if (data) {
         this.isLoggedIn = true;
       }
@@ -40,13 +38,18 @@ export class HeaderComponent implements OnInit {
       if(data) {
         this.authenticationService.clearStaleSession();
         this.router.navigate([MyRoutes.notProtected.loginPage]);
-        console.log(data);
       }
 
     }, error => {
 
       this.loggingOut = false;
 
+    });
+  }
+
+  gotoUrl(url: string) {
+    this.router.navigateByUrl(url).then((result) => {
+      console.log(result);
     });
   }
 }

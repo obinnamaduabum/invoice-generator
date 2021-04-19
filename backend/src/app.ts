@@ -19,6 +19,7 @@ export class App {
         origin: "*",
         preflightContinue: false
     };
+
     public allowedOrigins: string[] = [
         'localhost:8000',
         'localhost:3000',

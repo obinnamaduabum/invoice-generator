@@ -47,6 +47,7 @@ export class InvoiceCreatorComponent implements OnInit {
     { name: 'Rupee', symbol: '&#x20B9;'},
     { name: 'Naira', symbol: '&#8358;'}
     ];
+  logoUrl: string = "";
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -206,25 +207,7 @@ export class InvoiceCreatorComponent implements OnInit {
     console.log(this.invoiceForm.getRawValue());
   }
 
-  openAddLogoDialog(): void {
-    const dialogRef = this.dialog.open(FileUploadGalleryComponent, {
-      height: '90%',
-      width: '80%',
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (this.instanceOfResponseDialog(result)) {
-        if (result.success) {
-          this.invoiceCreationObj.thList = result.result;
-          this.myToastService.showSuccess(result.message);
-        } else {
-          this.myToastService.showFailed(result.message);
-        }
-      } else {
-        this.myToastService.showFailed('Error occurred');
-      }
-    });
-  }
 }
 
 @Component({

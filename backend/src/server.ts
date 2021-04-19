@@ -1,5 +1,4 @@
 import dotEnvFlow from "dotenv-flow";
-
 dotEnvFlow.config();
 import {CustomRouterInterface} from "./interface/CustomRouterInterface";
 import IndexRouter from "./routes/index-router";
@@ -12,6 +11,9 @@ import ProtectedAuthenticationRouter from "./routes/protected/protected_authenti
 import {MyLogo} from "./models/my_logo";
 import {ProtectedMyLogoRouter} from "./routes/protected/protected_logo_router";
 import {ProtectedFileUploadRouter} from "./routes/protected/protected_file_upload_router";
+import ProtectedCompanyProfileRouter from "./routes/protected/protected_company_profile_router";
+import {CompanyProfile} from "./models/company_profile";
+import {PhoneNumber} from "./models/phone_number";
 
 const mainPath = "/api";
 const v1 = "/v1";
@@ -37,6 +39,9 @@ let CustomRouters: CustomRouterInterface[] = [
     {
         url: `${mainPath}${v1}${protectedPath}/file-upload`,
         routerObj: new ProtectedFileUploadRouter()
+    },
+    {   url: `${mainPath}${v1}${protectedPath}/company-profile`,
+        routerObj: new ProtectedCompanyProfileRouter()
     }
 ];
 
@@ -65,11 +70,13 @@ try {
     const pd = new PostgresDatabase();
     pd.checkConnection().then(async r => {
 
-        const sequelizeObj = {alter: false, force: false};
-        //await pd.getSequelize.sync(sequelizeObj);
+        const sequelizeObj = {alter: true, force: false};
+        await pd.getSequelize.sync(sequelizeObj);
         await User.sync(sequelizeObj);
         await MyLogo.sync(sequelizeObj);
-        //await pd.syncAllTables();
+        await CompanyProfile.sync(sequelizeObj);
+        await PhoneNumber.sync(sequelizeObj);
+        // await pd.sync();
         await StartUpActions.init();
         const app = new App(CustomRouters, PORT, HOSTNAME);
         app.listen();
