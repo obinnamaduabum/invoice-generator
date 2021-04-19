@@ -1,0 +1,153 @@
+<div class="container">
+  <mat-card>
+
+    <h2 style="text-align: center">Company Information</h2>
+    <form [formGroup]="companyProfile">
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Add Column</mat-label>
+            <input matInput placeholder="Company Name" formControlName="name">
+
+            <mat-error *ngIf="companyProfile.controls['name'].invalid &&
+            (companyProfile.controls['name'].dirty || companyProfile.controls['name'].touched)">
+              <span *ngIf="companyProfile.controls['name'].errors.required">
+                Company name is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Add Column</mat-label>
+            <input matInput placeholder="Zip code" formControlName="zipCode">
+
+            <mat-error *ngIf="companyProfile.controls['zipCode'].invalid &&
+            (companyProfile.controls['zipCode'].dirty || companyProfile.controls['zipCode'].touched)">
+              <span *ngIf="companyProfile.controls['zipCode'].errors.required">
+                Zip Code is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Add Column</mat-label>
+            <input matInput placeholder="Company Name" formControlName="name">
+
+            <mat-error *ngIf="companyProfile.controls['name'].invalid &&
+            (companyProfile.controls['name'].dirty || companyProfile.controls['name'].touched)">
+              <span *ngIf="companyProfile.controls['name'].errors.required">
+                Company name is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Street</mat-label>
+            <input matInput placeholder="Street" formControlName="street">
+
+            <mat-error *ngIf="companyProfile.controls['street'].invalid &&
+            (companyProfile.controls['street'].dirty || companyProfile.controls['street'].touched)">
+              <span *ngIf="companyProfile.controls['street'].errors.required">
+                Company street is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="Enter city" formControlName="city">
+
+            <mat-error *ngIf="companyProfile.controls['city'].invalid &&
+            (companyProfile.controls['city'].dirty || companyProfile.controls['city'].touched)">
+              <span *ngIf="companyProfile.controls['city'].errors.required">
+                Company name is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>State</mat-label>
+            <input matInput placeholder="State" formControlName="state">
+
+            <mat-error *ngIf="companyProfile.controls['state'].invalid &&
+            (companyProfile.controls['state'].dirty || companyProfile.controls['state'].touched)">
+              <span *ngIf="companyProfile.controls['state'].errors.required">
+                State is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+          <div class="col m12 s12 l6">
+            <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter email" formControlName="email">
+
+            <mat-error *ngIf="companyProfile.controls['email'].invalid &&
+            (companyProfile.controls['email'].dirty || companyProfile.controls['email'].touched)">
+              <span *ngIf="companyProfile.controls['email'].errors.required">
+                Email is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Website URL</mat-label>
+            <input matInput placeholder="State" formControlName="websiteUrl">
+
+            <mat-error *ngIf="companyProfile.controls['websiteUrl'].invalid &&
+            (companyProfile.controls['websiteUrl'].dirty || companyProfile.controls['websiteUrl'].touched)">
+              <span *ngIf="companyProfile.controls['websiteUrl'].errors.required">
+                Website Url is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </div>
+
+
+      <div style="text-align: center">
+        <button mat-button class="success-btn" (click)="save()">Save</button>
+      </div>
+
+    </form>
+  </mat-card>
+</div>
+
+
