@@ -5,6 +5,7 @@ import {MyUtils} from "../utils/my_util";
 import {MyJWTObj} from "../interface/JWTObjInterface";
 import AuthenticationService from "../service/authentication_service";
 import {User} from "../models/user";
+import {UserDao} from "../dao/psql/user_dao";
 
 export class FileUploadController {
 
@@ -15,9 +16,7 @@ export class FileUploadController {
             const response: MyJWTObj | null | Response = await AuthenticationService.getVerificationToken(req, res);
 
             if(response instanceof MyJWTObj) {
-                const user: User | null = await User.findOne({
-                    where: {code: response.id}
-                });
+                const user: User | null = await UserDao.findUserForAuth(response.id);
 
                 if (!user) {
                     return ApiResponseUtil.unAuthenticated(res);

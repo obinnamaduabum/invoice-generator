@@ -37,12 +37,12 @@ export class ApiResponseUtil {
         });
     }
 
-    static pagination(page: number, limit: number, data: any[]){
+    static pagination(page: number, limit: number, total: number, data: any[]){
 
         return {
             page: page,
             limit: limit,
-            total: "",
+            total: total,
             data: data
         }
     }

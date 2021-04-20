@@ -4,7 +4,7 @@ import {PostgresDatabase} from "../../database/postgres_db";
 
 export class LogoDao {
 
-    static async index(offset: number, limit: number, userId: number) {
+    static async findAll(offset: number, limit: number, userId: number) {
         try {
             return MyLogo.findAll({
                 where: {
@@ -15,6 +15,20 @@ export class LogoDao {
                 order: [
                     ['date_created', 'DESC'],
                 ],
+            });
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+
+    static async countAll(userId: number) {
+        try {
+            return MyLogo.count({
+                where: {
+                    user_id: userId
+                }
             });
         } catch (e) {
             console.log(e);

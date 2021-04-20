@@ -25,6 +25,38 @@ export class CompanyProfileDao {
         }
     }
 
+    static async findAllWithPagination(userId: number, offset: number, limit: number) {
+
+        try {
+            return await CompanyProfile.findAll({
+                where: {
+                    user_id: userId
+                },
+                offset: offset,
+                limit: limit,
+                order: [
+                    ['date_created', 'DESC'],
+                ],
+            });
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
+
+
+    static async countAll(userId: number) {
+        try {
+            return await CompanyProfile.count({
+                where: {
+                    user_id: userId
+                }
+            });
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
 
     static async save(inputObj: CompanyProfileServiceInterface) {
 
@@ -57,7 +89,7 @@ export class CompanyProfileDao {
                     const phoneNumberInputObj = await PhoneNumber.create(phoneNumberObj, {transaction: transaction});
                     mainPromises.push(phoneNumberInputObj);
                 } else {
-                    return Error("Phone number required");
+                    return new Error("Phone number required");
                 }
             }
 

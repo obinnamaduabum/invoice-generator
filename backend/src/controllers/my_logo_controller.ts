@@ -5,6 +5,7 @@ import {User} from "../models/user";
 import {ApiResponseUtil} from "../utils/api-response-util";
 import {MyUtils} from "../utils/my_util";
 import {LogoService} from "../service/logo_service";
+import {UserDao} from "../dao/psql/user_dao";
 
 export class MyLogoController {
 
@@ -17,9 +18,7 @@ export class MyLogoController {
             const response: MyJWTObj | null | Response = await AuthenticationService.getVerificationToken(req, res);
 
             if(response instanceof MyJWTObj) {
-                const user: User | null = await User.findOne({
-                    where: {code: response.id}
-                });
+                const user: User | null = await UserDao.findUserForAuth(response.id);
 
                 if(!user) {
                     return ApiResponseUtil.unAuthenticated(res);

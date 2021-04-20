@@ -1,8 +1,10 @@
 import {CompanyProfileInterface} from "../interface/company_profile_interface";
 import {CompanyProfileServiceInterface} from "../interface/company_profile_service_interface";
+import {CompanyProfileDao} from "../dao/psql/company_profile_dao";
+import {User} from "../models/user";
+import {ApiResponseUtil} from "../utils/api-response-util";
 
 export class CompanyProfileService {
-
 
     static async getRequestData(req: any, userId: number): Promise<CompanyProfileServiceInterface> {
 
@@ -30,5 +32,20 @@ export class CompanyProfileService {
         }
 
         return output;
+    }
+
+    static async findAllWithPaginationAndCount(user: User, page: number, limit: number) {
+        const result: any[] = await CompanyProfileDao.findAllWithPagination(user.id, page, limit);
+
+        const newResult: any[] = [];
+        const resultLength: number = result.length;
+        for (let i = 0; i < resultLength; i++){
+            const items = result[i]['dataValues'];
+            const obj = Object.assign(items, {'loaded': false});
+            newResult.push(obj);
+        }
+
+        const count: number = await CompanyProfileDao.countAll(user.id);
+        return  ApiResponseUtil.pagination(page, limit, count, newResult);
     }
 }

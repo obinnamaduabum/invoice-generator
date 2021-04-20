@@ -17,6 +17,13 @@ export class UserDao {
     }
 
 
+    static async findUserForAuth(id: string) {
+        return await User.findOne({
+            where: {code: id}
+        });
+    }
+
+
     static async unBlockUser(email: string): Promise<void> {
         const emailTrimmed = email.trim().toLowerCase();
 

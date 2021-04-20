@@ -6,13 +6,13 @@ export class LogoService {
 
 
     static async response(res: any, page: number, limit: number, user: User): Promise<any> {
-        const logoList = await LogoDao.index(page, limit, user.id);
+        const logoList = await LogoDao.findAll(page, limit, user.id);
+        const totalCount: number = await LogoDao.countAll(user.id);
 
         let arrayOfObj: any[] = [];
         for(let r = 0; r < logoList.length; r++) {
             const obj = logoList[r];
             obj['loaded'] = false;
-
 
             let newObj = {
                 id: obj['id'],
@@ -27,7 +27,7 @@ export class LogoService {
             arrayOfObj.push(newObj);
         }
 
-        const paginationObj = ApiResponseUtil.pagination(page, limit, arrayOfObj);
+        const paginationObj = ApiResponseUtil.pagination(page, limit, totalCount, arrayOfObj);
 
         return ApiResponseUtil.apiResponseWithData(res,
             200,

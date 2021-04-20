@@ -10,6 +10,7 @@ class ProtectedCompanyProfileRouter {
     }
 
     public initializeRoutes() {
+        this.router.get('/', CompanyProfileController.index);
         this.router.post('/create', CompanyProfileController.create);
     }
 }
