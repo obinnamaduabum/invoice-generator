@@ -9,9 +9,8 @@ import {CompanyProfile} from "./company_profile";
 export class PhoneNumber extends Model {
 
     public id!: number;
-    public phoneNumber!: string;
+    public phone_number!: string;
     public code!: string;
-
     public date_created!: Date;
     public date_updated!: Date;
 }
@@ -24,7 +23,7 @@ PhoneNumber.init(
             autoIncrement: true,
             primaryKey: true
         },
-        phoneNumber: {
+        phone_number: {
             type: Sequelize.STRING,
             allowNull: false
         },

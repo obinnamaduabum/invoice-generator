@@ -12,6 +12,7 @@ import {CompanyProfileService} from "../../../services/company-profile.service";
 import {CompanyProfileInterface} from "../../../../../../backend/src/interface/company_profile_interface";
 import {DatePipe} from "@angular/common";
 import {Subscription} from "rxjs";
+import { Output, EventEmitter } from '@angular/core';
 
 export interface InvoiceCreationInterface {
   thList: ThTypeInterface[];
@@ -55,6 +56,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   date: string;
   loginComponentHandlerServiceSubscription: Subscription;
   myInvoiceCreationForm: FormGroup;
+  @Output() gotoEvent = new EventEmitter<number>();
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -265,6 +267,10 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   gotoUrl(url: string) {
     this.router.navigateByUrl(url).then((result) => {
     });
+  }
+
+  myGotoEvent(value: number) {
+    this.gotoEvent.emit(value);
   }
 }
 

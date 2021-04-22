@@ -15,6 +15,7 @@ import ProtectedCompanyProfileRouter from "./routes/protected/protected_company_
 import {CompanyProfile} from "./models/company_profile";
 import {PhoneNumber} from "./models/phone_number";
 import {ProtectedClientRouter} from "./routes/protected/protected_client_router";
+import {MyClient} from "./models/client";
 
 const mainPath = "/api";
 const v1 = "/v1";
@@ -82,6 +83,7 @@ try {
         await MyLogo.sync(sequelizeObj);
         await CompanyProfile.sync(sequelizeObj);
         await PhoneNumber.sync(sequelizeObj);
+        await MyClient.sync(sequelizeObj);
         // await pd.sync();
         await StartUpActions.init();
         const app = new App(CustomRouters, PORT, HOSTNAME);

@@ -17,6 +17,7 @@ import {UserLoggedInGuard} from './guard/user/user-logged-in.guard';
 import {LogoService} from './services/logo.service';
 import {CompanyProfileService} from "./services/company-profile.service";
 import {DatePipe} from "@angular/common";
+import {ClientService} from "./services/client.service";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {DatePipe} from "@angular/common";
     UserService,
     LogoService,
     CompanyProfileService,
+    ClientService,
     // guards
     AlreadyLoggedInGuard,
     UserLoggedInGuard

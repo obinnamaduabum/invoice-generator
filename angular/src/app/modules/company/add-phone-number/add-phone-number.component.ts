@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog} from "@angular/material/dialog";
 import { MyToastService } from "../../../services/toast-service/my-toast.service";
 import { PhoneNumberCodeService } from "../../edit-phone-number-dialogue/service/phone_number_code.service";
 import { PhoneNumberDialogComponent } from "../../edit-phone-number-dialogue/component/phone-number-dialog/edit-phone-number-dialogue-component";
@@ -24,6 +24,7 @@ export class AddPhoneNumberComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data,
               private myToastService: MyToastService,
               private phoneNumberCodeService: PhoneNumberCodeService) {
 
@@ -56,23 +57,43 @@ export class AddPhoneNumberComponent implements OnInit {
   }
 
   save() {
-    if(this.phoneNumberForm.valid) {
-      const myDialog = this.dialog.getDialogById('add-phone-number-dialog');
-      this.myToastService.showSuccess('Phone number added');
-      const phoneNumber: string = this.phoneNumberForm.get('phoneNumber').value;
-      const selectedPhoneNumber = this.phoneNumberForm.get('selectedPhoneNumber').value;
-      const phoneNumberUtil = PhoneNumberUtil.getInstance();
-      const alpha2: string = selectedPhoneNumber.alpha2;
-      console.log(alpha2);
-      //const PNF = PhoneNumberFormat;
-      //const result = phoneNumberUtil.format(phoneNumber, PNF.INTERNATIONAL);
 
-      const d = phoneNumberUtil.formatOutOfCountryCallingNumber(phoneNumber, alpha2);
-      console.log(d);
-      //myDialog.close();
-    } else {
-      this.myToastService.showFailed('Form invalid');
-    }
+
+      if (this.phoneNumberForm.valid) {
+        const myDialog = this.dialog.getDialogById('add-phone-number-dialog');
+        const phoneNumberString = this.getPhoneNumberInternationNumber();
+        if(this.data) {
+          const foundIndex = this.data.findIndex(e => { return e === phoneNumberString});
+
+          if(foundIndex > -1) {
+            this.myToastService.showFailed('Phone number already added!');
+          } else {
+            this.myToastService.showSuccess('Phone number added');
+            myDialog.close(phoneNumberString);
+          }
+
+        } else {
+          this.myToastService.showSuccess('Phone number added');
+          myDialog.close(phoneNumberString);
+        }
+
+      } else {
+        this.myToastService.showFailed('Form invalid');
+      }
+  }
+
+  getPhoneNumberInternationNumber() {
+    const phoneNumber: string = this.phoneNumberForm.get('phoneNumber').value;
+    const selectedPhoneNumber = this.phoneNumberForm.get('selectedPhoneNumber').value;
+    const phoneNumberUtil = PhoneNumberUtil.getInstance();
+    const alpha2: string = selectedPhoneNumber.alpha2;
+
+    const number = phoneNumberUtil.parseAndKeepRawInput(phoneNumber, alpha2);
+    const countryCode: number = number.getCountryCode();
+    const nationalPhoneNumber: number = number.getNationalNumber();
+
+    const phoneNumberString: string = `${countryCode}${nationalPhoneNumber}`;
+    return phoneNumberString;
   }
 
   openPhoneNumberDialog(phoneNumber: string, selectedPhoneNumber: string) {

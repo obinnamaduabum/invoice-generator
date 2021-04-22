@@ -15,7 +15,6 @@
                 Company name is required
               </span>
             </mat-error>
-
           </mat-form-field>
         </div>
 
@@ -88,7 +87,7 @@
         <div class="col m12 s12 l6">
           <mat-form-field class="example-full-width">
             <mat-label>State</mat-label>
-            <input matInput placeholder="State" formControlName="state" [errorStateMatcher]="matcher">
+            <input matInput placeholder="State" formControlName="state">
 
             <mat-error *ngIf="companyProfile.controls['state'].invalid &&
             (companyProfile.controls['state'].dirty || companyProfile.controls['state'].touched)">
@@ -114,7 +113,7 @@
 
           <mat-error *ngIf="companyProfile.controls['logoUrl'].invalid &&
             (companyProfile.controls['logoUrl'].dirty || companyProfile.controls['logoUrl'].touched)">
-              <span *ngIf="companyProfile.controls['logoUrl'].errors.required">
+              <span class="my-error" *ngIf="companyProfile.controls['logoUrl'].errors.required">
                 Company logo is required
               </span>
           </mat-error>
@@ -134,8 +133,8 @@
 
           <mat-error *ngIf="companyProfile.controls['phoneNumber'].invalid &&
             (companyProfile.controls['phoneNumber'].dirty || companyProfile.controls['phoneNumber'].touched)">
-              <span *ngIf="companyProfile.controls['phoneNumber'].errors.required">
-                Company logo is required
+              <span class="my-error" *ngIf="companyProfile.controls['phoneNumber'].errors.required">
+                Company phone number is required
               </span>
           </mat-error>
 
@@ -185,7 +184,20 @@
 
 
       <div style="text-align: center">
-        <button mat-button class="success-btn" (click)="save()">Save</button>
+        <span *ngIf="!makingRequest">
+           <button mat-button class="success-btn" (click)="save()">Save</button>
+        </span>
+        <span *ngIf="makingRequest">
+            <button mat-button class="success-btn">
+               <mat-icon>
+                  <mat-progress-spinner
+                    class="white-mat-spinner"
+                    [diameter]="20"
+                    mode="indeterminate">
+                  </mat-progress-spinner>
+              </mat-icon>
+            </button>
+         </span>
       </div>
 
     </form>

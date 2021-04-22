@@ -6,10 +6,6 @@
   </span>
 
 
-  <span *ngIf="this.isLoggedIn" style="padding-left: 5px; padding-right: 5px">
-    <button mat-button (click)="gotoUrl('/invoice-builder/main')" class="success-btn">Create Invoice</button>
-  </span>
-
   <span [matMenuTriggerFor]="menu" class="profile-icon" *ngIf="this.isLoggedIn">
    <mat-icon>account_circle</mat-icon>
   </span>

@@ -1,0 +1,121 @@
+<div class="container">
+  <mat-card>
+
+    <h2 style="text-align: center">Client Information</h2>
+    <form [formGroup]="clientInfoForm">
+
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Client Name</mat-label>
+            <input matInput placeholder="Client Name" formControlName="name" [errorStateMatcher]="matcher">
+
+            <mat-error *ngIf="clientInfoForm.controls['name'].invalid &&
+            (clientInfoForm.controls['name'].dirty || clientInfoForm.controls['name'].touched)">
+              <span *ngIf="clientInfoForm.controls['name'].errors.required">
+                Client name is required
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Enter address" formControlName="address" [errorStateMatcher]="matcher">
+
+            <mat-error *ngIf="clientInfoForm.controls['address'].invalid &&
+            (clientInfoForm.controls['address'].dirty || clientInfoForm.controls['address'].touched)">
+              <span *ngIf="clientInfoForm.controls['address'].errors.required">
+                Address is required
+              </span>
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col m12 s12 l6">
+          <mat-form-field class="alignment password-input-field-mat-input" appearance="outline">
+                   <span matPrefix class="phone-number-international"
+                         (click)="openPhoneNumberDialog('phoneNumber', 'selectedPhoneNumber')">
+                      <img class="custom-dropdown-arrow"
+                           src="assets/img/svg/drop-down-arrow.svg"
+                           alt="dropdown">
+                      <img class="phone-number-international-img"
+                           [src]="getLocalCountryImageUrl(clientInfoForm.controls['selectedPhoneNumber'].value?.alpha2)"
+                           alt="country flag">
+                       <span class="phone-number-international-font">
+                         +{{clientInfoForm.controls['selectedPhoneNumber'].value?.internationalPhoneNumber}}
+                       </span>
+                    </span>
+
+            <mat-label>Phone Number</mat-label>
+            <input formControlName="phoneNumber"
+                   matInput
+                   type="tel" [errorStateMatcher]="matcher"
+                   placeholder="e.g 08067189966" required>
+
+            <mat-error *ngIf="clientInfoForm.controls['phoneNumber'].invalid &&
+            (clientInfoForm.controls['phoneNumber'].dirty || clientInfoForm.controls['phoneNumber'].touched)">
+
+              <span *ngIf="clientInfoForm.controls['phoneNumber'].errors.required">
+                Phone number is required
+              </span>
+
+              <span
+                *ngIf="!clientInfoForm.controls['phoneNumber'].errors.required && clientInfoForm.controls['phoneNumber'].errors.phoneNumberInvalid">
+               Phone number is invalid
+            </span>
+
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col m12 s12 l6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter email" formControlName="email" [errorStateMatcher]="matcher">
+
+            <mat-error *ngIf="clientInfoForm.controls['email'].invalid &&
+            (clientInfoForm.controls['email'].dirty || clientInfoForm.controls['email'].touched)">
+
+              <span *ngIf="clientInfoForm.controls['email'].errors.required">
+                Email is required
+              </span>
+
+              <span *ngIf="!clientInfoForm.controls['email'].errors.required &&
+              clientInfoForm.controls['email'].errors.emailInvalid">
+                Email invalid
+              </span>
+
+            </mat-error>
+
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div style="text-align: center">
+        <span *ngIf="!makingRequest">
+           <button mat-button class="success-btn" (click)="save()">Save</button>
+        </span>
+        <span *ngIf="makingRequest">
+            <button mat-button class="success-btn">
+               <mat-icon>
+                  <mat-progress-spinner
+                    class="white-mat-spinner"
+                    [diameter]="20"
+                    mode="indeterminate">
+                  </mat-progress-spinner>
+              </mat-icon>
+            </button>
+         </span>
+      </div>
+
+    </form>
+  </mat-card>
+</div>
+
+

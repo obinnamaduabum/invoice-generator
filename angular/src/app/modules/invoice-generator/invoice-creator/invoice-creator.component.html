@@ -16,9 +16,7 @@
 <!--        <div class="col m6 s12 l6">-->
 <!--          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>-->
 <!--        </div>-->
-      </div>
 
-      <div class="row">
         <div class="col m6 s12 l6">
           <mat-form-field appearance="fill">
             <mat-label>Select Currency</mat-label>
@@ -45,7 +43,7 @@
 
               <div *ngIf="selectedCompany === null">
                 <div style="padding-top: 10px; padding-bottom: 10px;" class="center-on-mobile">
-                  <button mat-button (click)="gotoUrl('/invoice-builder/company')"
+                  <button mat-button (click)="myGotoEvent(1)"
                           class="success-btn">
                     Select Company Profile
                   </button>
@@ -92,11 +90,11 @@
           </div>
 
           <div>
-            <h1>Recipient</h1>
-            <address contenteditable>
-              <p>Some Company<br>c/o Some Guy</p>
-            </address>
 
+
+            <div>
+              <button mat-button class="add-column-btn-stretched" (click)="myGotoEvent(2)">Add Client</button>
+            </div>
 
             <div class="my-custom-table my-table-horizontal-scroll"
                  *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
@@ -185,10 +183,13 @@
 
 
           <div class="additional-info">
-            <h1><span contenteditable>Additional Notes</span></h1>
-            <div contenteditable>
-              <p>A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
-            </div>
+              <mat-form-field appearance="outline">
+                <mat-label>Additional Notes</mat-label>
+                <textarea matInput
+                          [rows]="5"
+                          [cols]="4">
+                </textarea>
+              </mat-form-field>
           </div>
 
         </div>

@@ -8,6 +8,7 @@ import {ResponseModel} from "../../../models/response-model";
 import {MyToastService} from "../../../services/toast-service/my-toast.service";
 import {MyEmailValidator} from "../../edit-phone-number-dialogue/validator/email_validator";
 import {MyErrorStateMatcher} from "../../../utils/error_state_matcher";
+import {MyUtils} from "../../../utils/my_utils";
 
 @Component({
   selector: 'app-company-profile',
@@ -20,6 +21,7 @@ export class CompanyProfileComponent implements OnInit {
   logoUrl: string;
   phoneNumbers: string[] = [];
   matcher = new MyErrorStateMatcher();
+  makingRequest = false;
 
   constructor(private fb: FormBuilder,
               public dialog: MatDialog,
@@ -36,13 +38,18 @@ export class CompanyProfileComponent implements OnInit {
       logoUrl: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       websiteUrl: new FormControl('', []),
-      phoneNumber: this.fb.array(this.phoneNumbers || [])
+      phoneNumber: new FormControl('', [Validators.required])
     });
+
+    // this.companyProfile.get('phoneNumber').valueChanges.subscribe((data: any) => {
+    //   if(this.phoneNumbers.length > 0) {
+    //     this.companyProfile.get('phoneNumber').setErrors(null);
+    //   }
+    // });
+    //this.fb.array(this.phoneNumbers || [])
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
 
   openAddLogoDialog(): void {
@@ -62,36 +69,59 @@ export class CompanyProfileComponent implements OnInit {
     });
   }
 
+  openAddPhoneNumberDialog() {
+
+    this.companyProfile.get('phoneNumber').markAsTouched();
+    const value = this.companyProfile.get('phoneNumber').value;
+    const dialogRef = this.dialog.open(AddPhoneNumberComponent, {
+      id: 'add-phone-number-dialog',
+      height: '300px',
+      width: '500px',
+      data: value
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(typeof result === "string") {
+        this.phoneNumbers.push(result);
+        if(value) {
+          const array: any[] = [];
+
+          if(result) {
+            if (typeof value === "string") {
+              array.push(value);
+            } else {
+              for (let i = 0; i < value.length; i++) {
+                array.push(value[i]);
+              }
+            }
+          }
+          array.push(result);
+          this.companyProfile.get('phoneNumber').setValue(array);
+        } else {
+          this.companyProfile.get('phoneNumber').setValue([result]);
+        }
+      }
+    });
+  }
+
   save() {
     if(this.companyProfile.valid) {
+      this.makingRequest = true;
       const inputObj = this.companyProfile.getRawValue();
       this.companyProfileService.create(inputObj).subscribe((data: ResponseModel) => {
+        this.makingRequest = true;
         if (data.success) {
           this.myToastService.showSuccess(data.message);
         } else {
           this.myToastService.showFailed(data.message);
         }
       }, error => {
+        this.makingRequest = false;
         this.myToastService.showServerError();
       });
     } else {
+      MyUtils.validateAllFormFields(this.companyProfile);
       this.myToastService.showInvalidFormError();
     }
-  }
-
-  openAddPhoneNumberDialog() {
-
-    this.companyProfile.get('phoneNumber').markAsTouched();
-    const dialogRef = this.dialog.open(AddPhoneNumberComponent, {
-      id: 'add-phone-number-dialog',
-      height: '300px',
-      width: '500px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(typeof result === "string") {
-        this.phoneNumbers.push(result);
-      }
-    });
   }
 }

@@ -157,3 +157,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 10px;
   padding-top: 5px;
 }
+
+.my-error {
+  font-size: 10px;
+}

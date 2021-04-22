@@ -20,10 +20,14 @@ import { UserLoggedInGuard } from 'src/app/guard/user/user-logged-in.guard';
 import { AlreadyLoggedInGuard } from 'src/app/guard/already-logged-in/already-logged-in.guard';
 import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protect-invoice-builder.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {CompanyModule} from "../company/company.module";
+import {MatTabsModule} from "@angular/material/tabs";
+import {ClientModule} from "../client/client.module";
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
   { path: 'main', component: ProtectInvoiceBuilderComponent, canActivate: [UserLoggedInGuard] },
+  { path: 'client', loadChildren: () =>  import('../../modules/client/client.module').then(m => m.ClientModule) },
   { path: 'company', loadChildren: () => import('../../modules/company/company.module').then(m => m.CompanyModule) },
 ];
 
@@ -48,7 +52,10 @@ const routes: Routes = [
     MatIconModule,
     FileUploadModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    CompanyModule,
+    MatTabsModule,
+    ClientModule
   ]
 })
 export class InvoiceGeneratorModule { }
