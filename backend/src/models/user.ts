@@ -1,10 +1,9 @@
 import {
     Model,
-    DataTypes, Association, HasOneSetAssociationMixin, HasOneGetAssociationMixin,
+    DataTypes
 } from 'sequelize';
 import Sequelize from 'sequelize';
 import {PostgresDatabase} from "../database/postgres_db";
-import {MyLogo} from "./my_logo";
 
 export class User extends Model {
 

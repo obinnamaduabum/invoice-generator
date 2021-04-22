@@ -5,7 +5,7 @@ import {
   InvoiceCreatorDialogComponent
 } from './invoice-creator/invoice-creator.component';
 import {RouterModule, Routes} from '@angular/router';
-import {MatOptionModule} from '@angular/material/core';
+import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
@@ -19,6 +19,7 @@ import {FileUploadModule} from '../file-upload/file-upload.module';
 import { UserLoggedInGuard } from 'src/app/guard/user/user-logged-in.guard';
 import { AlreadyLoggedInGuard } from 'src/app/guard/already-logged-in/already-logged-in.guard';
 import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protect-invoice-builder.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -45,7 +46,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
-    FileUploadModule
+    FileUploadModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class InvoiceGeneratorModule { }

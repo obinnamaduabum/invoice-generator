@@ -6,6 +6,8 @@ import {AddPhoneNumberComponent} from "../add-phone-number/add-phone-number.comp
 import {CompanyProfileService} from "../../../services/company-profile.service";
 import {ResponseModel} from "../../../models/response-model";
 import {MyToastService} from "../../../services/toast-service/my-toast.service";
+import {MyEmailValidator} from "../../edit-phone-number-dialogue/validator/email_validator";
+import {MyErrorStateMatcher} from "../../../utils/error_state_matcher";
 
 @Component({
   selector: 'app-company-profile',
@@ -17,6 +19,7 @@ export class CompanyProfileComponent implements OnInit {
   companyProfile: FormGroup;
   logoUrl: string;
   phoneNumbers: string[] = [];
+  matcher = new MyErrorStateMatcher();
 
   constructor(private fb: FormBuilder,
               public dialog: MatDialog,
@@ -29,7 +32,7 @@ export class CompanyProfileComponent implements OnInit {
       zipCode: new FormControl('', [Validators.required]),
       street: new FormControl('', [Validators.required]),
       state: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, MyEmailValidator]),
       logoUrl: new FormControl('', [Validators.required]),
       address: new FormControl('', [Validators.required]),
       websiteUrl: new FormControl('', []),

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
+import {CompanyProfileInterface} from "../../../../backend/src/interface/company_profile_interface";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,6 +19,7 @@ const httpOptions = {
 export class CompanyProfileService {
 
   serverAuthenticationApi = '';
+  public selectedCompanyProfile: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   constructor(private httpClient: HttpClient) {
 
@@ -26,6 +28,22 @@ export class CompanyProfileService {
     } else {
       this.serverAuthenticationApi =  environment.serverAuthenticationApi;
     }
+  }
+
+  setCompanyProfile(value: any) {
+    this.selectedCompanyProfile.next(value);
+  }
+
+  getCompanyProfile(): Observable<CompanyProfileInterface> {
+    return this.selectedCompanyProfile.asObservable();
+  }
+
+
+  index(page: number, limit: number): Observable<any> {
+    return this.httpClient.get(`${this.serverAuthenticationApi}/api/v1/protected/company-profile?page=${page}&limit=${limit}`,
+      httpOptions).pipe(map((data: any) => {
+      return data;
+    }));
   }
 
   create(inputObj: any): Observable<any> {

@@ -1,14 +1,17 @@
-import {Component, HostListener, Inject, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, OnDestroy, OnInit} from '@angular/core';
 import {PageSize} from '../../../interfaces/page-size-interface';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyToastService} from '../../../services/toast-service/my-toast.service';
 import {EnumInputType} from '../../../lh-enum/EnumInputType';
-import {FileUploadGalleryComponent} from '../../file-upload/components/file-upload-gallery/file-upload-gallery.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
 import {LogoService} from '../../../services/logo.service';
 import {ResponseModel} from '../../../models/response-model';
+import {CompanyProfileService} from "../../../services/company-profile.service";
+import {CompanyProfileInterface} from "../../../../../../backend/src/interface/company_profile_interface";
+import {DatePipe} from "@angular/common";
+import {Subscription} from "rxjs";
 
 export interface InvoiceCreationInterface {
   thList: ThTypeInterface[];
@@ -20,7 +23,7 @@ export interface InvoiceCreationInterface {
   templateUrl: './invoice-creator.component.html',
   styleUrls: ['./invoice-creator.component.css', './add-column-component.css']
 })
-export class InvoiceCreatorComponent implements OnInit {
+export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
   pageSize: PageSize;
   defaultPageSize: PageSize;
@@ -48,16 +51,28 @@ export class InvoiceCreatorComponent implements OnInit {
     { name: 'Naira', symbol: '&#8358;'}
     ];
   logoUrl: string = "";
+  selectedCompany: CompanyProfileInterface = null;
+  date: string;
+  loginComponentHandlerServiceSubscription: Subscription;
+  myInvoiceCreationForm: FormGroup;
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
               private fb: FormBuilder,
               private route: ActivatedRoute,
-              private loginComponentHandlerService: LoginComponentHandlerService) {
+              private loginComponentHandlerService: LoginComponentHandlerService,
+              private companyProfileService: CompanyProfileService,
+              private router: Router,
+              public datePipe: DatePipe) {
 
     this.invoiceForm = this.fb.group({
       name: '',
-      rows: this.fb.array([])
+      rows: this.fb.array([]),
+    });
+
+
+    this.myInvoiceCreationForm = this.fb.group({
+      selectedCompany: ''
     });
 
     this.route.queryParams.subscribe(params => {
@@ -68,8 +83,49 @@ export class InvoiceCreatorComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.loginComponentHandlerServiceSubscription.unsubscribe();
+  }
+
+
+  checkIfObjIsEmpty() {
+    if(this.selectedCompany === null) {
+      return false;
+    }
+
+    const obj = this.selectedCompany;
+    for(let prop in obj) {
+      if(obj.hasOwnProperty(prop)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  checkIfObjIsNotNull() {
+    const result = this.checkIfObjIsEmpty();
+    console.log("result: ");
+    console.log(result);
+    return result;
+  }
 
   ngOnInit(): void {
+
+    // const date = new Date();
+    // this.date =this.datePipe.transform(date, 'yyyy-MM-dd');
+
+    this.companyProfileService.getCompanyProfile().subscribe((data: any) => {
+      if(data){
+        if(!this.selectedCompany) {
+          this.selectedCompany = data;
+          console.log(this.selectedCompany);
+        }
+      }
+    }, error => {
+
+    });
+
     this.defaultPageSize = this.pageSizes[3];
     this.reCalibrate(this.defaultPageSize.name);
     this.invoiceCreationObj = {
@@ -77,14 +133,13 @@ export class InvoiceCreatorComponent implements OnInit {
       tbList: []
     };
 
-    this.loginComponentHandlerService.loginDialogObservable.subscribe(value => {
+    this.loginComponentHandlerServiceSubscription = this.loginComponentHandlerService.loginDialogObservable.subscribe(value => {
       if (value) {
         this.loginComponentHandlerService.openDialog();
       }
     });
 
   }
-
 
   public get EnumInputType(): any {
     return EnumInputType;
@@ -207,7 +262,10 @@ export class InvoiceCreatorComponent implements OnInit {
     console.log(this.invoiceForm.getRawValue());
   }
 
-
+  gotoUrl(url: string) {
+    this.router.navigateByUrl(url).then((result) => {
+    });
+  }
 }
 
 @Component({

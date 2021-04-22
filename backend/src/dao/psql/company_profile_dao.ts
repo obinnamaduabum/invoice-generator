@@ -1,5 +1,5 @@
 import {MyLogo} from "../../models/my_logo";
-import {Transaction} from "sequelize";
+import {QueryTypes, Transaction} from "sequelize";
 import {PostgresDatabase} from "../../database/postgres_db";
 import {CompanyProfile} from "../../models/company_profile";
 import {CompanyProfileServiceInterface} from "../../interface/company_profile_service_interface";
@@ -28,16 +28,20 @@ export class CompanyProfileDao {
     static async findAllWithPagination(userId: number, offset: number, limit: number) {
 
         try {
-            return await CompanyProfile.findAll({
-                where: {
-                    user_id: userId
+
+            return await new PostgresDatabase().getSequelize.query('SELECT * from company_profile as cp' +
+                ' LEFT JOIN phone_number as p on p.company_profile_id = cp.id ' +
+                ' WHERE cp.user_id = :userId' +
+                ' limit :limit offset :offset', {
+                mapToModel: true,
+                replacements: {
+                    userId: userId,
+                    offset: offset,
+                    limit: limit
                 },
-                offset: offset,
-                limit: limit,
-                order: [
-                    ['date_created', 'DESC'],
-                ],
+                type: QueryTypes.SELECT
             });
+
         } catch (e) {
             console.log(e);
             throw e;
@@ -85,7 +89,6 @@ export class CompanyProfileDao {
                 if(typeof inputObj.phoneNumber === "string") {
                     const phoneNumber: string = inputObj.phoneNumber;
                     const phoneNumberObj = this.getPhoneNumberInsertObj(phoneNumber, companyProfileObj.id);
-
                     const phoneNumberInputObj = await PhoneNumber.create(phoneNumberObj, {transaction: transaction});
                     mainPromises.push(phoneNumberInputObj);
                 } else {

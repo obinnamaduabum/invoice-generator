@@ -1,15 +1,47 @@
-
 <div class="container">
   <button mat-button class="success-btn"
           (click)="addCompanyProfile('/invoice-builder/company/create-profile')">
     Add Company Profile
   </button>
 
+  <div *ngFor="let companyProfile of listOfCompanyProfiles; let i = index">
+    <div style="margin-top: 10px; margin-bottom: 10px">
+      <mat-card>
+        <div [ngClass]="companyProfile.name !== null ? 'hide': 'show'" class="shimmer-animate fake-company-div"></div>
+        <div [ngClass]="companyProfile.name === null ? 'hide': 'show'"
+             class="row cursor-pointer" (click)="selectCompany(companyProfile)">
+          <!-- images -->
+          <div class="col m3 s3 l2">
+            <span [ngClass]="companyProfile.loaded === true ? 'hide': 'show'" class="shimmer-animate circle-div"></span>
+            <img [ngClass]="companyProfile.loaded === false ? 'hide': 'show'"
+                 (load)="loadImage($event, i)"
+                 class="circle-div"
+                 [src]="companyProfile.logoUrl"
+                 alt="logo">
+          </div>
+          <div class="col m7 s7 l5">
+            <span [ngClass]="companyProfile.name === null ? 'show': 'hide'"
+                class="shimmer-animate fake-company-name-div">
+          </span>
+            <span [ngClass]="companyProfile.name !== null ? 'show': 'hide'"
+                  class="company-name">
+            {{companyProfile.name}}
+          </span>
+            <div style="margin-top: 10px">
+              <span [ngClass]="companyProfile.name === null ? 'show': 'hide'"
+                    class="shimmer-animate fake-company-name-div">
+              </span>
 
-  <div style="margin-top: 10px; margin-bottom: 10px">
-    <mat-card>
-      <span class="shimmer-animate circle-div"></span> <span class="shimmer-animate fake-text-title"></span>
-    </mat-card>
+              <span [ngClass]="companyProfile.name !== null ? 'show': 'hide'"
+                    class="company-address">
+                {{companyProfile.address}}
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </mat-card>
+    </div>
   </div>
 
 </div>

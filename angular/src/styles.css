@@ -126,3 +126,34 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .login-page-resize {
   min-height: 80vh;
 }
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+
+
+.phone-number-international {
+  vertical-align: text-bottom;
+  display: table-caption;
+  margin-right: 5px;
+  margin-top: 1px;
+}
+
+.phone-number-international-img {
+  vertical-align: top;
+  width: 20px;
+  height: 10px;
+  padding-top: 4px;
+}
+
+.custom-dropdown-arrow {
+  vertical-align: top;
+  width: 18px;
+  height: 10px;
+  padding-top: 5px;
+}

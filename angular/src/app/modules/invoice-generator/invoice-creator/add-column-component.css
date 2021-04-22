@@ -39,6 +39,13 @@
 }
 
 .invoice-logo {
-  width: 200px;
+  width: 120px;
   height: auto;
+}
+
+
+@media only screen and (max-width: 500px) {
+  .center-on-mobile {
+    text-align: center;
+  }
 }

@@ -37,22 +37,59 @@
   <mat-card>
 
     <form [formGroup]="invoiceForm">
-      <div class="invoice-div">
-        <h1>Invoice</h1>
-      </div>
       <div class="container">
         <div>
-          <header>
-            <address contenteditable>
-              <p>Jonathan Neal</p>
-              <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
-              <p>(800) 555-1234</p>
-            </address>
-            <span>
-              <img alt="" class="invoice-logo" [src]="logoUrl">
 
-            </span>
-          </header>
+          <div class="row">
+            <div class="col m6 s12 l6">
+
+              <div *ngIf="selectedCompany === null">
+                <div style="padding-top: 10px; padding-bottom: 10px;" class="center-on-mobile">
+                  <button mat-button (click)="gotoUrl('/invoice-builder/company')"
+                          class="success-btn">
+                    Select Company Profile
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="selectedCompany !== null">
+                <img alt="logo" class="invoice-logo" [src]="selectedCompany?.logoUrl">
+                <p>{{selectedCompany?.address}}</p>
+                <p>{{selectedCompany?.city}} {{selectedCompany?.state}} {{selectedCompany?.zipCode}} </p>
+                <p>{{selectedCompany?.email}}</p>
+                <p>{{selectedCompany?.websiteUrl}}</p>
+              </div>
+
+            </div>
+            <div class="col m6 s12 l6">
+              <div class="center-on-mobile">
+                <h2>INVOICE</h2>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Invoice Number </mat-label>
+                    <input matInput placeholder="Enter Invoice Number">
+                    <mat-icon matSuffix>mode_edit</mat-icon>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="pickerOne">
+                    <mat-datepicker-toggle matSuffix [for]="pickerOne"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerOne></mat-datepicker>
+                  </mat-form-field>
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div>
             <h1>Recipient</h1>
@@ -60,22 +97,6 @@
               <p>Some Company<br>c/o Some Guy</p>
             </address>
 
-            <div>
-              <table>
-                <tr>
-                  <th><span contenteditable>Invoice #</span></th>
-                  <td><span contenteditable>101138</span></td>
-                </tr>
-                <tr>
-                  <th><span contenteditable>Date</span></th>
-                  <td><span contenteditable>January 1, 2012</span></td>
-                </tr>
-                <tr>
-                  <th><span contenteditable>Amount Due</span></th>
-                  <td><span id="prefix" contenteditable>$</span><span>600.00</span></td>
-                </tr>
-              </table>
-            </div>
 
             <div class="my-custom-table my-table-horizontal-scroll"
                  *ngIf="invoiceCreationObj.thList.length > 0; else other_content">

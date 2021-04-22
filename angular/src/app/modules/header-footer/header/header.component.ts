@@ -49,7 +49,6 @@ export class HeaderComponent implements OnInit {
 
   gotoUrl(url: string) {
     this.router.navigateByUrl(url).then((result) => {
-      console.log(result);
     });
   }
 }

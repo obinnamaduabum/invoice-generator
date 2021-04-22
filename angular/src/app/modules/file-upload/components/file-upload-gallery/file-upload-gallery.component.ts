@@ -49,15 +49,7 @@ export class FileUploadGalleryComponent implements OnInit {
   }
 
   loadImage($event: any, index: number) {
-    //console.log($event);
     this.listOfUploadedLogos[index].loaded = true;
-    const img = new Image();
-    const myThis = this;
-    // img.onload = function () {
-    //   console.log("index: ...." );
-    //   console.log(myThis.listOfUploadedLogos[index]);
-
-    // }
   }
 
   getImageUrlOnSelect(url: string) {

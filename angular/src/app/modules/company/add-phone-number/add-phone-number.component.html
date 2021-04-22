@@ -4,25 +4,53 @@
 
   <form [formGroup]="phoneNumberForm">
 
+      <mat-form-field class="alignment password-input-field-mat-input" appearance="outline">
+                   <span matPrefix class="phone-number-international"
+                         (click)="openPhoneNumberDialog('phoneNumber', 'selectedPhoneNumber')">
+                      <img class="custom-dropdown-arrow"
+                           src="assets/img/svg/drop-down-arrow.svg"
+                           alt="dropdown">
+                      <img class="phone-number-international-img"
+                           [src]="getLocalCountryImageUrl(phoneNumberForm.controls['selectedPhoneNumber'].value?.alpha2)"
+                           alt="country flag">
+                       <span class="phone-number-international-font">
+                         +{{phoneNumberForm.controls['selectedPhoneNumber'].value?.internationalPhoneNumber}}
+                       </span>
+                    </span>
 
-    <mat-form-field class="example-full-width">
-      <mat-label>Phone Number</mat-label>
-      <input matInput placeholder="Enter phone number" formControlName="phoneNumber">
+        <mat-label>Phone Number</mat-label>
+        <input formControlName="phoneNumber"
+               matInput
+               type="tel" [errorStateMatcher]="matcher"
+               placeholder="e.g 08067189966" required>
 
-      <mat-error *ngIf="phoneNumberForm.controls['phoneNumber'].invalid &&
+        <div *ngIf="phoneNumberForm.controls['phoneNumber'].status === 'PENDING'" matSuffix>
+          <mat-spinner [diameter]="25"></mat-spinner>
+        </div>
+
+
+        <mat-error *ngIf="phoneNumberForm.controls['phoneNumber'].invalid &&
             (phoneNumberForm.controls['phoneNumber'].dirty || phoneNumberForm.controls['phoneNumber'].touched)">
+
               <span *ngIf="phoneNumberForm.controls['phoneNumber'].errors.required">
                 Phone number is required
               </span>
-      </mat-error>
 
-    </mat-form-field>
+          <span
+            *ngIf="!phoneNumberForm.controls['phoneNumber'].errors.required && phoneNumberForm.controls['phoneNumber'].errors.phoneNumberInvalid">
+               Phone number is invalid
+            </span>
 
+          <span
+            *ngIf="!phoneNumberForm.controls['phoneNumber'].errors.required && phoneNumberForm.controls['phoneNumber'].errors.phoneNumberAlreadyTaken">
+               Phone number is already taken
+            </span>
+        </mat-error>
+      </mat-form-field>
 
     <div style="margin-top: 20px">
       <button mat-button class="add-column-btn-stretched"
-              (click)="save()">
-        Add
+              (click)="save()">Add
       </button>
     </div>
 

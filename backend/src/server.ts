@@ -14,6 +14,7 @@ import {ProtectedFileUploadRouter} from "./routes/protected/protected_file_uploa
 import ProtectedCompanyProfileRouter from "./routes/protected/protected_company_profile_router";
 import {CompanyProfile} from "./models/company_profile";
 import {PhoneNumber} from "./models/phone_number";
+import {ProtectedClientRouter} from "./routes/protected/protected_client_router";
 
 const mainPath = "/api";
 const v1 = "/v1";
@@ -42,6 +43,11 @@ let CustomRouters: CustomRouterInterface[] = [
     },
     {   url: `${mainPath}${v1}${protectedPath}/company-profile`,
         routerObj: new ProtectedCompanyProfileRouter()
+    },
+    {
+        url: `${mainPath}${v1}${protectedPath}/client`,
+        routerObj: new ProtectedClientRouter()
+
     }
 ];
 

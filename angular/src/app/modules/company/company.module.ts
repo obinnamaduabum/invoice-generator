@@ -11,6 +11,9 @@ import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
 import { CompaniesComponent } from './companies/companies.component';
 import { AddPhoneNumberComponent } from './add-phone-number/add-phone-number.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {SharedModuleModule} from "../shared-module/shared-module.module";
+import {PhoneNumberDialogueModule} from "../edit-phone-number-dialogue/edit-phone-number-dialogue.module";
 
 const routes: Routes = [
   { path: 'create-profile', component: CompanyProfileComponent },
@@ -23,15 +26,17 @@ const routes: Routes = [
     CompaniesComponent,
     AddPhoneNumberComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatCardModule,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        PhoneNumberDialogueModule
+    ]
 })
 export class CompanyModule { }

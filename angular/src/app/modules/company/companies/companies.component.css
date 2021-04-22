@@ -4,3 +4,31 @@
   border-radius: 50%;
   display: inline-block;
 }
+
+
+.fake-company-name-div {
+  height: 20px;
+  width: 120px;
+  display: inline-block;
+}
+
+.fake-company-div {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  display: inline-block;
+}
+
+.company-name {
+  font-size: 20px;
+}
+
+.company-address {
+  font-size: 12px;
+  font-style: italic;
+}
+
+
+.cursor-pointer {
+  cursor: pointer;
+}

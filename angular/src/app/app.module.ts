@@ -16,6 +16,7 @@ import {AlreadyLoggedInGuard} from './guard/already-logged-in/already-logged-in.
 import {UserLoggedInGuard} from './guard/user/user-logged-in.guard';
 import {LogoService} from './services/logo.service';
 import {CompanyProfileService} from "./services/company-profile.service";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import {CompanyProfileService} from "./services/company-profile.service";
       HttpClientModule
     ],
   providers: [
+    DatePipe,
     SidebarService,
     MyToastService,
     ToastrService,
