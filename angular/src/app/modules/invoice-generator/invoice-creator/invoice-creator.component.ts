@@ -6,24 +6,36 @@ import {MyToastService} from '../../../services/toast-service/my-toast.service';
 import {EnumInputType} from '../../../lh-enum/EnumInputType';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
-import {LogoService} from '../../../services/logo.service';
-import {ResponseModel} from '../../../models/response-model';
 import {CompanyProfileService} from "../../../services/company-profile.service";
 import {CompanyProfileInterface} from "../../../../../../backend/src/interface/company_profile_interface";
 import {DatePipe} from "@angular/common";
 import {Subscription} from "rxjs";
 import { Output, EventEmitter } from '@angular/core';
 import {ClientService} from "../../../services/client.service";
+import {MyUtils} from "../../../utils/my_utils";
+import {InvoiceCreatorDialogComponent} from "./add-column/add-column-component";
 
 export interface InvoiceCreationInterface {
   thList: ThTypeInterface[];
   tbList: ThTypeInterface[];
 }
 
+export interface ThTypeInterface {
+  value: string;
+  type: string;
+}
+
+export interface ResponseDialog {
+  result: any;
+  success: boolean;
+  message: string;
+}
+
+
 @Component({
   selector: 'app-invoice-creator',
   templateUrl: './invoice-creator.component.html',
-  styleUrls: ['./invoice-creator.component.css', './add-column-component.css']
+  styleUrls: ['./invoice-creator.component.css', './add-column/add-column-component.css']
 })
 export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
@@ -57,10 +69,11 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   selectedClient: any = null;
   date: string;
   loginComponentHandlerServiceSubscription: Subscription;
-  myInvoiceCreationForm: FormGroup;
   @Output() gotoEvent = new EventEmitter<number>();
   //create
   invoiceInfoForm: FormGroup;
+  clientAndCompanyForm: FormGroup;
+  dateNow: Date = new Date();
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -72,20 +85,25 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
               public datePipe: DatePipe,
               private clientService: ClientService) {
 
-    this.invoiceForm = this.fb.group({
-      name: '',
-      rows: this.fb.array([]),
-    });
 
+
+    //Form 1
     this.invoiceInfoForm = this.fb.group({
-      date: new FormControl('', [Validators.required]),
-      dueDate: new FormControl('', [Validators.required]),
+      date: new FormControl(this.dateNow, [Validators.required]),
+      dueDate: new FormControl(this.dateNow, [Validators.required]),
       invoiceNumber: new FormControl('', [Validators.required])
     });
 
+    //Form 2
+    this.clientAndCompanyForm = this.fb.group({
+      company: new FormControl('', [Validators.required]),
+      client: new FormControl('', [Validators.required]),
+    });
 
-    this.myInvoiceCreationForm = this.fb.group({
-      selectedCompany: ''
+    //Form 3
+    this.invoiceForm = this.fb.group({
+      name: '',
+      rows: this.fb.array([]),
     });
 
     this.route.queryParams.subscribe(params => {
@@ -100,7 +118,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
     this.clientService.getSelectedClient().subscribe((data: any) => {
       if(data){
-          this.selectedClient = data;
+        this.clientAndCompanyForm.get('client').setValue(data);
+        this.selectedClient = data;
       }
     }, error => {
 
@@ -108,7 +127,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
     this.companyProfileService.getCompanyProfile().subscribe((data: any) => {
       if(data){
-          this.selectedCompany = data;
+        this.clientAndCompanyForm.get('company').setValue(data);
+        this.selectedCompany = data;
       }
     }, error => {
 
@@ -132,31 +152,6 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.loginComponentHandlerServiceSubscription.unsubscribe();
   }
-
-
-  checkIfObjIsEmpty() {
-    if(this.selectedCompany === null) {
-      return false;
-    }
-
-    const obj = this.selectedCompany;
-    for(let prop in obj) {
-      if(obj.hasOwnProperty(prop)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  checkIfObjIsNotNull() {
-    const result = this.checkIfObjIsEmpty();
-    console.log("result: ");
-    console.log(result);
-    return result;
-  }
-
-
 
   public get EnumInputType(): any {
     return EnumInputType;
@@ -267,17 +262,13 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     this.reCalibrate(this.pageSize.name);
   }
 
-  percentageChange(x: number, originalAmount: number): number {
-    const divisionResult = x / originalAmount;
-    console.log('divisionResult: ' + divisionResult);
-
-    // 'transform': 'translate(-50%, -50%)' + 'scale('+scale+')'
-    return  divisionResult * 100;
-  }
-
-  save(): void {
-    console.log(this.invoiceForm.getRawValue());
-  }
+  // percentageChange(x: number, originalAmount: number): number {
+  //   const divisionResult = x / originalAmount;
+  //   console.log('divisionResult: ' + divisionResult);
+  //
+  //   // 'transform': 'translate(-50%, -50%)' + 'scale('+scale+')'
+  //   return  divisionResult * 100;
+  // }
 
   gotoUrl(url: string) {
     this.router.navigateByUrl(url);
@@ -286,92 +277,40 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   myGotoEvent(value: number) {
     this.gotoEvent.emit(value);
   }
-}
 
-@Component({
-  selector: 'app-add-column-component',
-  templateUrl: 'add-column-component.html',
-  styleUrls: ['./add-column-component.css']
-})
-export class InvoiceCreatorDialogComponent implements OnInit {
-
-  thList: any[] = [];
-  addColumnForm: FormGroup;
-  inputTypeList: string[] = [EnumInputType.AMOUNT, EnumInputType.STRING, EnumInputType.DISCOUNT];
-
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<InvoiceCreatorDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private myToastService: MyToastService,
-              private logoService: LogoService) {}
-
-  ngOnInit(): void {
-    this.addColumnForm = this.fb.group({
-      name: new FormControl('', [Validators.required]),
-      typeOfColumn: new FormControl('', [Validators.required]),
-    });
-
-    this.logoService.index().subscribe((data: ResponseModel) => {
-        console.log(data);
-      }, error => {
-    });
+  addClient(s: string) {
+    this.clientAndCompanyForm.get('client').markAsTouched();
+    this.gotoUrl(s);
   }
 
-  checkIfExist(name: string): boolean {
-    const foundIndex = this.thList.findIndex(data => data.value.toLowerCase() === name.toLowerCase());
-    console.log(foundIndex);
-    return foundIndex <= -1;
-  }
-
-  addColumn(): void {
-    if (this.addColumnForm.valid) {
-      const value = this.addColumnForm.get('name').value;
-      if (this.checkIfExist(value)) {
-        const type = this.addColumnForm.get('typeOfColumn').value;
-        const obj: ThTypeInterface = {value, type};
-        this.thList.push(obj);
-      } else {
-        this.myToastService.showFailed('Column Name already exists');
-      }
-    } else {
-      this.myToastService.showFailed('Form invalid');
-    }
-
-  }
-
-  removeFromColumn(index: number): void {
-    console.log(index);
-    if (index > -1) {
-      this.thList.splice(index, 1);
-    }
+  addCompany(s: string) {
+    this.clientAndCompanyForm.get('company').markAsTouched();
+    this.gotoUrl(s);
   }
 
   save(): void {
-    if (this.thList.length > 0) {
+    console.log(this.invoiceForm.getRawValue());
 
-      const obj: ResponseDialog = {
-        result: this.thList,
-        success: true,
-        message: 'Column name added'
-      };
-
-      this.dialogRef.close(obj);
+    if(this.invoiceInfoForm.valid) {
+      console.log(this.invoiceInfoForm.getRawValue());
     } else {
-      this.myToastService.showFailed('Column name required');
+      MyUtils.validateAllFormFields(this.invoiceInfoForm);
+      this.myToastService.showFailed("Kindly fill invoice form properly");
     }
+
+    if(this.clientAndCompanyForm.valid) {
+      console.log(this.clientAndCompanyForm.getRawValue());
+    } else {
+      MyUtils.validateAllFormFields(this.clientAndCompanyForm);
+    }
+
+    if(!this.selectedClient && !this.selectedCompany) {
+      this.myToastService.showFailed("Kindly add client and company");
+    } else if(!this.selectedClient) {
+      this.myToastService.showFailed("Kindly add client");
+    } else if(!this.selectedCompany) {
+      this.myToastService.showFailed("Kindly add company");
+    }
+
   }
-}
-
-export interface DialogData {
-  name: string;
-}
-
-export interface ThTypeInterface {
-  value: string;
-  type: string;
-}
-
-export interface ResponseDialog {
-  result: any;
-  success: boolean;
-  message: string;
 }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   InvoiceCreatorComponent,
-  InvoiceCreatorDialogComponent
 } from './invoice-creator/invoice-creator.component';
 import {RouterModule, Routes} from '@angular/router';
 import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
@@ -22,6 +21,9 @@ import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protec
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTabNav, MatTabsModule} from "@angular/material/tabs";
 import { InvoiceNavigationBodyComponent } from './invoice-navigation-body/invoice-navigation-body.component';
+import {InvoiceCreatorDialogComponent} from "./invoice-creator/add-column/add-column-component";
+import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.component';
+import { PreviewInvoiceContainerComponent } from './preview-invoice-container/preview-invoice-container.component';
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -38,7 +40,9 @@ const routes: Routes = [
     InvoiceCreatorComponent,
     InvoiceCreatorDialogComponent,
     ProtectInvoiceBuilderComponent,
-    InvoiceNavigationBodyComponent
+    InvoiceNavigationBodyComponent,
+    PreviewInvoiceComponent,
+    PreviewInvoiceContainerComponent
   ],
   imports: [
     CommonModule,
