@@ -13,6 +13,7 @@ import {CompanyProfileInterface} from "../../../../../../backend/src/interface/c
 import {DatePipe} from "@angular/common";
 import {Subscription} from "rxjs";
 import { Output, EventEmitter } from '@angular/core';
+import {ClientService} from "../../../services/client.service";
 
 export interface InvoiceCreationInterface {
   thList: ThTypeInterface[];
@@ -53,10 +54,13 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     ];
   logoUrl: string = "";
   selectedCompany: CompanyProfileInterface = null;
+  selectedClient: any = null;
   date: string;
   loginComponentHandlerServiceSubscription: Subscription;
   myInvoiceCreationForm: FormGroup;
   @Output() gotoEvent = new EventEmitter<number>();
+  //create
+  invoiceInfoForm: FormGroup;
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -65,11 +69,18 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
               private loginComponentHandlerService: LoginComponentHandlerService,
               private companyProfileService: CompanyProfileService,
               private router: Router,
-              public datePipe: DatePipe) {
+              public datePipe: DatePipe,
+              private clientService: ClientService) {
 
     this.invoiceForm = this.fb.group({
       name: '',
       rows: this.fb.array([]),
+    });
+
+    this.invoiceInfoForm = this.fb.group({
+      date: new FormControl('', [Validators.required]),
+      dueDate: new FormControl('', [Validators.required]),
+      invoiceNumber: new FormControl('', [Validators.required])
     });
 
 
@@ -83,6 +94,39 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
         this.loginComponentHandlerService.openDialog();
       }
     });
+  }
+
+  ngOnInit(): void {
+
+    this.clientService.getSelectedClient().subscribe((data: any) => {
+      if(data){
+          this.selectedClient = data;
+      }
+    }, error => {
+
+    });
+
+    this.companyProfileService.getCompanyProfile().subscribe((data: any) => {
+      if(data){
+          this.selectedCompany = data;
+      }
+    }, error => {
+
+    });
+
+    this.defaultPageSize = this.pageSizes[3];
+    this.reCalibrate(this.defaultPageSize.name);
+    this.invoiceCreationObj = {
+      thList: [],
+      tbList: []
+    };
+
+    this.loginComponentHandlerServiceSubscription = this.loginComponentHandlerService.loginDialogObservable.subscribe(value => {
+      if (value) {
+        this.loginComponentHandlerService.openDialog();
+      }
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -112,36 +156,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  ngOnInit(): void {
 
-    // const date = new Date();
-    // this.date =this.datePipe.transform(date, 'yyyy-MM-dd');
-
-    this.companyProfileService.getCompanyProfile().subscribe((data: any) => {
-      if(data){
-        if(!this.selectedCompany) {
-          this.selectedCompany = data;
-          console.log(this.selectedCompany);
-        }
-      }
-    }, error => {
-
-    });
-
-    this.defaultPageSize = this.pageSizes[3];
-    this.reCalibrate(this.defaultPageSize.name);
-    this.invoiceCreationObj = {
-      thList: [],
-      tbList: []
-    };
-
-    this.loginComponentHandlerServiceSubscription = this.loginComponentHandlerService.loginDialogObservable.subscribe(value => {
-      if (value) {
-        this.loginComponentHandlerService.openDialog();
-      }
-    });
-
-  }
 
   public get EnumInputType(): any {
     return EnumInputType;
@@ -265,8 +280,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   }
 
   gotoUrl(url: string) {
-    this.router.navigateByUrl(url).then((result) => {
-    });
+    this.router.navigateByUrl(url);
   }
 
   myGotoEvent(value: number) {

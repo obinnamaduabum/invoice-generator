@@ -13,9 +13,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-<!--        <div class="col m6 s12 l6">-->
-<!--          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>-->
-<!--        </div>-->
+        <!--        <div class="col m6 s12 l6">-->
+        <!--          <button mat-button class="success-btn" (click)="openAddLogoDialog()">Add Logo</button>-->
+        <!--        </div>-->
 
         <div class="col m6 s12 l6">
           <mat-form-field appearance="fill">
@@ -34,7 +34,7 @@
 
   <mat-card>
 
-    <form [formGroup]="invoiceForm">
+    <form>
       <div class="container">
         <div>
 
@@ -43,7 +43,7 @@
 
               <div *ngIf="selectedCompany === null">
                 <div style="padding-top: 10px; padding-bottom: 10px;" class="center-on-mobile">
-                  <button mat-button (click)="myGotoEvent(1)"
+                  <button mat-button (click)="gotoUrl('/invoice-builder/main/company')"
                           class="success-btn">
                     Select Company Profile
                   </button>
@@ -61,99 +61,114 @@
             </div>
             <div class="col m6 s12 l6">
               <div class="center-on-mobile">
-                <h2>INVOICE</h2>
-                <p>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Date</mat-label>
-                    <input matInput [matDatepicker]="picker">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                  </mat-form-field>
-                </p>
-                <p>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Invoice Number </mat-label>
-                    <input matInput placeholder="Enter Invoice Number">
-                    <mat-icon matSuffix>mode_edit</mat-icon>
-                  </mat-form-field>
-                </p>
-                <p>
-                  <mat-form-field appearance="fill">
-                    <mat-label>Due Date</mat-label>
-                    <input matInput [matDatepicker]="pickerOne">
-                    <mat-datepicker-toggle matSuffix [for]="pickerOne"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerOne></mat-datepicker>
-                  </mat-form-field>
-                </p>
+                <form [formGroup]="invoiceInfoForm">
+                  <h2>INVOICE</h2>
+                  <p>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Date</mat-label>
+                      <input matInput [matDatepicker]="picker" formControlName="date">
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </p>
+                  <p>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Invoice Number</mat-label>
+                      <input matInput placeholder="Enter Invoice Number" formControlName="invoiceNumber">
+                      <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-form-field>
+                  </p>
+                  <p>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Due Date</mat-label>
+                      <input matInput [matDatepicker]="pickerOne" formControlName="dueDate">
+                      <mat-datepicker-toggle matSuffix [for]="pickerOne">
+                      </mat-datepicker-toggle>
+                      <mat-datepicker #pickerOne></mat-datepicker>
+                    </mat-form-field>
+                  </p>
+                </form>
               </div>
             </div>
           </div>
 
           <div>
 
-
-            <div>
-              <button mat-button class="add-column-btn-stretched" (click)="myGotoEvent(2)">Add Client</button>
-            </div>
-
-            <div class="my-custom-table my-table-horizontal-scroll"
-                 *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
-              <table class="responsive-table">
-                <thead>
-                <tr>
-                  <th *ngFor="let th of invoiceCreationObj.thList">
-                    <span>{{th.value}}</span>
-                  </th>
-                </tr>
-                </thead>
-                <tbody *ngIf="invoiceCreationObj.thList.length > 0" formArrayName="rows">
-                  <tr *ngFor="let col of rows.controls; let i = index" [formGroupName]="i">
-                      <td *ngFor="let th of invoiceCreationObj.thList">
-
-                        <mat-form-field *ngIf="th.type === EnumInputType.STRING" class="example-full-width">
-                          <input matInput formControlName="{{th['value']}}">
-                        </mat-form-field>
-
-                        <mat-form-field *ngIf="th.type === EnumInputType.AMOUNT" class="example-full-width">
-                          <input type="number" matInput formControlName="{{th['value']}}">
-                        </mat-form-field>
-
-                      </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="invoiceCreationObj.thList.length > 0 && invoiceForm.get('rows').value.length <= 0">
-              <div class="please-add-column">
-                <div class="please-add-column-dot-dash">
-                  <div class="center">
-                    <h4>Add row</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="m20-v" *ngIf="invoiceCreationObj.thList.length > 0;">
-              <button mat-button class="success-btn" (click)="addRow()">
-                Add Row
+            <div *ngIf="this.selectedClient === null">
+              <button mat-button class="add-column-btn"
+                      (click)="gotoUrl('/invoice-builder/main/client')">
+                Add Client
               </button>
             </div>
 
-            <ng-template #other_content>
-              <div class="please-add-column">
-                <div class="please-add-column-dot-dash">
-                  <div class="center">
-                    <h4>Add Invoice Table</h4>
-                    <div class="p20">
-                      <button mat-button class="add-column-btn" (click)="openAddColumnDialog()">
-                        Add Column
-                      </button>
+            <div *ngIf="this.selectedClient !== null">
+              <h2>Client</h2>
+              <p>{{this.selectedClient?.name}}</p>
+              <p>{{this.selectedClient?.email}}</p>
+              <p>{{this.selectedClient?.phoneNumber}}</p>
+            </div>
+
+            <form [formGroup]="invoiceForm">
+              <div class="my-custom-table my-table-horizontal-scroll"
+                   *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
+                <table class="responsive-table">
+                  <thead>
+                  <tr>
+                    <th *ngFor="let th of invoiceCreationObj.thList">
+                      <span>{{th.value}}</span>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody *ngIf="invoiceCreationObj.thList.length > 0" formArrayName="rows">
+                  <tr *ngFor="let col of rows.controls; let i = index" [formGroupName]="i">
+                    <td *ngFor="let th of invoiceCreationObj.thList">
+
+                      <mat-form-field *ngIf="th.type === EnumInputType.STRING" class="example-full-width">
+                        <input matInput formControlName="{{th['value']}}">
+                      </mat-form-field>
+
+                      <mat-form-field *ngIf="th.type === EnumInputType.AMOUNT" class="example-full-width">
+                        <input type="number" matInput formControlName="{{th['value']}}">
+                      </mat-form-field>
+
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="invoiceCreationObj.thList.length > 0 && invoiceForm.get('rows').value.length <= 0">
+                <div class="please-add-column">
+                  <div class="please-add-column-dot-dash">
+                    <div class="center">
+                      <h4>Add row</h4>
                     </div>
                   </div>
                 </div>
               </div>
-            </ng-template>
+
+              <div class="m20-v" *ngIf="invoiceCreationObj.thList.length > 0;">
+                <button mat-button class="success-btn" (click)="addRow()">
+                  Add Row
+                </button>
+              </div>
+
+              <ng-template #other_content>
+                <div class="please-add-column">
+                  <div class="please-add-column-dot-dash">
+                    <div class="center">
+                      <h4>Add Invoice Table</h4>
+                      <div class="p20">
+                        <button mat-button class="add-column-btn" (click)="openAddColumnDialog()">
+                          Add Column
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+            </form>
 
             <div class="balance my-custom-table">
 
@@ -183,13 +198,13 @@
 
 
           <div class="additional-info">
-              <mat-form-field appearance="outline">
-                <mat-label>Additional Notes</mat-label>
-                <textarea matInput
-                          [rows]="5"
-                          [cols]="4">
+            <mat-form-field appearance="outline">
+              <mat-label>Additional Notes</mat-label>
+              <textarea matInput
+                        [rows]="7"
+                        [cols]="4">
                 </textarea>
-              </mat-form-field>
+            </mat-form-field>
           </div>
 
         </div>

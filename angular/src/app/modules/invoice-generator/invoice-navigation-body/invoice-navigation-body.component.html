@@ -1,0 +1,44 @@
+<!--<ng-container *ngIf="(asyncTabs | async) === null">-->
+
+<!--</ng-container>-->
+
+<!--<mat-tab-group mat-align-tabs="center"-->
+<!--               (selectedIndexChange)="onNavigationChange($event)"-->
+<!--               [selectedIndex]="selectedPage">-->
+<!--<mat-tab *ngFor="let tab of navLinks" [label]="tab.label" [routerLink]="tab.link">-->
+<!--  <router-outlet></router-outlet>-->
+<!--</mat-tab>-->
+<!--</mat-tab-group>-->
+
+<nav mat-tab-nav-bar mat-align-tabs="left">
+  <a mat-tab-link
+     *ngFor="let l of navLinks"
+     [routerLink]="rootUrl + l.link"
+     [active]="this.router.url === rootUrl + l.link">
+    <span>{{ l.label | uppercase }}</span>
+  </a>
+</nav>
+
+<div style="margin-top: 20px"></div>
+
+<router-outlet></router-outlet>
+
+<!--<mat-tab-group mat-align-tabs="center"-->
+<!--               (selectedIndexChange)="onNavigationChange($event)"-->
+<!--               [selectedIndex]="selectedPage">-->
+<!--  <mat-tab label="Invoice Creator">-->
+<!--    <app-invoice-creator (gotoEvent)="gotoPage($event)"></app-invoice-creator>-->
+<!--  </mat-tab>-->
+<!--  <mat-tab label="Company">-->
+<!--    <ng-template matTabContent>-->
+<!--      <div style="margin-top: 30px"></div>-->
+<!--      <app-companies (gotoEvent)="gotoPage($event)"></app-companies>-->
+<!--    </ng-template>-->
+<!--  </mat-tab>-->
+<!--  <mat-tab label="Clients">-->
+<!--    <ng-template matTabContent>-->
+<!--      <div style="margin-top: 30px"></div>-->
+<!--      <app-view-all-clients (gotoEventTwo)="gotoPage($event)" ></app-view-all-clients>-->
+<!--    </ng-template>-->
+<!--  </mat-tab>-->
+<!--</mat-tab-group>-->

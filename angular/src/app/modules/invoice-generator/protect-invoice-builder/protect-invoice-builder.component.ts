@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable, Observer} from "rxjs";
-
-export interface ExampleTab {
-  label: string;
-  content: string;
-}
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-protect-invoice-builder',
@@ -13,28 +9,19 @@ export interface ExampleTab {
 })
 export class ProtectInvoiceBuilderComponent implements OnInit {
 
-  asyncTabs: Observable<ExampleTab[]>;
-  selectedPage = 0;
-  constructor() {
-    this.asyncTabs = new Observable((observer: Observer<ExampleTab[]>) => {
-      setTimeout(() => {
-        observer.next([
-          {label: 'Invoice Creator', content: 'Content 1'},
-          {label: 'Company', content: 'Content 2'},
-          {label: 'Clients', content: 'Content 3'},
-        ]);
-      }, 1000);
-    });
+
+  constructor(public router: Router) {
+    // this.asyncTabs = new Observable((observer: Observer<ExampleTab[]>) => {
+    //   setTimeout(() => {
+    //     observer.next([
+    //       {label: 'Invoice Creator', link: '/invoice-builder/company'},
+    //       {label: 'Company', link: '/invoice-builder/company'},
+    //       {label: 'Clients', link: '/invoice-builder/client'},
+    //     ]);
+    //   }, 1000);
+    // });
   }
 
   ngOnInit(): void {}
 
-  onNavigationChange($event: number) {
-    this.selectedPage = $event;
-  }
-
-  gotoPage($event: number): void {
-    // console.log($event);
-    this.selectedPage = $event;
-  }
 }
