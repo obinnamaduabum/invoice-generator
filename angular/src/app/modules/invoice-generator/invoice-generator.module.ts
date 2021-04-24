@@ -15,15 +15,17 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {FileUploadModule} from '../file-upload/file-upload.module';
-import { UserLoggedInGuard } from 'src/app/guard/user/user-logged-in.guard';
-import { AlreadyLoggedInGuard } from 'src/app/guard/already-logged-in/already-logged-in.guard';
+import { UserLoggedInGuard } from 'src/app/guards/user/user-logged-in.guard';
+import { AlreadyLoggedInGuard } from 'src/app/guards/already-logged-in/already-logged-in.guard';
 import { ProtectInvoiceBuilderComponent } from './protect-invoice-builder/protect-invoice-builder.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatTabNav, MatTabsModule} from "@angular/material/tabs";
+import { MatTabsModule} from "@angular/material/tabs";
 import { InvoiceNavigationBodyComponent } from './invoice-navigation-body/invoice-navigation-body.component';
-import {InvoiceCreatorDialogComponent} from "./invoice-creator/add-column/add-column-component";
+import {InvoiceCreatorDialogComponent} from "./add-column/add-column-component";
 import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.component';
-import { PreviewInvoiceContainerComponent } from './preview-invoice-container/preview-invoice-container.component';
+import { InvoicePreviewDialogComponent } from './invoice-preview-dialog/invoice-preview-dialog.component';
+import {SharedModuleModule} from "../shared-module/shared-module.module";
+import { SaveTemplateDialogComponent } from './save-template-dialog/save-template-dialog.component';
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -42,7 +44,8 @@ const routes: Routes = [
     ProtectInvoiceBuilderComponent,
     InvoiceNavigationBodyComponent,
     PreviewInvoiceComponent,
-    PreviewInvoiceContainerComponent
+    InvoicePreviewDialogComponent,
+    SaveTemplateDialogComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +63,8 @@ const routes: Routes = [
     FileUploadModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTabsModule
+    MatTabsModule,
+    SharedModuleModule
   ]
 })
 export class InvoiceGeneratorModule { }

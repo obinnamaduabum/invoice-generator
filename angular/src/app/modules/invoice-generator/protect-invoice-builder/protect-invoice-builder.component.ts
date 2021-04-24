@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable, Observer} from "rxjs";
 import {Router} from "@angular/router";
+import {InvoiceTemplateService} from "../../../services/invoice-template-service/invoice-template.service";
+import {ResponseInvoiceTemplateInterface} from "../../../interfaces/invoice-template-interface";
 
 @Component({
   selector: 'app-protect-invoice-builder',
@@ -10,16 +12,10 @@ import {Router} from "@angular/router";
 export class ProtectInvoiceBuilderComponent implements OnInit {
 
 
+  responseInvoiceTemplate: ResponseInvoiceTemplateInterface;
   constructor(public router: Router) {
-    // this.asyncTabs = new Observable((observer: Observer<ExampleTab[]>) => {
-    //   setTimeout(() => {
-    //     observer.next([
-    //       {label: 'Invoice Creator', link: '/invoice-builder/company'},
-    //       {label: 'Company', link: '/invoice-builder/company'},
-    //       {label: 'Clients', link: '/invoice-builder/client'},
-    //     ]);
-    //   }, 1000);
-    // });
+
+
   }
 
   ngOnInit(): void {}

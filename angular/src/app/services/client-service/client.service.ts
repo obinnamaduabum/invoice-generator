@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
 const httpOptions = {
@@ -19,6 +19,7 @@ const httpOptions = {
 export class ClientService {
 
   serverAuthenticationApi = '';
+  public selectedClient: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   constructor(private httpClient: HttpClient) {
 
@@ -29,9 +30,16 @@ export class ClientService {
     }
   }
 
+  setSelectedClient(input: any) {
+    this.selectedClient.next(input);
+  }
+
+  getSelectedClient(): Observable<any> {
+    return this.selectedClient.asObservable();
+  }
 
   index(): Observable<any> {
-    return this.httpClient.get(this.serverAuthenticationApi + `/api/v1/protected/logos`, httpOptions).pipe(map((data: any) => {
+    return this.httpClient.get(this.serverAuthenticationApi + `/api/v1/protected/client`, httpOptions).pipe(map((data: any) => {
       return data;
     }));
   }

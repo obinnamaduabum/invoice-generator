@@ -1,11 +1,11 @@
 import {Component, Inject, OnInit} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {EnumInputType} from "../../../../lh-enum/EnumInputType";
+import {EnumInputType} from "../../../lh-enum/EnumInputType";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {MyToastService} from "../../../../services/toast-service/my-toast.service";
-import {LogoService} from "../../../../services/logo.service";
-import {ResponseModel} from "../../../../models/response-model";
-import {ResponseDialog, ThTypeInterface} from "../invoice-creator.component";
+import {MyToastService} from "../../../services/toast-service/my-toast.service";
+import {LogoService} from "../../../services/logo-service/logo.service";
+import {ResponseDialog} from "../../../interfaces/response_dialog";
+import {ThTypeInterface} from "../../../interfaces/thtype-interface";
 
 @Component({
   selector: 'app-add-column-component',
@@ -19,7 +19,7 @@ export class InvoiceCreatorDialogComponent implements OnInit {
   inputTypeList: string[] = [EnumInputType.AMOUNT, EnumInputType.STRING, EnumInputType.DISCOUNT];
 
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<InvoiceCreatorDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              @Inject(MAT_DIALOG_DATA) public data: any,
               private myToastService: MyToastService,
               private logoService: LogoService) {}
 
@@ -29,10 +29,6 @@ export class InvoiceCreatorDialogComponent implements OnInit {
       typeOfColumn: new FormControl('', [Validators.required]),
     });
 
-    this.logoService.index().subscribe((data: ResponseModel) => {
-      console.log(data);
-    }, error => {
-    });
   }
 
   checkIfExist(name: string): boolean {
@@ -57,7 +53,6 @@ export class InvoiceCreatorDialogComponent implements OnInit {
   }
 
   removeFromColumn(index: number): void {
-    console.log(index);
     if (index > -1) {
       this.thList.splice(index, 1);
     }
@@ -79,6 +74,4 @@ export class InvoiceCreatorDialogComponent implements OnInit {
   }
 }
 
-export interface DialogData {
-  name: string;
-}
+

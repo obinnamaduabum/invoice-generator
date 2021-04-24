@@ -1,41 +1,32 @@
-import {Component, HostListener, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {PageSize} from '../../../interfaces/page-size-interface';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MyToastService} from '../../../services/toast-service/my-toast.service';
 import {EnumInputType} from '../../../lh-enum/EnumInputType';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LoginComponentHandlerService} from '../../../services/login-component-handler.service';
-import {CompanyProfileService} from "../../../services/company-profile.service";
+import {LoginComponentHandlerService} from '../../../services/login-component-service/login-component-handler.service';
+import {CompanyProfileService} from "../../../services/company-profile-service/company-profile.service";
 import {CompanyProfileInterface} from "../../../../../../backend/src/interface/company_profile_interface";
 import {DatePipe} from "@angular/common";
 import {Subscription} from "rxjs";
 import { Output, EventEmitter } from '@angular/core';
-import {ClientService} from "../../../services/client.service";
-import {MyUtils} from "../../../utils/my_utils";
-import {InvoiceCreatorDialogComponent} from "./add-column/add-column-component";
-
-export interface InvoiceCreationInterface {
-  thList: ThTypeInterface[];
-  tbList: ThTypeInterface[];
-}
-
-export interface ThTypeInterface {
-  value: string;
-  type: string;
-}
-
-export interface ResponseDialog {
-  result: any;
-  success: boolean;
-  message: string;
-}
+import {ClientService} from "../../../services/client-service/client.service";
+import {listOfCurrencies, MyUtils, pageSizes} from "../../../utils/my_utils";
+import {InvoiceCreatorDialogComponent} from "../add-column/add-column-component";
+import {InvoicePreviewDialogComponent} from "../invoice-preview-dialog/invoice-preview-dialog.component";
+import {InvoiceInfoFormInterface} from "../../../interfaces/invoice-info-form-interface";
+import {InvoiceCreationInterface} from "../../../interfaces/invoice_creation_interface";
+import {ResponseDialog} from "../../../interfaces/response_dialog";
+import {SaveTemplateDialogComponent} from "../save-template-dialog/save-template-dialog.component";
+import {ResponseInvoiceTemplateInterface} from "../../../interfaces/invoice-template-interface";
+import {InvoiceTemplateService} from "../../../services/invoice-template-service/invoice-template.service";
 
 
 @Component({
   selector: 'app-invoice-creator',
   templateUrl: './invoice-creator.component.html',
-  styleUrls: ['./invoice-creator.component.css', './add-column/add-column-component.css']
+  styleUrls: ['./invoice-creator.component.css', '../add-column/add-column-component.css']
 })
 export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
@@ -48,22 +39,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   invoiceForm: FormGroup;
   totalAmount = 0;
   openLoginDialog = false;
-  pageSizes: PageSize[] = [
-    { height: 3508, width: 2480, name: 'A4'},
-    { height: 4961, width: 3508, name: 'A3'},
-    { height: 7016, width: 4961, name: 'A2'},
-    { height: 9933, width: 7016, name: 'A1'},
-    { height: 14043, width: 9933, name: 'A0'},
-  ];
-  listOfCurrencies: any[] = [
-    { name: 'Dollar', symbol: '&#36;'},
-    { name: 'Pound Sterling',
-      symbol: '&#163;' },
-    { name: 'Yen', symbol: '&#165;'},
-    { name: 'Euro', symbol: '&#128;'},
-    { name: 'Rupee', symbol: '&#x20B9;'},
-    { name: 'Naira', symbol: '&#8358;'}
-    ];
+  pageSizes: PageSize[] = pageSizes;
+  listOfCurrencies: any[] = listOfCurrencies;
   logoUrl: string = "";
   selectedCompany: CompanyProfileInterface = null;
   selectedClient: any = null;
@@ -74,6 +51,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   invoiceInfoForm: FormGroup;
   clientAndCompanyForm: FormGroup;
   dateNow: Date = new Date();
+  @Input() inputInvoiceTemplate: ResponseInvoiceTemplateInterface;
+  responseInvoiceTemplate: ResponseInvoiceTemplateInterface;
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -83,9 +62,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
               private companyProfileService: CompanyProfileService,
               private router: Router,
               public datePipe: DatePipe,
-              private clientService: ClientService) {
-
-
+              private clientService: ClientService,
+              private invoiceTemplateService: InvoiceTemplateService) {
 
     //Form 1
     this.invoiceInfoForm = this.fb.group({
@@ -115,6 +93,35 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+
+    this.invoiceTemplateService.get().subscribe((data: any) => {
+
+      if(data) {
+
+        this.responseInvoiceTemplate = data;
+
+        this.invoiceForm.patchValue({
+          rows: this.responseInvoiceTemplate.rows
+        });
+
+        this.invoiceCreationObj = {
+          thList: this.responseInvoiceTemplate.rows,
+          tbList: []
+        }
+
+        this.clientAndCompanyForm.patchValue({
+          company: this.responseInvoiceTemplate.companyProfile,
+          client: this.responseInvoiceTemplate.client
+        });
+
+        this.selectedCompany = this.responseInvoiceTemplate.companyProfile;
+        this.selectedClient = this.responseInvoiceTemplate.client;
+      }
+
+    }, error => {
+
+    });
 
     this.clientService.getSelectedClient().subscribe((data: any) => {
       if(data){
@@ -163,9 +170,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
   calculateTotal(): void {
     const listOfRows = this.rows.value;
-   // console.log(listOfRows);
     for (const amount of listOfRows) {
-     // console.log(amount);
       this.totalAmount += amount;
     }
   }
@@ -175,7 +180,6 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     for (const key of listOfTh) {
       obj[key.value] = ['', Validators.required];
     }
-    //console.log(obj);
     return this.fb.group(obj);
   }
 
@@ -288,29 +292,103 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     this.gotoUrl(s);
   }
 
-  save(): void {
-    console.log(this.invoiceForm.getRawValue());
+  saveTemplate(): void {
+    const res: InvoiceInfoFormInterface = this.getDataToSave();
+    if(res) {
+
+      const input = {
+        rows: res.columns,
+        company_name: res.company['name'],
+        client_email: res.client['email']
+      };
+
+      this.openSaveDialog(input);
+      // console.log(input);
+    }
+  }
+
+
+  getDataToSave() {
 
     if(this.invoiceInfoForm.valid) {
-      console.log(this.invoiceInfoForm.getRawValue());
+      // console.log(this.invoiceInfoForm.getRawValue());
     } else {
       MyUtils.validateAllFormFields(this.invoiceInfoForm);
       this.myToastService.showFailed("Kindly fill invoice form properly");
     }
 
     if(this.clientAndCompanyForm.valid) {
-      console.log(this.clientAndCompanyForm.getRawValue());
+      // console.log(this.clientAndCompanyForm.getRawValue());
+      // this.clientAndCompanyForm.get('client').hasError()
     } else {
       MyUtils.validateAllFormFields(this.clientAndCompanyForm);
     }
 
-    if(!this.selectedClient && !this.selectedCompany) {
-      this.myToastService.showFailed("Kindly add client and company");
-    } else if(!this.selectedClient) {
-      this.myToastService.showFailed("Kindly add client");
-    } else if(!this.selectedCompany) {
-      this.myToastService.showFailed("Kindly add company");
+    if(this.invoiceInfoForm.valid && this.clientAndCompanyForm.valid && this.invoiceForm.valid) {
+
+      const response: InvoiceInfoFormInterface = {
+        client: this.clientAndCompanyForm.get('client').value,
+        company: this.clientAndCompanyForm.get('company').value,
+        date: this.invoiceInfoForm.get('date').value,
+        dueDate: this.invoiceInfoForm.get('dueDate').value,
+        invoiceNumber: this.invoiceInfoForm.get('invoiceNumber').value,
+        columns: this.invoiceCreationObj.thList,
+        rows: this.invoiceForm.get('rows').value
+      }
+
+      return response;
     }
 
+    return null;
+
   }
+
+  openSaveDialog(input: any): void {
+      const dialogRef = this.dialog.open(SaveTemplateDialogComponent, {
+        height: '250px',
+        width: '400px',
+        data: input
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // if (this.instanceOfResponseDialog(result)) {
+        //   if (result.success) {
+        //     this.invoiceCreationObj.thList = result.result;
+        //     this.myToastService.showSuccess(result.message);
+        //   } else {
+        //     this.myToastService.showFailed(result.message);
+        //   }
+        // } else {
+        //   this.myToastService.showFailed('Error occurred');
+        // }
+      });
+  }
+
+  openPreviewDialog(): void {
+
+    const res: InvoiceInfoFormInterface = this.getDataToSave();
+    if(res) {
+
+      const dialogRef = this.dialog.open(InvoicePreviewDialogComponent, {
+        height: '90%',
+        width: '70%',
+        data: res
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        // if (this.instanceOfResponseDialog(result)) {
+        //   if (result.success) {
+        //     this.invoiceCreationObj.thList = result.result;
+        //     this.myToastService.showSuccess(result.message);
+        //   } else {
+        //     this.myToastService.showFailed(result.message);
+        //   }
+        // } else {
+        //   this.myToastService.showFailed('Error occurred');
+        // }
+      });
+    } else {
+      console.log("error");
+    }
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-preview-invoice',
@@ -7,9 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewInvoiceComponent implements OnInit {
 
+  @Input('inputData') inputData;
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.inputData);
   }
 
 }

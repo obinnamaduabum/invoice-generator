@@ -1,0 +1,31 @@
+<div class="center">
+  <h2 mat-dialog-title>Add Template Name</h2>
+</div>
+
+<mat-dialog-content class="mat-typography">
+
+  <form class="example-form" [formGroup]="invoiceTemplateForm">
+    <div class="row">
+      <div class="col m12 s12 l12">
+        <mat-form-field class="example-full-width">
+          <mat-label>Template Name</mat-label>
+          <input matInput placeholder="Template Name" formControlName="name">
+
+          <mat-error *ngIf="invoiceTemplateForm.controls['name'].invalid &&
+            (invoiceTemplateForm.controls['name'].dirty || invoiceTemplateForm.controls['name'].touched)">
+              <span *ngIf="invoiceTemplateForm.controls['name'].errors.required">
+                Name is required
+              </span>
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="cancel-btn">Cancel</button>
+  <button mat-button class="success-btn" (click)="save()">Save</button>
+</mat-dialog-actions>
