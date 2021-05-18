@@ -7,7 +7,8 @@ import { PhoneNumberDialogComponent } from "../../edit-phone-number-dialogue/com
 import { MyErrorStateMatcher } from "../../../utils/error_state_matcher";
 import { PhoneNumberValidator } from "../../edit-phone-number-dialogue/validator/phone-validator";
 import {PhoneNumberCodes} from "../../edit-phone-number-dialogue/model/phone-number-codes-model";
-import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
+
+import {MyUtils} from "../../../utils/my_utils";
 @Component({
   selector: 'app-add-phone-number',
   templateUrl: './add-phone-number.component.html',
@@ -61,7 +62,9 @@ export class AddPhoneNumberComponent implements OnInit {
 
       if (this.phoneNumberForm.valid) {
         const myDialog = this.dialog.getDialogById('add-phone-number-dialog');
-        const phoneNumberString = this.getPhoneNumberInternationNumber();
+        const phoneNumber: string = this.phoneNumberForm.get('phoneNumber').value;
+        const selectedPhoneNumber = this.phoneNumberForm.get('selectedPhoneNumber').value;
+        const phoneNumberString = MyUtils.getPhoneNumberInternationNumber(phoneNumber, selectedPhoneNumber);
         if(this.data) {
           const foundIndex = this.data.findIndex(e => { return e === phoneNumberString});
 
@@ -82,19 +85,7 @@ export class AddPhoneNumberComponent implements OnInit {
       }
   }
 
-  getPhoneNumberInternationNumber() {
-    const phoneNumber: string = this.phoneNumberForm.get('phoneNumber').value;
-    const selectedPhoneNumber = this.phoneNumberForm.get('selectedPhoneNumber').value;
-    const phoneNumberUtil = PhoneNumberUtil.getInstance();
-    const alpha2: string = selectedPhoneNumber.alpha2;
 
-    const number = phoneNumberUtil.parseAndKeepRawInput(phoneNumber, alpha2);
-    const countryCode: number = number.getCountryCode();
-    const nationalPhoneNumber: number = number.getNationalNumber();
-
-    const phoneNumberString: string = `${countryCode}${nationalPhoneNumber}`;
-    return phoneNumberString;
-  }
 
   openPhoneNumberDialog(phoneNumber: string, selectedPhoneNumber: string) {
     if (this.phoneNumberForm.get(phoneNumber).value) {

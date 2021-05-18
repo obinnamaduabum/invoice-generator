@@ -1,6 +1,8 @@
 <div>
   <mat-form-field class="example-full-width">
-    <input type="text" autocomplete="off" (input)="findCountries($event.target?.value)" matInput placeholder="Enter country name">
+    <input type="text" autocomplete="off"
+           (input)="findCountries($event.target?.value)"
+           matInput placeholder="Enter country name">
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 

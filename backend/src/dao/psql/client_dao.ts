@@ -1,4 +1,5 @@
 import {MyClient} from "../../models/client";
+import Sequelize from "sequelize";
 
 export class ClientDao {
 
@@ -32,5 +33,17 @@ export class ClientDao {
             console.log(e);
             throw e;
         }
+    }
+
+    static async findByEmailAndUserId(email: string, userId: number) {
+        return await MyClient.findOne({
+            where: {
+                email: Sequelize.where(
+                    Sequelize.fn('lower', Sequelize.col('email')),
+                    Sequelize.fn('lower', email)
+                ),
+                user_id: userId
+            },
+        });
     }
 }

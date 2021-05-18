@@ -8,3 +8,18 @@
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.work-only-on-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .work-only-on-mobile {
+    display: block;
+  }
+}
+
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  background-color: #fbf9f9 !important;
+}
+

@@ -17,6 +17,15 @@ export class MyUtils {
        return Object.keys(obj).length === 0;
     }
 
+    static pageOffsetCalculator(pageNumber: number, pageSize: number, index: number) {
+        try {
+            let result = pageNumber * pageSize + index + 1;
+            return result;
+        } catch (e) {
+            return  0;
+        }
+    }
+
     static async writeFile(path: string, file: any) {
 
        return new Promise((resolve, reject) => {

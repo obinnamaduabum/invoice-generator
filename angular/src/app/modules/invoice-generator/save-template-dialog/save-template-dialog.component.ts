@@ -12,6 +12,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class SaveTemplateDialogComponent implements OnInit {
 
+  makingRequest = false;
   invoiceTemplateForm: FormGroup;
 
   constructor(private invoiceTemplateService: InvoiceTemplateService,
@@ -32,14 +33,19 @@ export class SaveTemplateDialogComponent implements OnInit {
   save() {
     if(this.invoiceTemplateForm.valid) {
       const input: any = Object.assign(this.data, {name: this.invoiceTemplateForm.get('name').value });
+      this.makingRequest = true;
       this.invoiceTemplateService.create(input).subscribe((data: ResponseModel) => {
-        console.log(data);
+        // console.log(data);
+        this.makingRequest = false;
         if (data.success) {
+          this.invoiceTemplateService.setJustUpdated(true);
           this.myToastService.showSuccess(data.message);
+          this.dialogRef.close();
         } else {
           this.myToastService.showFailed(data.message);
         }
       }, error => {
+        this.makingRequest = false;
         this.myToastService.showServerError();
       });
     } else {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {LogoService} from "../../../../services/logo.service";
+import {LogoService} from "../../../../services/logo-service/logo.service";
 import {ResponseModel} from "../../../../models/response-model";
 import {MatDialog} from "@angular/material/dialog";
 
@@ -11,7 +11,6 @@ import {MatDialog} from "@angular/material/dialog";
 export class FileUploadGalleryComponent implements OnInit {
 
   listOfUploadedLogos: any[] = [];
-
 
   constructor(private logoService: LogoService,
               public dialog: MatDialog,) { }
@@ -39,13 +38,6 @@ export class FileUploadGalleryComponent implements OnInit {
         loaded: false
       });
     }
-  }
-
-  nullCheck(data) {
-    if(data){
-      return true;
-    }
-    return false;
   }
 
   loadImage($event: any, index: number) {

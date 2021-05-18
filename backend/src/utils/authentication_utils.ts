@@ -9,6 +9,7 @@ const fs = require('fs');
 export class AuthenticationUtils {
 
     private static privateKeyUrl = resolve(__dirname, "../assets/security/private.pem");
+
     private static publicKeyUrl = resolve(__dirname, "../assets/security/public.pem");
 
     private static verifyOptions: any = {
@@ -27,12 +28,10 @@ export class AuthenticationUtils {
         algorithm: "RS256"
     };
 
-
     static generateToken(userCode: any) {
         let privateKey = fs.readFileSync(this.privateKeyUrl, 'utf8');
         return jwt.sign({"id": userCode}, privateKey, this.generateOptions);
     }
-
 
     static async verifyToken(req: Request): Promise<MyJWTObj | null> {
 
@@ -67,8 +66,6 @@ export class AuthenticationUtils {
 
         return null;
     }
-
-
 
     static async performVerification(token: string): Promise<JWTObjInterface | null> {
         try {
@@ -108,7 +105,6 @@ export class AuthenticationUtils {
 
         return res.cookie(cookieName, token, options);
     }
-
 
     static logoutSetCookie(res: Response, req: Request) {
         let cookieName = process.env.COOKIE_NAME;

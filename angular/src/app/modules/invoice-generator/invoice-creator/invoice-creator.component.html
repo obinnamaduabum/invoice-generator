@@ -34,219 +34,242 @@
 
   <mat-card>
     <div class="container">
-        <div>
-          <div class="row">
-            <div class="col m6 s12 l6">
-              <form [formGroup]="clientAndCompanyForm">
-                <div class="row">
-                  <div class="col m12 s12 l12">
+      <div>
+        <div class="row">
+          <div class="col m6 s12 l6">
+            <form [formGroup]="clientAndCompanyForm">
+              <div class="row">
+                <div class="col m12 s12 l12">
 
-                    <div *ngIf="selectedCompany === null">
-                      <div style="padding-top: 10px; padding-bottom: 10px;" class="center-on-mobile">
-                        <button mat-button (click)="addCompany('/invoice-builder/main/company')"
-                                class="success-btn">
-                          Select Company Profile
-                        </button>
+                  <div *ngIf="selectedCompany === null">
+                    <div style="padding-top: 10px; padding-bottom: 10px;" class="center-on-mobile">
+                      <button mat-button (click)="addCompany('/invoice-builder/main/company')"
+                              class="success-btn">
+                        Select Company Profile
+                      </button>
 
-                        <mat-error *ngIf="clientAndCompanyForm.controls['company'].invalid &&
+                      <mat-error *ngIf="clientAndCompanyForm.controls['company'].invalid &&
                                 (clientAndCompanyForm.controls['company'].dirty || clientAndCompanyForm.controls['company'].touched)">
 
                                   <span *ngIf="clientAndCompanyForm.controls['company'].errors.required">
                                       Company is required
                                   </span>
-                        </mat-error>
+                      </mat-error>
 
-                      </div>
                     </div>
-
-                    <div *ngIf="selectedCompany !== null">
-                      <img alt="logo" class="invoice-logo" [src]="selectedCompany?.logoUrl">
-                      <p>{{selectedCompany?.address}}</p>
-                      <p>{{selectedCompany?.city}} {{selectedCompany?.state}} {{selectedCompany?.zipCode}} </p>
-                      <p>{{selectedCompany?.email}}</p>
-                      <p>{{selectedCompany?.websiteUrl}}</p>
-                    </div>
-
                   </div>
-                  <div class="col m12 s12 l12">
+
+                  <div *ngIf="selectedCompany !== null">
+                    <img alt="logo" class="invoice-logo" [src]="selectedCompany?.logoUrl">
+                    <p>{{selectedCompany?.address}}</p>
+                    <p>{{selectedCompany?.city}} {{selectedCompany?.state}} {{selectedCompany?.zipCode}} </p>
+                    <p>{{selectedCompany?.email}}</p>
+                    <p>{{selectedCompany?.websiteUrl}}</p>
+                  </div>
+
+
+                  <button *ngIf="this.selectedCompany !== null" mat-raised-button class="remove-btn"
+                          (click)="removeCompany()">
+                    Remove Company Profile
+                  </button>
+
+                </div>
+                <div class="col m12 s12 l12">
+                  <div style="padding: 5px">
                     <div *ngIf="this.selectedClient === null">
                       <button mat-button class="add-column-btn"
                               (click)="addClient('/invoice-builder/main/client')">
                         Add Client
                       </button>
                     </div>
-
                     <mat-error *ngIf="clientAndCompanyForm.controls['client'].invalid &&
-                                (clientAndCompanyForm.controls['client'].dirty ||
-                                clientAndCompanyForm.controls['client'].touched)">
+                                  (clientAndCompanyForm.controls['client'].dirty ||
+                                  clientAndCompanyForm.controls['client'].touched)">
 
-                                  <span *ngIf="clientAndCompanyForm.controls['client'].errors.required">
-                                      Client is required
-                                  </span>
+                                    <span *ngIf="clientAndCompanyForm.controls['client'].errors.required">
+                                        Client is required
+                                    </span>
                     </mat-error>
-
                     <div *ngIf="this.selectedClient !== null">
                       <h2>Client</h2>
                       <p>{{this.selectedClient?.name}}</p>
                       <p>{{this.selectedClient?.email}}</p>
                       <p>{{this.selectedClient?.phoneNumber}}</p>
                     </div>
+                    <button *ngIf="selectedClient !== null" mat-raised-button class="remove-btn"
+                            (click)="removeClient()">
+                      Remove Client
+                    </button>
                   </div>
-                </div>
-              </form>
-            </div>
-            <div class="col m6 s12 l6">
-              <div class="center-on-mobile">
-                <form [formGroup]="invoiceInfoForm">
-                  <h2>INVOICE</h2>
-                  <p>
-                    <mat-form-field appearance="fill">
-                      <mat-label>Date</mat-label>
-                      <input matInput [matDatepicker]="picker" formControlName="date">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
 
-                      <mat-error *ngIf="invoiceInfoForm.controls['date'].invalid &&
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col m6 s12 l6">
+            <div class="center-on-mobile">
+              <form [formGroup]="invoiceInfoForm">
+                <h2>INVOICE</h2>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-error *ngIf="invoiceInfoForm.controls['date'].invalid &&
                         (invoiceInfoForm.controls['date'].dirty || invoiceInfoForm.controls['date'].touched)">
 
                           <span *ngIf="invoiceInfoForm.controls['date'].errors.required">
                               Date is required
                           </span>
-                      </mat-error>
-                    </mat-form-field>
-                  </p>
-                  <p>
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Invoice Number</mat-label>
-                      <input matInput placeholder="Enter Invoice Number" formControlName="invoiceNumber">
-                      <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-error>
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Invoice Number</mat-label>
+                    <input matInput placeholder="Enter Invoice Number" formControlName="invoiceNumber">
+                    <mat-icon matSuffix>mode_edit</mat-icon>
 
-                      <mat-error *ngIf="invoiceInfoForm.controls['invoiceNumber'].invalid &&
+                    <mat-error *ngIf="invoiceInfoForm.controls['invoiceNumber'].invalid &&
                         (invoiceInfoForm.controls['invoiceNumber'].dirty || invoiceInfoForm.controls['invoiceNumber'].touched)">
 
                           <span *ngIf="invoiceInfoForm.controls['invoiceNumber'].errors.required">
                               Invoice Number is required
                           </span>
-                      </mat-error>
+                    </mat-error>
 
-                    </mat-form-field>
+                  </mat-form-field>
 
-                    <button class="add-column-btn-stretched" mat-raised-button>
-                      Generate Invoice Number
-                    </button>
+                  <button class="add-column-btn-stretched" mat-raised-button>
+                    Generate Invoice Number
+                  </button>
 
-                  </p>
-                  <p>
-                    <mat-form-field appearance="fill">
-                      <mat-label>Due Date</mat-label>
-                      <input matInput [matDatepicker]="pickerOne" formControlName="dueDate">
-                      <mat-datepicker-toggle matSuffix [for]="pickerOne">
-                      </mat-datepicker-toggle>
-                      <mat-datepicker #pickerOne></mat-datepicker>
-                    </mat-form-field>
-                  </p>
-                </form>
-              </div>
+                </p>
+                <p>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="pickerOne" formControlName="dueDate">
+                    <mat-datepicker-toggle matSuffix [for]="pickerOne">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #pickerOne></mat-datepicker>
+                  </mat-form-field>
+                </p>
+              </form>
             </div>
           </div>
         </div>
-        <div>
-          <form [formGroup]="invoiceForm">
-            <div class="my-custom-table my-table-horizontal-scroll"
-                 *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
-              <table class="responsive-table">
-                <thead>
-                <tr>
-                  <th *ngFor="let th of invoiceCreationObj.thList">
-                    <span>{{th.value}}</span>
-                  </th>
-                </tr>
-                </thead>
-                <tbody *ngIf="invoiceCreationObj.thList.length > 0" formArrayName="rows">
-                <tr *ngFor="let col of rows.controls; let i = index" [formGroupName]="i">
-                  <td *ngFor="let th of invoiceCreationObj.thList">
+      </div>
+      <div>
 
-                    <mat-form-field *ngIf="th.type === EnumInputType.STRING" class="example-full-width">
-                      <input matInput formControlName="{{th['value']}}">
-                    </mat-form-field>
 
-                    <mat-form-field *ngIf="th.type === EnumInputType.AMOUNT" class="example-full-width">
-                      <input type="number" matInput formControlName="{{th['value']}}">
-                    </mat-form-field>
+        <form [formGroup]="invoiceForm">
+          <div class="my-custom-table my-table-horizontal-scroll"
+               *ngIf="invoiceCreationObj.thList.length > 0; else other_content">
 
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="invoiceCreationObj.thList.length > 0 && invoiceForm.get('rows').value.length <= 0">
-              <div class="please-add-column">
-                <div class="please-add-column-dot-dash">
-                  <div class="center">
-                    <h4>Add row</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="m20-v" *ngIf="invoiceCreationObj.thList.length > 0;">
-              <button mat-button class="success-btn" (click)="addRow()">
-                Add row
+            <div style="padding-top: 10px; padding-bottom: 10px">
+              <button *ngIf="invoiceCreationObj !== null"
+                      mat-raised-button
+                      class="remove-btn"
+                      (click)="removeColumns()">
+                Remove Columns
               </button>
             </div>
-
-            <ng-template #other_content>
-              <div class="please-add-column">
-                <div class="please-add-column-dot-dash">
-                  <div class="center">
-                    <h4>Add Invoice Table</h4>
-                    <div class="p20">
-                      <button mat-button class="add-column-btn" (click)="openAddColumnDialog()">
-                        Add Column
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-template>
-
-          </form>
-
-          <div class="balance my-custom-table">
 
             <table class="responsive-table">
+              <thead>
               <tr>
-                <th><span contenteditable>Total</span></th>
-                <td><span data-prefix>$</span><span>{{totalAmount}}</span></td>
+                <th *ngFor="let th of invoiceCreationObj.thList">
+                  <span>{{th.value}}</span>
+                </th>
               </tr>
-              <tr>
-                <th><span contenteditable>Amount Paid</span></th>
-                <td><span data-prefix>$</span><span contenteditable>0.00</span></td>
+              </thead>
+              <tbody *ngIf="invoiceCreationObj.thList.length > 0" formArrayName="rows">
+              <tr *ngFor="let col of rows.controls; let i = index" [formGroupName]="i">
+                <td *ngFor="let th of invoiceCreationObj.thList">
+
+                  <mat-form-field *ngIf="th.type === EnumInputType.STRING" class="example-full-width">
+                    <input matInput formControlName="{{th['value']}}">
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="th.type === EnumInputType.AMOUNT" class="example-full-width">
+                    <input type="number" matInput formControlName="{{th['value']}}">
+                  </mat-form-field>
+
+                </td>
               </tr>
-              <tr>
-                <th><span contenteditable>Balance Due</span></th>
-                <td><span data-prefix>$</span><span>600.00</span></td>
-              </tr>
+              </tbody>
             </table>
-
-            <div class="m20-v">
-              <button mat-button class="success-btn" (click)="calculateTotal()">
-                Calculate Total
-              </button>
-            </div>
-
           </div>
+
+          <div *ngIf="invoiceCreationObj.thList.length > 0 && invoiceForm.get('rows').value.length <= 0">
+            <div class="please-add-column">
+              <div class="please-add-column-dot-dash">
+                <div class="center">
+                  <h4>Add row</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="m20-v" *ngIf="invoiceCreationObj.thList.length > 0;">
+            <button mat-button class="success-btn" (click)="addRow()">
+              Add row
+            </button>
+          </div>
+
+          <ng-template #other_content>
+            <div class="please-add-column">
+              <div class="please-add-column-dot-dash">
+                <div class="center">
+                  <h4>Add Invoice Table</h4>
+                  <div class="p20">
+                    <button mat-button class="add-column-btn" (click)="openAddColumnDialog()">
+                      Add Column
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+        </form>
+
+        <div class="balance my-custom-table">
+
+          <table class="responsive-table">
+            <tr>
+              <th><span contenteditable>Total</span></th>
+              <td><span data-prefix>$</span><span>{{totalAmount}}</span></td>
+            </tr>
+            <tr>
+              <th><span contenteditable>Amount Paid</span></th>
+              <td><span data-prefix>$</span><span contenteditable>0.00</span></td>
+            </tr>
+            <tr>
+              <th><span contenteditable>Balance Due</span></th>
+              <td><span data-prefix>$</span><span>600.00</span></td>
+            </tr>
+          </table>
+
+          <div class="m20-v">
+            <button mat-button class="success-btn" (click)="calculateTotal()">
+              Calculate Total
+            </button>
+          </div>
+
         </div>
-        <div class="additional-info">
-          <mat-form-field appearance="outline">
-            <mat-label>Additional Notes</mat-label>
-            <textarea matInput
-                      [rows]="7"
-                      [cols]="4">
+      </div>
+      <div class="additional-info">
+        <mat-form-field appearance="outline">
+          <mat-label>Additional Notes</mat-label>
+          <textarea matInput
+                    [rows]="7"
+                    [cols]="4">
                 </textarea>
-          </mat-form-field>
-        </div>
+        </mat-form-field>
+      </div>
     </div>
   </mat-card>
 
@@ -256,13 +279,42 @@
       <span>
         <button mat-button class="success-btn" (click)="saveTemplate()">Save Template</button>
       </span>
+
+        <span class="spacer"></span>
+
+        <span>
+          <button mat-button class="success-btn" (click)="saveTemplate()">Send via email</button>
+        </span>
+
+        <span class="spacer"></span>
+
+        <span>
+
+          <button *ngIf="!downloading"
+                  mat-raised-button class="success-btn"
+                  (click)="downloadPdf()">
+            Download
+          </button>
+
+          <button *ngIf="downloading" mat-raised-button class="success-btn">
+            <mat-icon>
+              <mat-progress-spinner
+                class="white-mat-spinner"
+                [diameter]="20"
+                mode="indeterminate">
+              </mat-progress-spinner>
+            </mat-icon>
+            Downloading...
+          </button>
+
+        </span>
+
         <span class="spacer"></span>
         <span>
         <button mat-button class="preview-btn m20" (click)="openPreviewDialog()">Preview</button>
       </span>
       </div>
     </mat-card>
-
   </div>
 
 </div>

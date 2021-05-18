@@ -3,11 +3,11 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MyErrorStateMatcher} from "../../../utils/error_state_matcher";
 import {MatDialog} from "@angular/material/dialog";
 import {MyToastService} from "../../../services/toast-service/my-toast.service";
-import {CompanyProfileService} from "../../../services/company-profile.service";
+import {CompanyProfileService} from "../../../services/company-profile-service/company-profile.service";
 import {MyEmailValidator} from "../../edit-phone-number-dialogue/validator/email_validator";
 import {PhoneNumberDialogComponent} from "../../edit-phone-number-dialogue/component/phone-number-dialog/edit-phone-number-dialogue-component";
 import {PhoneNumberCodeService} from "../../edit-phone-number-dialogue/service/phone_number_code.service";
-import {ClientService} from "../../../services/client.service";
+import {ClientService} from "../../../services/client-service/client.service";
 import {ResponseModel} from "../../../models/response-model";
 import {MyUtils} from "../../../utils/my_utils";
 
@@ -99,8 +99,15 @@ export class AddClientComponent implements OnInit {
 
     if(this.clientInfoForm.valid) {
       this.makingRequest = true;
-      this.clientService.create(this.clientInfoForm.getRawValue()).subscribe((data: ResponseModel) => {
 
+      const phoneNumber: string = this.clientInfoForm.get('phoneNumber').value;
+      const selectedPhoneNumber = this.clientInfoForm.get('selectedPhoneNumber').value;
+      const phoneNumberString = MyUtils.getPhoneNumberInternationNumber(phoneNumber, selectedPhoneNumber);
+
+      const raw = this.clientInfoForm.getRawValue();
+      const inputObject = Object.assign(raw, {phoneNumber: phoneNumberString});
+
+      this.clientService.create(inputObject).subscribe((data: ResponseModel) => {
         this.makingRequest = false;
         if(data.success) {
           this.myToastService.showSuccess(data.message);

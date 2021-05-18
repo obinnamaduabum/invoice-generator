@@ -21,7 +21,8 @@ import {ResponseDialog} from "../../../interfaces/response_dialog";
 import {SaveTemplateDialogComponent} from "../save-template-dialog/save-template-dialog.component";
 import {ResponseInvoiceTemplateInterface} from "../../../interfaces/invoice-template-interface";
 import {InvoiceTemplateService} from "../../../services/invoice-template-service/invoice-template.service";
-
+import {DownloadService} from "../../../services/download-service";
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-invoice-creator',
@@ -53,6 +54,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   dateNow: Date = new Date();
   @Input() inputInvoiceTemplate: ResponseInvoiceTemplateInterface;
   responseInvoiceTemplate: ResponseInvoiceTemplateInterface;
+  downloading = false;
 
   constructor(public dialog: MatDialog,
               private myToastService: MyToastService,
@@ -63,7 +65,8 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
               private router: Router,
               public datePipe: DatePipe,
               private clientService: ClientService,
-              private invoiceTemplateService: InvoiceTemplateService) {
+              private invoiceTemplateService: InvoiceTemplateService,
+              private downloadService: DownloadService) {
 
     //Form 1
     this.invoiceInfoForm = this.fb.group({
@@ -93,6 +96,10 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.invoiceInfoForm.patchValue({
+      invoiceNumber: MyUtils.generateRandomString(9)
+    });
 
 
     this.invoiceTemplateService.get().subscribe((data: any) => {
@@ -188,9 +195,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
   }
 
   addRow(): void {
-   // console.log(this.invoiceCreationObj.thList);
     this.rowBuilder(this.invoiceCreationObj.thList, 0);
-    // this.invoiceCreationObj.tbList.push({value: '', type: ''});
   }
 
   removeRow(index: number): void {
@@ -303,7 +308,38 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
       };
 
       this.openSaveDialog(input);
-      // console.log(input);
+    }
+  }
+
+
+  downloadPdf(): void {
+    const res: InvoiceInfoFormInterface = this.getDataToSave();
+    if(res) {
+
+      const body = {
+        client: res.client,
+        company: res.company,
+        columns: res.columns,
+        rows: res.rows,
+        invoiceObj: {
+          date: res.date,
+          dueDate: res.dueDate,
+          invoiceNumber: res.invoiceNumber,
+        }
+      }
+
+      this.downloading = true;
+      let downloadName = 'download.pdf';
+      this.downloadService.download(body).subscribe((blob)=> {
+        this.downloading = false;
+        if(blob) {
+          saveAs(blob, downloadName);
+        }
+      }, error => {
+        this.downloading = false;
+      });
+
+
     }
   }
 
@@ -370,7 +406,7 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
 
       const dialogRef = this.dialog.open(InvoicePreviewDialogComponent, {
         height: '90%',
-        width: '70%',
+        width: '40%',
         data: res
       });
 
@@ -391,4 +427,18 @@ export class InvoiceCreatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  removeClient() {
+    this.selectedClient = null;
+  }
+
+  removeCompany() {
+    this.selectedCompany = null;
+  }
+
+  removeColumns() {
+    this.invoiceCreationObj = {
+      thList: [],
+      tbList: []
+    }
+  }
 }

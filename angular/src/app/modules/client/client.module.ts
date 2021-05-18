@@ -7,6 +7,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {RouterModule, Routes} from "@angular/router";
+import {MatTableModule} from "@angular/material/table";
 
 const routes: Routes = [
   { path: 'create-profile', component: AddClientComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
     MatCardModule,
     MatFormFieldModule,
     RouterModule.forChild(routes),
-    SharedModuleModule
+    SharedModuleModule,
+    MatTableModule
   ], exports: [
     ViewAllClientsComponent
   ]

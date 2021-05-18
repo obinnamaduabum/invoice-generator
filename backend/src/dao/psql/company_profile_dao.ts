@@ -1,5 +1,5 @@
 import {MyLogo} from "../../models/my_logo";
-import {QueryTypes, Transaction} from "sequelize";
+import Sequelize, {QueryTypes, Transaction} from "sequelize";
 import {PostgresDatabase} from "../../database/postgres_db";
 import {CompanyProfile} from "../../models/company_profile";
 import {CompanyProfileServiceInterface} from "../../interface/company_profile_service_interface";
@@ -30,18 +30,20 @@ export class CompanyProfileDao {
 
         try {
 
-            return await new PostgresDatabase().getSequelize.query('SELECT * from company_profile as cp' +
-                ' LEFT JOIN phone_number as p on p.company_profile_id = cp.id ' +
-                ' WHERE cp.user_id = :userId' +
-                ' limit :limit offset :offset', {
-                mapToModel: true,
-                replacements: {
-                    userId: userId,
-                    offset: offset,
-                    limit: limit
-                },
-                type: QueryTypes.SELECT
-            });
+            return CompanyProfile.findAll({where: { user_id: userId }, offset: offset, limit: limit})
+
+            // return await new PostgresDatabase().getSequelize.query('SELECT * from company_profile as cp' +
+            //     ' LEFT JOIN phone_number as p on p.company_profile_id = cp.id ' +
+            //     ' WHERE cp.user_id = :userId' +
+            //     ' limit :limit offset :offset', {
+            //     mapToModel: true,
+            //     replacements: {
+            //         userId: userId,
+            //         offset: offset,
+            //         limit: limit
+            //     },
+            //     type: QueryTypes.SELECT
+            // });
 
         } catch (e) {
             console.log(e);
@@ -61,6 +63,19 @@ export class CompanyProfileDao {
             console.log(e);
             throw e;
         }
+    }
+
+
+    static async findByName(name: string, userId: number) {
+        return CompanyProfile.findOne({
+            where: {
+                name: Sequelize.where(
+                    Sequelize.fn('lower', Sequelize.col('name')),
+                    Sequelize.fn('lower', name)
+                ),
+                user_id: userId
+            }
+        });
     }
 
     static async save(inputObj: CompanyProfileServiceInterface) {

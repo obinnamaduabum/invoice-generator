@@ -8,6 +8,12 @@ export class PhoneNumberDao {
         return PhoneNumber.create(response, {transaction: transaction});
     }
 
+    static async findAll(companyProfileId: number) {
+        return PhoneNumber.findAll({
+            where: {'company_profile_id': companyProfileId}
+        });
+    }
+
     static getPhoneNumberInsertObj(phoneNumber: string) {
         return  {
             phone_number: phoneNumber,

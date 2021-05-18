@@ -8,6 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100% !important;
   background-color: #4dcc2b;
   color: white;
+  border-radius: 15px !important;
 }
 
 
@@ -20,16 +21,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .add-column-btn {
   background-color: #4dcc2b;
   color: white !important;
+  border-radius: 15px !important;
+}
+
+.remove-btn {
+  background-color: #ba0d2f;
+  color: white !important;
+  border-radius: 15px !important;
 }
 
 .success-btn {
   background-color: #4dcc2b;
   color: white !important;
+  border-radius: 15px !important;
 }
 
 .preview-btn {
   background-color: #1040ee;
   color: white !important;
+  border-radius: 15px !important;
 }
 
 .m20 {
@@ -83,6 +93,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .white-mat-spinner svg circle{
   stroke: #ffffff;
+}
+
+.sidebar {
+  width: 200px;
 }
 
 .sidebar, .background-grey {

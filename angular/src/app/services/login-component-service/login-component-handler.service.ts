@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {LoginComponent} from '../modules/authentication/login/login.component';
+import {LoginComponent} from '../../modules/authentication/login/login.component';
 
 @Injectable({
   providedIn: 'root'

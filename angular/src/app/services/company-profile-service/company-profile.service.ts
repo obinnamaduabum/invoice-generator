@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {map} from "rxjs/operators";
-import {CompanyProfileInterface} from "../../../../backend/src/interface/company_profile_interface";
+import {CompanyProfileInterface} from "../../../../../backend/src/interface/company_profile_interface";
 
 const httpOptions = {
   headers: new HttpHeaders({

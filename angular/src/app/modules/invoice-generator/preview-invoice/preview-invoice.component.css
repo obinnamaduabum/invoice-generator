@@ -1,0 +1,90 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.tableHeader {
+  background-color: #05338f;
+  color: #ffffff;
+}
+
+.float-container {
+  padding: 5px;
+  width: 100%;
+}
+
+.float-child {
+  width: 48%;
+  float: left;
+  padding: 5px;
+}
+
+
+.div-child-one {
+  width: 58%;
+  float: left;
+  padding: 5px;
+}
+
+
+.div-child-two {
+  width: 38%;
+  float: left;
+  padding: 5px;
+}
+
+.company-info {
+  font-size: 12px;
+  font-style: italic;
+}
+
+div p, a {
+  font-family: sans, serif;
+}
+
+@font-face {
+  font-family: sans;
+  src: url('../../../../assets/fonts/NotoSans-Regular.ttf');
+}
+
+.invoice-due-date table tr, .invoice-due-date table td, .invoice-due-date table th {
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  background-color: transparent;
+}
+
+p {
+  font-size: 12px;
+}
+
+
+.bill-to {
+  background-color: #05338f;
+  color: #ffffff;
+  padding: 5px;
+}
+
+.float-right {
+  float: right
+}
+
+.logo-image {
+  width: 90px;
+}
+
+.company-name-padding {
+  padding: 5px;
+}

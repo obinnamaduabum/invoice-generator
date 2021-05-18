@@ -7,7 +7,7 @@ import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
-import {LoginComponentHandlerService} from '../../services/login-component-handler.service';
+import {LoginComponentHandlerService} from '../../services/login-component-service/login-component-handler.service';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 

@@ -1,5 +1,5 @@
-import {Observable, of} from 'rxjs';
-import {AbstractControl, ValidationErrors} from '@angular/forms';
+import {of} from 'rxjs';
+import {AbstractControl} from '@angular/forms';
 
 export function CustomEmailValidator(control: AbstractControl) {
 
@@ -13,11 +13,3 @@ export function CustomEmailValidator(control: AbstractControl) {
     return { emailInvalid: true };
   }
 }
-
-// return control.valueChanges
-//   .debounceTime(300)
-//   .distinctUntilChanged()
-//   .take(1)
-//   .switchMap(value => this.unitService.isNameTaken(value))
-//   .do(() => control.markAsTouched())
-//   .map(isTaken => isTaken ? {nameTaken: true} : null);

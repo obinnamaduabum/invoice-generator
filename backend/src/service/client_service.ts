@@ -6,6 +6,7 @@ import {MySequenceTypeConstant} from "../lh_enum/sequence_type";
 import {User} from "../models/user";
 import {ApiResponseUtil} from "../utils/api-response-util";
 import {ClientDao} from "../dao/psql/client_dao";
+import {MyUtils} from "../utils/my_util";
 
 export class ClientService {
 
@@ -37,7 +38,14 @@ export class ClientService {
 
     static async findAllWithPaginationAndCount(user: User, page: number, limit: number) {
         const result: any[] = await ClientDao.findAllWithPagination(user.id, page, limit);
+        const newArray: any[] = [];
+        for(let i = 0; i < result.length; i++) {
+            const position = MyUtils.pageOffsetCalculator(page, limit, i);
+            newArray.push(Object.assign(result[i]['dataValues'], {position: position}));
+        }
+
+        console.log(newArray);
         const count: number = await ClientDao.countAll(user.id);
-        return ApiResponseUtil.pagination(page, limit, count, result);
+        return ApiResponseUtil.pagination(page, limit, count, newArray);
     }
 }

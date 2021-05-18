@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompanyProfileComponent } from './company-profile/company-profile.component';
 import {RouterModule, Routes} from "@angular/router";
-import {AlreadyLoggedInGuard} from "../../guard/already-logged-in/already-logged-in.guard";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
@@ -12,7 +11,6 @@ import {MatButtonModule} from "@angular/material/button";
 import { CompaniesComponent } from './companies/companies.component';
 import { AddPhoneNumberComponent } from './add-phone-number/add-phone-number.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {SharedModuleModule} from "../shared-module/shared-module.module";
 import {PhoneNumberDialogueModule} from "../edit-phone-number-dialogue/edit-phone-number-dialogue.module";
 import {MatIconModule} from "@angular/material/icon";
 
@@ -27,9 +25,6 @@ const routes: Routes = [
     CompaniesComponent,
     AddPhoneNumberComponent
   ],
-  exports: [
-    CompaniesComponent
-  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -42,6 +37,9 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     PhoneNumberDialogueModule,
     MatIconModule
-  ]
+  ],
+  exports: [
+    CompaniesComponent
+  ],
 })
 export class CompanyModule { }

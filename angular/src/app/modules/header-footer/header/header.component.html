@@ -1,4 +1,16 @@
-<mat-toolbar class="my-tool-bar">
+<mat-toolbar class="my-tool-bar mat-elevation-z6">
+
+  <div class="work-only-on-mobile">
+  <button class="hamburger" [ngClass]="{
+  'hamburger--collapse': hamburgerState,
+  'is-active': hamburgerState
+  }" type="button" (click)="toggleHamburger()">
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+  </button>
+  </div>
+
   <span>Invoice Generator</span>
   <span class="spacer"></span>
   <span *ngIf="!this.isLoggedIn">

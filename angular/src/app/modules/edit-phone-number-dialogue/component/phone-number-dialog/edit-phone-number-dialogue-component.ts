@@ -29,6 +29,9 @@ export class PhoneNumberDialogComponent implements OnInit {
   }
   getPhoneNumberCodes() {
     this.phoneNumberCodeService.getListOfPhoneCodes().subscribe(data => {
+
+      console.log(data);
+
       this.listPhoneNumberCodes = data;
       this.phoneNumberCodes = this.listPhoneNumberCodes;
     }, error1 => {});

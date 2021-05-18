@@ -1,13 +1,25 @@
 <div>
-  <div *ngFor="let template of templates">
-    <div class="p20-lr">
-      <div class="m20-v template-size">
-        <div>
-          Savings
-        </div>
-        <mat-card>
 
+  <div style="height: 80px"></div>
+  <div style="text-align: center; padding-top: 20px">
+    <h3>Invoice Template's</h3>
+  </div>
+
+  <div *ngFor="let template of listOfInvoiceTemplates; let i = index">
+    <div class="p20-lr" (click)="select(i)">
+      <div class="m20-v template-size ">
+
+        <div class="template-name">
+          {{template.name}}
+        </div>
+
+        <mat-card class="mat-elevation-z6">
+          <p style="font-size: 11px">Column's: </p>
+          <div *ngFor="let row of template.rows">
+            <p class="template-font-design">name: {{row.value}} type: {{row.type}}</p>
+          </div>
         </mat-card>
+
       </div>
     </div>
   </div>

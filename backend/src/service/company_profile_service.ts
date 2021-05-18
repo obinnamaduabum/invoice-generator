@@ -3,6 +3,8 @@ import {CompanyProfileServiceInterface} from "../interface/company_profile_servi
 import {CompanyProfileDao} from "../dao/psql/company_profile_dao";
 import {User} from "../models/user";
 import {ApiResponseUtil} from "../utils/api-response-util";
+import {MyUtils} from "../utils/my_util";
+import {PhoneNumberDao} from "../dao/psql/phone_number_dao";
 
 export class CompanyProfileService {
 
@@ -37,16 +39,23 @@ export class CompanyProfileService {
     static async findAllWithPaginationAndCount(user: User, page: number, limit: number) {
         const result: any[] = await CompanyProfileDao.findAllWithPagination(user.id, page, limit);
 
-        console.log(result);
-        // const newResult: any[] = [];
-        // const resultLength: number = result.length;
-        // for (let i = 0; i < resultLength; i++){
-        //     const items = result[i]['dataValues'];
-        //     const obj = Object.assign(items, {'loaded': false});
-        //     newResult.push(obj);
-        // }
+        // console.log(result);
+        const newResult: any[] = [];
+        const resultLength: number = result.length;
+        for (let i = 0; i < resultLength; i++){
+            const items = result[i]['dataValues'];
+            const position = MyUtils.pageOffsetCalculator(page, limit, i);
+            const phoneNumbers =  await PhoneNumberDao.findAll(items['id']);
+            // console.log(phoneNumbers);
+
+            const obj = Object.assign(items, { loaded: false,
+                position: position,
+                phoneNumbers: phoneNumbers });
+
+            newResult.push(obj);
+        }
 
         const count: number = await CompanyProfileDao.countAll(user.id);
-        return  ApiResponseUtil.pagination(page, limit, count, []);
+        return ApiResponseUtil.pagination(page, limit, count, newResult);
     }
 }

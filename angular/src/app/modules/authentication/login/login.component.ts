@@ -5,13 +5,14 @@ import {Router} from '@angular/router';
 import {MyToastService} from '../../../services/toast-service/my-toast.service';
 import {MyErrorStateMatcher} from '../../../utils/error_state_matcher';
 import {ResponseModel} from '../../../models/response-model';
-import {CustomEmailValidator} from '../../../validator/custom-email-validator';
-import {AuthenticationService} from '../../../services/authentication-service';
-import {UserService} from '../../../services/user.service';
+import {CustomEmailValidator} from '../../../validators/custom-email-validator';
+import {AuthenticationService} from '../../../services/authentication-service/authentication-service';
+import {UserService} from '../../../services/user-service/user.service';
 import {LoginInterface} from '../../../interfaces/login-interface';
-import {ErrorCatcherService} from '../../../services/error-catcher.service';
+import {ErrorCatcherService} from '../../../services/error-service/error-catcher.service';
 import {MyRoutes} from '../../../utils/my-routes';
 import {GoogleLoginProvider, SocialAuthService, SocialUser} from 'angularx-social-login';
+import {LoginNotifierService} from "../../../services/logged-notifier-service/login-notifier-service";
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private errorCatcherService: ErrorCatcherService,
               public dialog: MatDialog,
-              private socialAuthService: SocialAuthService) {
+              private socialAuthService: SocialAuthService,
+              private loginNotifierService: LoginNotifierService) {
   }
 
   ngOnInit(): void {
@@ -66,6 +68,7 @@ export class LoginComponent implements OnInit {
         email: this.loginFormGroup.get('email').value,
         password: this.loginFormGroup.get('password').value
       };
+
       this.authenticationService.login(userCredentials).subscribe(data => {
         const responseModel: ResponseModel = data;
         this.loggingIn = false;
@@ -76,9 +79,11 @@ export class LoginComponent implements OnInit {
         this.loggingIn = false;
         this.myToastrService.showFailed('Login failed');
       });
+
     } else {
       this.myToastrService.showFailed('Kindly fill required fields');
     }
+
   }
 
   fetchMe(): void  {
@@ -86,7 +91,9 @@ export class LoginComponent implements OnInit {
       const responseModel: ResponseModel = data;
       if (responseModel.success) {
         console.log(responseModel);
+
         this.authenticationService.setUserInfo(responseModel);
+        this.loginNotifierService.setLoggedInStatus(true);
         // Close dialog box
         this.dialog.getDialogById('login-dialog').close();
         this.router.navigate([MyRoutes.protectedRoutes.authLandingPage]);

@@ -26,6 +26,7 @@ import { PreviewInvoiceComponent } from './preview-invoice/preview-invoice.compo
 import { InvoicePreviewDialogComponent } from './invoice-preview-dialog/invoice-preview-dialog.component';
 import {SharedModuleModule} from "../shared-module/shared-module.module";
 import { SaveTemplateDialogComponent } from './save-template-dialog/save-template-dialog.component';
+import {PdfGeneratorModule} from "../pdf-generator/pdf-generator.module";
 
 const routes: Routes = [
   { path: '', component: InvoiceCreatorComponent, canActivate: [AlreadyLoggedInGuard] },
@@ -64,7 +65,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatTabsModule,
-    SharedModuleModule
+    SharedModuleModule,
+    PdfGeneratorModule
   ]
 })
 export class InvoiceGeneratorModule { }

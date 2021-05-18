@@ -1,7 +1,8 @@
 import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
-import {MatSidenav} from "@angular/material/sidenav";
+import {MatDrawerMode, MatSidenav} from "@angular/material/sidenav";
 import {NavigationCancel, NavigationEnd, NavigationStart, Router} from "@angular/router";
 import {SidebarService} from "../../../services/sidebar-service/sidebar.service";
+import {HamburgerNotifierService} from "../../../services/hamburger-notifier-service/hamburger-notifier-service";
 
 @Component({
   selector: 'app-body',
@@ -10,7 +11,7 @@ import {SidebarService} from "../../../services/sidebar-service/sidebar.service"
 })
 export class BodyComponent implements OnInit {
 
-  mode = 'side';
+  mode: MatDrawerMode = 'side';
   private desktopWidth = 800;
   @ViewChild('leftSidenav', { static: true })
   public leftSideNav: MatSidenav;
@@ -18,14 +19,25 @@ export class BodyComponent implements OnInit {
   currentWidth: number;
   isSidebarOpen = false;
 
-  constructor(private adminLeftSidebarService: SidebarService,
+  constructor(private leftSidebarService: SidebarService,
+              private hamburgerNotifierService: HamburgerNotifierService,
               private router: Router) {}
 
   ngOnInit() {
 
-    this.adminLeftSidebarService.setSidenav(this.leftSideNav);
+    this.currentWidth = window.innerWidth;
+    this.leftSidebarService.setSidenav(this.leftSideNav);
 
-    this.adminLeftSidebarService.getSidebarStatus().subscribe(data => {
+    console.log(this.router.url);
+
+    // if(this.router.url === '/invoice-builder') {
+    //   this.setAsOverMode();
+    // } else {
+    //   this.setAsSideMode();
+    // }
+
+
+    this.leftSidebarService.getSidebarStatus().subscribe(data => {
       if (data) {
         this.isSidebarOpen = this.mode === 'over';
       } else {
@@ -33,16 +45,20 @@ export class BodyComponent implements OnInit {
       }
     }, error1 => {});
 
-    this.currentWidth = window.innerWidth;
     this.checkWidthAndSetMode();
     this.router.events.subscribe((event) => {
+
       if (event instanceof NavigationStart) {
         if (this.currentWidth < 800) {
-          this.adminLeftSidebarService.close();
+          this.leftSidebarService.close();
+        } else {
+          this.leftSidebarService.open();
         }
       } else if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
         if (this.currentWidth < 800) {
-          this.adminLeftSidebarService.close();
+          this.leftSidebarService.close();
+        } else {
+          this.leftSidebarService.open();
         }
       }
     });
@@ -57,22 +73,25 @@ export class BodyComponent implements OnInit {
 
   checkWidthAndSetMode() {
     if (this.currentWidth > this.desktopWidth) {
+      console.log("currentWidth");
       this.setAsSideMode();
     } else {
+      console.log("xxxxx");
       this.setAsOverMode();
     }
   }
   setAsSideMode() {
     this.mode = 'side';
-    this.adminLeftSidebarService.open();
+    this.leftSidebarService.open();
   }
   setAsOverMode() {
     this.mode = 'over';
-    this.adminLeftSidebarService.close();
+    this.leftSidebarService.close();
   }
 
   closeSidebar() {
-    this.adminLeftSidebarService.close();
+    this.hamburgerNotifierService.setToggle(false);
+    this.leftSidebarService.close();
   }
 
 }

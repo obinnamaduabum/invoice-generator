@@ -3,10 +3,8 @@ import {Injectable, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
-import {environment} from '../../environments/environment';
-import {ResponseModel} from '../models/response-model';
-
-declare const gapi: any;
+import {environment} from '../../../environments/environment';
+import {ResponseModel} from '../../models/response-model';
 
 const httpOptions = {
   headers: new HttpHeaders({

@@ -1,14 +1,8 @@
 import pCloudSdk from 'pcloud-sdk-js';
-import {PcloudResponseInterface} from "../../interface/pcloud/pcloud-response";
 import {PcloudStreamFile} from "../../interface/pcloud/pcloud-stream-file";
-import {MySequences} from "../../utils/sequence_generator";
-import {MySequenceTypeConstant} from "../../lh_enum/sequence_type";
-import {MyUtils} from "../../utils/my_util";
-import * as https from "https";
 import axios from "axios";
 import concat from "concat-stream";
 import {PCloudPublicLinkInterface} from "../../interface/pcloud/public_link/pcloud_public_link";
-
 const FormData = require('form-data');
 const fs = require('fs');
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
-import {CompanyProfileService} from "../../../services/company-profile.service";
+import {CompanyProfileService} from "../../../services/company-profile-service/company-profile.service";
 import {ResponseModel} from "../../../models/response-model";
 import {CompanyProfileApiResponseInterface} from "../../../interfaces/company-profile-api-response-interface";
 import {PaginationInterface} from "../../../interfaces/pagination_interface";
@@ -14,6 +14,8 @@ import {rejects} from "assert";
 export class CompaniesComponent implements OnInit {
 
   listOfCompanyProfiles: CompanyProfileApiResponseInterface[] = [];
+  @Output() gotoEvent = new EventEmitter<number>();
+
   constructor(private router: Router,
               private companyProfileService: CompanyProfileService) { }
 
@@ -75,6 +77,7 @@ export class CompaniesComponent implements OnInit {
 
   selectCompany(input: any) {
     this.companyProfileService.setCompanyProfile(input);
-    this.router.navigateByUrl('/invoice-builder/main');
+    //this.gotoEvent.emit(0);
+    this.router.navigateByUrl('/invoice-builder/main/create');
   }
 }

@@ -22,10 +22,27 @@
       </div>
     </div>
   </form>
-
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close class="cancel-btn">Cancel</button>
-  <button mat-button class="success-btn" (click)="save()">Save</button>
+
+  <span *ngIf="!makingRequest">
+    <button mat-button class="success-btn" (click)="save()">
+      Save
+    </button>
+  </span>
+
+  <span *ngIf="makingRequest">
+    <button mat-button class="success-btn" (click)="save()">
+      <mat-icon>
+        <mat-progress-spinner
+          class="white-mat-spinner"
+          [diameter]="20"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-icon>
+  </button>
+  </span>
+
 </mat-dialog-actions>

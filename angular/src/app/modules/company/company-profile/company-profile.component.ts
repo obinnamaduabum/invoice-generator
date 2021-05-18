@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {FileUploadGalleryComponent} from "../../file-upload/components/file-upload-gallery/file-upload-gallery.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AddPhoneNumberComponent} from "../add-phone-number/add-phone-number.component";
-import {CompanyProfileService} from "../../../services/company-profile.service";
+import {CompanyProfileService} from "../../../services/company-profile-service/company-profile.service";
 import {ResponseModel} from "../../../models/response-model";
 import {MyToastService} from "../../../services/toast-service/my-toast.service";
 import {MyEmailValidator} from "../../edit-phone-number-dialogue/validator/email_validator";
@@ -41,12 +41,6 @@ export class CompanyProfileComponent implements OnInit {
       phoneNumber: new FormControl('', [Validators.required])
     });
 
-    // this.companyProfile.get('phoneNumber').valueChanges.subscribe((data: any) => {
-    //   if(this.phoneNumbers.length > 0) {
-    //     this.companyProfile.get('phoneNumber').setErrors(null);
-    //   }
-    // });
-    //this.fb.array(this.phoneNumbers || [])
   }
 
   ngOnInit(): void {}
@@ -62,7 +56,6 @@ export class CompanyProfileComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (typeof result === "string") {
-        // console.log(result);
         this.logoUrl = result;
         this.companyProfile.get('logoUrl').setValue(result);
       }
@@ -109,7 +102,7 @@ export class CompanyProfileComponent implements OnInit {
       this.makingRequest = true;
       const inputObj = this.companyProfile.getRawValue();
       this.companyProfileService.create(inputObj).subscribe((data: ResponseModel) => {
-        this.makingRequest = true;
+        this.makingRequest = false;
         if (data.success) {
           this.myToastService.showSuccess(data.message);
         } else {

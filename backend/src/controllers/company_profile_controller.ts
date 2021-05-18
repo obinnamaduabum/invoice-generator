@@ -61,6 +61,16 @@ export class CompanyProfileController {
                 const companyProfile: CompanyProfileServiceInterface =
                 await CompanyProfileService.getRequestData(req, user.id);
 
+                const foundCompany =
+                    await CompanyProfileDao.findByName(companyProfile.insertObj.name, user.id);
+
+                if(foundCompany) {
+                    return ApiResponseUtil.apiResponse(res,
+                        200,
+                        "Company name already exists",
+                        false);
+                }
+
                 await CompanyProfileDao.save(companyProfile);
 
                 return ApiResponseUtil.apiResponse(res,

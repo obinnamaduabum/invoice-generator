@@ -1,6 +1,11 @@
 import { Sequelize } from "sequelize";
 import * as fs from "fs";
 import * as path from "path";
+import {User} from "../models/user";
+import {MyLogo} from "../models/my_logo";
+import {CompanyProfile} from "../models/company_profile";
+import {PhoneNumber} from "../models/phone_number";
+import {MyClient} from "../models/client";
 
 // if(!process.env.PG_DATABASE) {
 //     throw "Database Configuration properties not found";
@@ -47,6 +52,7 @@ export class PostgresDatabase {
     get getSequelize(): Sequelize {
         return this.postgresDatabase;
     }
+
 
     // async syncAllTables() {
     //     const db = {};
